@@ -1,22 +1,10 @@
 import React from 'react'
-import './styles/index.scss'
+import Button from './components/button/button'
 
 const App : React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <p className="text-red orange-lighten-2">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Button type="primary">hello world</Button>
     </div>
   );
 }
