@@ -15,12 +15,21 @@ const Button: React.FC<ButtonProps> = ({
   className,
   children,
 }) => {
-  const computedClassNames = useClassNames({
-    "rf-btn": true,
-    [`rf-btn-${type}`]: type ? true : false,
-  });
+  const computedClassNames = useClassNames(
+    {
+      "rf-btn": true,
+      [`rf-btn-${type}`]: type ? true : false,
+      "rf-btn-disabled": disabled,
+    },
+    className
+  );
 
   return <button className={computedClassNames}>{children}</button>;
+};
+
+Button.defaultProps = {
+  disabled: false,
+  type: "primary",
 };
 
 export default Button;
