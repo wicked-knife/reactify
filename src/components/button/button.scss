@@ -1,0 +1,53 @@
+@import '../../styles/color';
+
+.rf-btn {
+  position: relative;
+  height: 32px;
+  border: none;
+  outline: none;
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  padding: 4px 15px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.rf-btn-default {
+  @extend .rf-btn;
+  background-color: $white;
+  color: $black;
+  &:hover{
+    background-color: darken($color: $white, $amount: 5);
+  }
+}
+
+.rf-btn-primary {
+  @extend .rf-btn;
+  background-color: $primary;
+  color: $white;
+  &:hover{
+    background-color: darken($color: $primary, $amount: 5);
+  }
+}
+
+.rf-btn-danger {
+  @extend .rf-btn;
+  background-color: $danger;
+  color: $white;
+  &:hover{
+    background-color: darken($color: $danger, $amount: 5);
+  }
+}
+
+.rf-btn-success {
+  @extend .rf-btn;
+  background-color: $light-green;
+  color: $white;
+  &:hover{
+    background-color: darken($color: $light-green, $amount: 5);
+  }
+}
