@@ -20,8 +20,9 @@
   @extend .rf-btn;
   background-color: $white;
   color: $black;
+  border: 1px solid $grey-lighten-1;
   &:hover{
-    background-color: darken($color: $white, $amount: 5);
+    background-color: lighten($color: $white, $amount: 10);
   }
 }
 
@@ -30,7 +31,7 @@
   background-color: $primary;
   color: $white;
   &:hover{
-    background-color: darken($color: $primary, $amount: 5);
+    background-color: lighten($color: $primary, $amount: 10);
   }
 }
 
@@ -39,7 +40,7 @@
   background-color: $danger;
   color: $white;
   &:hover{
-    background-color: darken($color: $danger, $amount: 5);
+    background-color: lighten($color: $danger, $amount: 10);
   }
 }
 
@@ -48,6 +49,6 @@
   background-color: $light-green;
   color: $white;
   &:hover{
-    background-color: darken($color: $light-green, $amount: 5);
+    background-color: lighten($color: $light-green, $amount: 10);
   }
 }
