@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: ButtonType
   disabled?: boolean
   className?: string
+  onClick?: React.EventHandler<React.MouseEvent>
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,6 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   className,
   children,
+  onClick
 }) => {
   const computedClassNames = useClassNames(
     {
@@ -25,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  return <button className={computedClassNames}>{children}</button>
+  return <button className={computedClassNames} onClick={onClick}>{children}</button>
 }
 
 Button.defaultProps = {
