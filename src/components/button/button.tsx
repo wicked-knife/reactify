@@ -2,10 +2,12 @@ import React from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
-type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 'success'
+export type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 'success'
+type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps {
   type?: ButtonType
+  size?: ButtonSize
   disabled?: boolean
   className?: string
   onClick?: React.EventHandler<React.MouseEvent>
@@ -13,6 +15,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   type,
+  size,
   disabled,
   className,
   children,
@@ -21,18 +24,20 @@ const Button: React.FC<ButtonProps> = ({
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
-      [`rf-btn-${type}`]: type ? true : false,
+      [`rf-btn-${type}`]: true,
       'rf-btn-disabled': disabled,
+      [`rf-btn-${size}`]: true
     },
     className
   )
 
-  return <button className={computedClassNames} onClick={onClick}>{children}</button>
+  return <button className={computedClassNames} onClick={onClick}><span className='rf-btn-text'>{children}</span></button>
 }
 
 Button.defaultProps = {
-  disabled: false,
   type: 'default',
+  size: 'medium',
+  disabled: false
 }
 
 export default Button

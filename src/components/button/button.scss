@@ -1,27 +1,47 @@
 @import '../../styles/color';
+@import '../../styles/font';
+
+.rf-btn-text{
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-subtitle-2;
+  display: inline-block;
+}
+
+.rf-btn-medium{
+  height: 32px;
+  padding: 4px 15px;
+  border-radius: 2px;
+  .rf-btn-text{
+    line-height: 24px;
+    vertical-align: middle;
+  }
+}
 
 .rf-btn {
   position: relative;
-  height: 32px;
+  box-sizing: border-box;
   border: none;
   outline: none;
-  display: inline-block;
+  display: inline-flex;
   user-select: none;
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
   touch-action: manipulation;
-  padding: 4px 15px;
-  border-radius: 2px;
   transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.015);
 }
 
 .rf-btn-default {
   @extend .rf-btn;
   background-color: $white;
-  color: $black;
+  color: $grey-darken-3;
   border: 1px solid $grey-lighten-1;
-  &:hover{
+  &:hover {
+    color: $primary;
+    border: 1px solid darken($color: $primary, $amount: 5);
     background-color: lighten($color: $white, $amount: 10);
   }
 }
@@ -30,7 +50,7 @@
   @extend .rf-btn;
   background-color: $primary;
   color: $white;
-  &:hover{
+  &:hover {
     background-color: lighten($color: $primary, $amount: 10);
   }
 }
@@ -39,7 +59,7 @@
   @extend .rf-btn;
   background-color: $danger;
   color: $white;
-  &:hover{
+  &:hover {
     background-color: lighten($color: $danger, $amount: 10);
   }
 }
@@ -48,7 +68,7 @@
   @extend .rf-btn;
   background-color: $light-green;
   color: $white;
-  &:hover{
+  &:hover {
     background-color: lighten($color: $light-green, $amount: 10);
   }
 }
