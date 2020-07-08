@@ -8,6 +8,7 @@ type ButtonSize = 'small' | 'medium' | 'large'
 interface ButtonProps {
   type?: ButtonType
   size?: ButtonSize
+  plain?: boolean
   disabled?: boolean
   className?: string
   onClick?: React.EventHandler<React.MouseEvent>
@@ -37,6 +38,7 @@ const Button: React.FC<ButtonProps> = ({
 Button.defaultProps = {
   type: 'default',
   size: 'medium',
+  plain: false,
   disabled: false
 }
 

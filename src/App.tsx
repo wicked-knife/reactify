@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, } from 'react'
 import Button, {ButtonType} from './components/button/button'
 import './styles/index.scss'
 
@@ -17,6 +17,16 @@ const App: React.FC = () => {
           </Button>
         )
       )}
+
+      <div style={{marginTop: '100px'}}>
+      {(['default', 'primary', 'danger', 'link', 'text', 'success'] as Array<ButtonType>).map(
+        buttonType => (
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} plain>
+            {buttonType}
+          </Button>
+        )
+      )}
+      </div>
     </div>
   )
 }
