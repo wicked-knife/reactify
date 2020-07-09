@@ -6,6 +6,7 @@ export type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 's
 type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps {
+  block?: boolean
   disabled?: boolean
   className?: string
   type?: ButtonType
@@ -16,6 +17,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
+  block,
   disabled,
   className,
   children,
@@ -29,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
     {
       'rf-btn': true,
       [`rf-btn-${type}`]: type,
+      'is-block': block,
       'is-disabled': disabled,
       [`rf-btn-${size}`]: true,
       [`is-plain`]: plain,
@@ -41,6 +44,7 @@ const Button: React.FC<ButtonProps> = ({
 }
 
 Button.defaultProps = {
+  block: false,
   type: 'default',
   size: 'medium',
   plain: false,

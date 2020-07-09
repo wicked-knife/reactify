@@ -14,7 +14,7 @@ const App: React.FC = () => {
     <div className='App'>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} round disabled>
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} round block>
             {buttonType}
           </Button>
         )
@@ -23,7 +23,7 @@ const App: React.FC = () => {
       <div style={{marginTop: '100px'}}>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} plain disabled>
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} plain block>
             {buttonType}
           </Button>
         )
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       <div style={{marginTop: '100px'}}>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} disabled>
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} block>
             {buttonType}
           </Button>
         )

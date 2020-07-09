@@ -35,7 +35,12 @@
       vertical-align: middle;
     }
   }
+  &.is-block{
+    display: flex;
+    width: 100%;
+  }
 }
+
 
 // 非 plain 类型的 button disabled 的样式
 @mixin baseBtnDisabled($disbaleColor) {
