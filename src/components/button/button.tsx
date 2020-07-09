@@ -2,36 +2,36 @@ import React from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
-export type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 'success'
+export type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 'success' | 'warning'
 type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps {
+  disabled?: boolean
+  className?: string
   type?: ButtonType
   size?: ButtonSize
   plain?: boolean
   round?: boolean
-  disabled?: boolean
-  className?: string
   onClick?: React.EventHandler<React.MouseEvent>
 }
 
 const Button: React.FC<ButtonProps> = ({
+  disabled,
+  className,
+  children,
   type,
   size,
   plain,
   round,
-  disabled,
-  className,
-  children,
   onClick
 }) => {
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
-      [`rf-btn-${type}`]: !plain,
-      'rf-btn-disabled': disabled,
+      [`rf-btn-${type}`]: type,
+      'is-disabled': disabled,
       [`rf-btn-${size}`]: true,
-      [`rf-btn-${type}-plain`]: plain,
+      [`is-plain`]: plain,
       'rf-btn-round': round
     },
     className
