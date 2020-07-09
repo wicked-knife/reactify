@@ -1,17 +1,17 @@
 @import '../../styles/color';
 @import '../../styles/font';
 
-.rf-btn-text{
+.rf-btn-text {
   font-family: $font-family-sans-serif;
   font-size: $font-size-subtitle-2;
   display: inline-block;
 }
 
-.rf-btn-medium{
+.rf-btn-medium {
   height: 32px;
   padding: 4px 15px;
   border-radius: 2px;
-  .rf-btn-text{
+  .rf-btn-text {
     line-height: 24px;
     vertical-align: middle;
   }
@@ -35,7 +35,6 @@
 }
 
 .rf-btn-default {
-  @extend .rf-btn;
   background-color: $white;
   color: $grey-darken-3;
   border: 1px solid $grey-lighten-1;
@@ -43,45 +42,85 @@
     color: $primary;
     border: 1px solid darken($color: $primary, $amount: 5);
   }
-  &:active{
+  &:active {
     background-color: rgba(lighten($color: $blue-lighten-2, $amount: 10), 0.25);
     color: darken($color: $primary, $amount: 10);
     border: 1px solid darken($color: $primary, $amount: 10);
   }
 }
+.rf-btn-default-plain {
+  @extend .rf-btn-default;
+}
 
 .rf-btn-primary {
-  @extend .rf-btn;
   background-color: $primary;
   color: $white;
   &:hover {
     background-color: lighten($color: $primary, $amount: 10);
   }
-  &:active{
+  &:active {
+    background-color: darken($color: $primary, $amount: 5);
+  }
+}
+
+.rf-btn-primary-plain {
+  border: $blue-lighten-2 1px solid;
+  background-color: rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3);
+  color: $primary;
+  &:hover {
+    color: $white;
+    background-color: $primary;
+  }
+  &:active {
     background-color: darken($color: $primary, $amount: 5);
   }
 }
 
 .rf-btn-danger {
-  @extend .rf-btn;
   background-color: $danger;
   color: $white;
   &:hover {
     background-color: lighten($color: $danger, $amount: 10);
   }
-  &:active{
+  &:active {
     background-color: darken($color: $danger, $amount: 5);
   }
 }
 
+.rf-btn-danger-plain{
+  border: $red-lighten-2 1px solid;
+  background-color: rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3);
+  color: $danger;
+  &:hover {
+    color: $white;
+    background-color: $danger;
+  }
+  &:active {
+    background-color: darken($color: $danger, $amount: 5);
+  }
+}
+
+
 .rf-btn-success {
-  @extend .rf-btn;
   background-color: $light-green;
   color: $white;
   &:hover {
     background-color: lighten($color: $light-green, $amount: 10);
   }
-  &:active{
+  &:active {
+    background-color: darken($color: $light-green, $amount: 5);
+  }
+}
+
+.rf-btn-success-plain{
+  border: $light-green-lighten-2 1px solid;
+  background-color: rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3);
+  color: $light-green;
+  &:hover {
+    color: $white;
+    background-color: $light-green;
+  }
+  &:active {
     background-color: darken($color: $light-green, $amount: 5);
   }
 }

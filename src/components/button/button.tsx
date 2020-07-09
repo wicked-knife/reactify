@@ -9,6 +9,7 @@ interface ButtonProps {
   type?: ButtonType
   size?: ButtonSize
   plain?: boolean
+  round?: boolean
   disabled?: boolean
   className?: string
   onClick?: React.EventHandler<React.MouseEvent>
@@ -17,6 +18,7 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   type,
   size,
+  plain,
   disabled,
   className,
   children,
@@ -25,9 +27,10 @@ const Button: React.FC<ButtonProps> = ({
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
-      [`rf-btn-${type}`]: true,
+      [`rf-btn-${type}`]: !plain,
       'rf-btn-disabled': disabled,
-      [`rf-btn-${size}`]: true
+      [`rf-btn-${size}`]: true,
+      [`rf-btn-${type}-plain`]: plain
     },
     className
   )
@@ -39,6 +42,7 @@ Button.defaultProps = {
   type: 'default',
   size: 'medium',
   plain: false,
+  round: false,
   disabled: false
 }
 
