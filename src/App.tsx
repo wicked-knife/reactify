@@ -12,7 +12,7 @@ const App: React.FC = () => {
     <div className='App'>
       {(['default', 'primary', 'danger', 'link', 'text', 'success'] as Array<ButtonType>).map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler}>
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} round>
             {buttonType}
           </Button>
         )
@@ -22,6 +22,16 @@ const App: React.FC = () => {
       {(['default', 'primary', 'danger', 'link', 'text', 'success'] as Array<ButtonType>).map(
         buttonType => (
           <Button type={buttonType} key={buttonType} onClick={clickHandler} plain>
+            {buttonType}
+          </Button>
+        )
+      )}
+      </div>
+
+      <div style={{marginTop: '100px'}}>
+      {(['default', 'primary', 'danger', 'link', 'text', 'success'] as Array<ButtonType>).map(
+        buttonType => (
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} plain round>
             {buttonType}
           </Button>
         )

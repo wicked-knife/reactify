@@ -19,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   size,
   plain,
+  round,
   disabled,
   className,
   children,
@@ -30,7 +31,8 @@ const Button: React.FC<ButtonProps> = ({
       [`rf-btn-${type}`]: !plain,
       'rf-btn-disabled': disabled,
       [`rf-btn-${size}`]: true,
-      [`rf-btn-${type}-plain`]: plain
+      [`rf-btn-${type}-plain`]: plain,
+      'rf-btn-round': round
     },
     className
   )
