@@ -24,7 +24,7 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.015);
   &.rf-btn-medium {
     height: 32px;
-    padding: 4px 15px;
+    padding: 4px 16px;
     border-radius: 2px;
     &.rf-btn-round {
       border-radius: 32px;
@@ -35,6 +35,36 @@
       vertical-align: middle;
     }
   }
+
+  &.rf-btn-large {
+    height: 36px;
+    padding: 4px 18px;
+    border-radius: 2px;
+    &.rf-btn-round {
+      border-radius: 40px;
+      padding: 4px 24px;
+    }
+    .rf-btn-text {
+      line-height: 28px;
+      vertical-align: middle;
+    }
+  }
+
+  &.rf-btn-small {
+    height: 28px;
+    padding: 4px 14px;
+    border-radius: 2px;
+    &.rf-btn-round {
+      border-radius: 28px;
+      padding: 4px 14px;
+    }
+    .rf-btn-text {
+      font-size: $font-size-caption;
+      line-height: 20px;
+      vertical-align: middle;
+    }
+  }
+
   &.is-block{
     display: flex;
     width: 100%;
