@@ -28,6 +28,17 @@
   }
 }
 
+@mixin btn-size($height, $padding) {
+  height: $height;
+  padding: $padding;
+  border-radius: 2px;
+}
+
+@mixin btn-round($border-radius, $padding) {
+  border-radius: $border-radius;
+  padding: $padding;
+}
+
 .rf-btn-span {
   font-family: $font-family-sans-serif;
   font-size: $font-size-base;
@@ -50,12 +61,9 @@
   justify-content: center;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.015);
   &.rf-btn-medium {
-    height: 32px;
-    padding: 4px 16px;
-    border-radius: 2px;
+    @include btn-size(32px, 4px 16px);
     &.rf-btn-round {
-      border-radius: 32px;
-      padding: 4px 20px;
+      @include btn-round(32px, 4px 20px);
     }
     .rf-btn-span {
       line-height: 24px;
@@ -64,12 +72,9 @@
   }
 
   &.rf-btn-large {
-    height: 36px;
-    padding: 4px 18px;
-    border-radius: 2px;
+    @include btn-size(36px, 4px 18px);
     &.rf-btn-round {
-      border-radius: 40px;
-      padding: 4px 28px;
+      @include btn-round(40px, 4px 28px);
     }
     .rf-btn-span {
       line-height: 28px;
@@ -78,12 +83,9 @@
   }
 
   &.rf-btn-small {
-    height: 28px;
-    padding: 4px 14px;
-    border-radius: 2px;
+    @include btn-size(28px, 4px 14px);
     &.rf-btn-round {
-      border-radius: 28px;
-      padding: 4px 18px;
+      @include btn-round(28px, 4px 18px);
     }
     .rf-btn-span {
       font-size: $font-size-caption;
