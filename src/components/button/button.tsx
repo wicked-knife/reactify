@@ -2,7 +2,7 @@ import React from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
-export type ButtonType = 'default' | 'primary' | 'danger' | 'link' | 'text' | 'success' | 'warning'
+export type ButtonType = 'default' | 'primary' | 'danger' | 'text' | 'success' | 'warning'
 type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps {
@@ -40,7 +40,7 @@ const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  return <button className={computedClassNames} onClick={onClick}><span className='rf-btn-text'>{children}</span></button>
+  return <button className={computedClassNames} onClick={onClick}><span className='rf-btn-span'>{children}</span></button>
 }
 
 Button.defaultProps = {

@@ -8,14 +8,14 @@ const App: React.FC = () => {
     console.log(event)
   }, [])
 
-  const buttons: Array<ButtonType> = ['default', 'primary', 'danger', 'link', 'text', 'success', 'warning']
+  const buttons: Array<ButtonType> = ['default', 'primary', 'danger', 'text', 'success', 'warning']
 
   return (
     <div className='App'>
       {buttons.map(
         buttonType => (
           <Button type={buttonType} key={buttonType} onClick={clickHandler} round size="small" >
-            {buttonType}
+            按钮
           </Button>
         )
       )}
@@ -23,7 +23,7 @@ const App: React.FC = () => {
       <div style={{marginTop: '100px'}}>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} plain size="small" >
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} round size="medium" >
             {buttonType}
           </Button>
         )
@@ -33,7 +33,7 @@ const App: React.FC = () => {
       <div style={{marginTop: '100px'}}>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} >
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} round size="large">
             {buttonType}
           </Button>
         )
