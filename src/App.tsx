@@ -23,7 +23,7 @@ const App: React.FC = () => {
       <div style={{marginTop: '100px'}}>
       {buttons.map(
         buttonType => (
-          <Button type={buttonType} key={buttonType} onClick={clickHandler} round size="medium" >
+          <Button type={buttonType} key={buttonType} onClick={clickHandler} round size="medium" plain >
             {buttonType}
           </Button>
         )

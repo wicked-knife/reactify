@@ -1,6 +1,33 @@
 @import '../../styles/color';
 @import '../../styles/font';
 
+@mixin plain-btn-styles($border-color, $bg-color, $active-bg-color) {
+  border: $border-color 1px solid;
+  background-color: rgba(lighten($color: $bg-color, $amount: 10), 0.3);
+  color: $active-bg-color;
+  &:hover {
+    color: $white;
+    background-color: lighten($color: $active-bg-color, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $active-bg-color, $amount: 5);
+  }
+}
+
+@mixin plain-btn-disabled($bg-color, $border-color, $color, $active-bg-color) {
+  cursor: not-allowed;
+  background-color: $bg-color;
+  border: $border-color 1px solid;
+  color: $color;
+  &:hover {
+    color: $color;
+    background-color: $active-bg-color;
+  }
+  &:active {
+    background-color: $active-bg-color;
+  }
+}
+
 .rf-btn-span {
   font-family: $font-family-sans-serif;
   font-size: $font-size-base;
@@ -65,15 +92,14 @@
     }
   }
 
-  &.is-block{
+  &.is-block {
     display: flex;
     width: 100%;
   }
 }
 
-
 // 非 plain 类型的 button disabled 的样式
-@mixin baseBtnDisabled($disbaleColor) {
+@mixin base-btn-disabled($disbaleColor) {
   cursor: not-allowed;
   background-color: $disbaleColor;
   color: $white;
@@ -102,7 +128,7 @@
   &.is-plain {
     @extend .rf-btn-default;
   }
-  &.is-disabled{
+  &.is-disabled {
     cursor: not-allowed;
     color: $grey;
     border: 1px solid $grey-lighten-2;
@@ -128,33 +154,19 @@
     background-color: darken($color: $primary, $amount: 5);
   }
   &.is-plain {
-    border: $blue-lighten-2 1px solid;
-    background-color: rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3);
-    color: $primary;
-    &:hover {
-      color: $white;
-      background-color: lighten($color: $primary, $amount: 10);
-    }
-    &:active {
-      background-color: darken($color: $primary, $amount: 5);
-    }
-    &.is-disabled{
-      cursor: not-allowed;
-      background-color: rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3);
-      border: $blue-lighten-4 1px solid;
-      color: $blue-lighten-2;
-      &:hover {
-        color: $blue-lighten-2;
-        background-color: rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3);
-      }
-      &:active {
-        background-color: rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3);
-      }
+    @include plain-btn-styles($blue-lighten-2, $blue-lighten-3, $primary);
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3),
+        $blue-lighten-4,
+        $blue-lighten-2,
+        rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3)
+      );
     }
   }
 
-  &.is-disabled{
-    @include baseBtnDisabled($blue-lighten-3);
+  &.is-disabled {
+    @include base-btn-disabled($blue-lighten-3);
   }
 }
 
@@ -168,33 +180,19 @@
     background-color: darken($color: $danger, $amount: 5);
   }
   &.is-plain {
-    border: $red-lighten-2 1px solid;
-    background-color: rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3);
-    color: $danger;
-    &:hover {
-      color: $white;
-      background-color: lighten($color: $danger, $amount: 10);
-    }
-    &:active {
-      background-color: darken($color: $danger, $amount: 5);
-    }
-    &.is-disabled{
-      cursor: not-allowed;
-      background-color: rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3);
-      border: $red-lighten-4 1px solid;
-      color: $red-lighten-2;
-      &:hover {
-        color: $red-lighten-2;
-        background-color: rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3);
-      }
-      &:active {
-        background-color: rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3);
-      }
+    @include plain-btn-styles($red-lighten-2, $red-lighten-3, $danger);
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3),
+        $red-lighten-4,
+        $blue-lighten-2,
+        rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3)
+      );
     }
   }
 
-  &.is-disabled{
-    @include baseBtnDisabled($red-lighten-3);
+  &.is-disabled {
+    @include base-btn-disabled($red-lighten-3);
   }
 }
 
@@ -208,35 +206,22 @@
     background-color: darken($color: $light-green, $amount: 5);
   }
   &.is-plain {
-    border: $light-green-lighten-2 1px solid;
-    background-color: rgba(
-      lighten($color: $light-green-lighten-3, $amount: 10),
-      0.3
+    @include plain-btn-styles(
+      $light-green-lighten-2,
+      rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3),
+      $light-green
     );
-    color: $light-green;
-    &:hover {
-      color: $white;
-      background-color: lighten($color: $light-green, $amount: 10);
-    }
-    &:active {
-      background-color: darken($color: $light-green, $amount: 5);
-    }
-    &.is-disabled{
-      cursor: not-allowed;
-      background-color: rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3);
-      border: $light-green-lighten-4 1px solid;
-      color: $light-green-lighten-2;
-      &:hover {
-        color: $light-green-lighten-2;
-        background-color: rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3);
-      }
-      &:active {
-        background-color: rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3);
-      }
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3),
+        $light-green-lighten-4,
+        $light-green-lighten-2,
+        rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3)
+      );
     }
   }
-  &.is-disabled{
-    @include baseBtnDisabled($light-green-lighten-3);
+  &.is-disabled {
+    @include base-btn-disabled($light-green-lighten-3);
   }
 }
 
@@ -250,54 +235,43 @@
     background-color: darken($color: $orange, $amount: 5);
   }
   &.is-plain {
-    border: $orange-lighten-2 1px solid;
-    background-color: rgba(
-      lighten($color: $orange-lighten-3, $amount: 10),
-      0.3
+    @include plain-btn-styles(
+      $orange-lighten-2,
+      rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3),
+      $orange
     );
-    color: $orange;
-    &:hover {
-      color: $white;
-      background-color: lighten($color: $orange, $amount: 10);
-    }
-    &:active {
-      background-color: darken($color: $orange, $amount: 5);
-    }
-    &.is-disabled{
-      cursor: not-allowed;
-      background-color: rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3);
-      border: $orange-lighten-4 1px solid;
-      color: $orange-lighten-2;
-      &:hover {
-        color: $orange-lighten-2;
-        background-color: rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3);
-      }
-      &:active {
-        background-color: rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3);
-      }
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3),
+        $orange-lighten-4,
+        $orange-lighten-2,
+        rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3)
+      );
     }
   }
-  &.is-disabled{
-    @include baseBtnDisabled($orange-lighten-3);
+  &.is-disabled {
+    @include base-btn-disabled($orange-lighten-3);
   }
 }
 
-.rf-btn-text{
-  color: $blue-lighten-1;
+.rf-btn-text {
+  color: $blue-lighten-2;
   background-color: transparent;
-  &.rf-btn-small, &.rf-btn-medium, &.rf-btn-large{
+  &.rf-btn-small,
+  &.rf-btn-medium,
+  &.rf-btn-large {
     padding-left: 6px;
     padding-right: 6px;
-    &.rf-btn-round{
+    &.rf-btn-round {
       padding-left: 6px;
       padding-right: 6px;
     }
-    .rf-btn-span{
+    .rf-btn-span {
       font-size: $font-size-base;
     }
   }
-  &.rf-btn-small{
-    .rf-btn-span{
+  &.rf-btn-small {
+    .rf-btn-span {
       font-size: $font-size-caption;
     }
   }
