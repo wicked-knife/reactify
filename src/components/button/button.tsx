@@ -3,7 +3,7 @@ import useClassNames from 'classnames'
 import './button.scss'
 
 export type ButtonType = 'default' | 'primary' | 'danger' | 'text' | 'success' | 'warning'
-type ButtonSize = 'small' | 'medium' | 'large'
+export type ButtonSize = 'small' | 'medium' | 'large'
 
 interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
   block?: boolean
