@@ -5,32 +5,33 @@ import './button.scss'
 export type ButtonType = 'default' | 'primary' | 'danger' | 'text' | 'success' | 'warning'
 type ButtonSize = 'small' | 'medium' | 'large'
 
-interface ButtonProps {
+interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
   block?: boolean
   disabled?: boolean
   className?: string
-  type?: ButtonType
+  buttonType?: ButtonType
   size?: ButtonSize
   plain?: boolean
   round?: boolean
-  onClick?: React.EventHandler<React.MouseEvent>
 }
+
+type ButtonProps = BaseButtonProps  
 
 const Button: React.FC<ButtonProps> = ({
   block,
   disabled,
   className,
   children,
-  type,
+  buttonType,
   size,
   plain,
   round,
-  onClick
+  ...props
 }) => {
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
-      [`rf-btn-${type}`]: type,
+      [`rf-btn-${buttonType}`]: buttonType,
       'is-block': block,
       'is-disabled': disabled,
       [`rf-btn-${size}`]: true,
@@ -40,12 +41,12 @@ const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  return <button className={computedClassNames} onClick={onClick}><span className='rf-btn-span'>{children}</span></button>
+  return <button className={computedClassNames} {...props}><span className='rf-btn-span'>{children}</span></button>
 }
 
 Button.defaultProps = {
   block: false,
-  type: 'default',
+  buttonType: 'default',
   size: 'medium',
   plain: false,
   round: false,
