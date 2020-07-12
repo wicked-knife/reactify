@@ -147,4 +147,22 @@ describe('button class names', () => {
       )
     })
   })
+
+  test('block button should have correct styles', () => {
+    buttonTypeList.forEach(buttonType => {
+      const { container } = render(
+        <Button block buttonType={buttonType}>
+          {buttonType}
+        </Button>
+      )
+      const buttonElement = container.querySelector('button')
+
+      expect(buttonElement).toHaveClass(
+        'rf-btn',
+        'rf-btn-' + buttonType,
+        'rf-btn-medium',
+        'is-block'
+      )
+    })
+  })
 })
