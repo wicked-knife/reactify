@@ -41,7 +41,11 @@ describe('button class names', () => {
         <Button size={buttonSize}>{buttonSize}</Button>
       )
       const buttonElement = container.querySelector('button')
-      expect(buttonElement).toHaveClass('rf-btn', 'rf-btn-default', 'rf-btn-' + buttonSize)
+      expect(buttonElement).toHaveClass(
+        'rf-btn',
+        'rf-btn-default',
+        'rf-btn-' + buttonSize
+      )
     })
   })
 
@@ -55,10 +59,73 @@ describe('button class names', () => {
       'warning',
     ]
     buttonTypeList.forEach(buttonType => {
-    const {container} = render(<Button plain buttonType={buttonType}>{buttonType}</Button>)
-    const buttonElement = container.querySelector('button')
+      const { container } = render(
+        <Button plain buttonType={buttonType}>
+          {buttonType}
+        </Button>
+      )
+      const buttonElement = container.querySelector('button')
 
-    expect(buttonElement).toHaveClass('rf-btn', 'rf-btn-' + buttonType, 'rf-btn-medium', 'is-plain')
+      expect(buttonElement).toHaveClass(
+        'rf-btn',
+        'rf-btn-' + buttonType,
+        'rf-btn-medium',
+        'is-plain'
+      )
+    })
+  })
+
+  test('disabled button component should have correct disabled styles', () => {
+    const buttonTypeList: Array<ButtonType> = [
+      'primary',
+      'danger',
+      'default',
+      'success',
+      'text',
+      'warning',
+    ]
+    buttonTypeList.forEach(buttonType => {
+      const { container } = render(
+        <Button disabled buttonType={buttonType}>
+          {buttonType}
+        </Button>
+      )
+      const buttonElement = container.querySelector('button')
+
+      expect(buttonElement).toHaveClass(
+        'rf-btn',
+        'rf-btn-' + buttonType,
+        'rf-btn-medium',
+        'is-disabled'
+      )
+    })
+  })
+
+  
+  test('disabled plain button component should have correct disabled styles', () => {
+    const buttonTypeList: Array<ButtonType> = [
+      'primary',
+      'danger',
+      'default',
+      'success',
+      'text',
+      'warning',
+    ]
+    buttonTypeList.forEach(buttonType => {
+      const { container } = render(
+        <Button disabled plain buttonType={buttonType}>
+          {buttonType}
+        </Button>
+      )
+      const buttonElement = container.querySelector('button')
+
+      expect(buttonElement).toHaveClass(
+        'rf-btn',
+        'rf-btn-' + buttonType,
+        'rf-btn-medium',
+        'is-disabled',
+        'is-plain'
+      )
     })
   })
 })
