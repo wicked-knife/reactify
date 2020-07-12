@@ -41,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  return <button className={computedClassNames} {...props}><span className='rf-btn-span'>{children}</span></button>
+  return <button className={computedClassNames} {...props} disabled={disabled}><span className='rf-btn-span'>{children}</span></button>
 }
 
 Button.defaultProps = {

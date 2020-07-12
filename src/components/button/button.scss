@@ -15,6 +15,7 @@
 }
 
 @mixin plain-btn-disabled($bg-color, $border-color, $color, $active-bg-color) {
+  pointer-events: none;
   cursor: not-allowed;
   background-color: $bg-color;
   border: $border-color 1px solid;
@@ -27,6 +28,22 @@
     background-color: $active-bg-color;
   }
 }
+
+// 非 plain 类型的 button disabled 的样式
+@mixin base-btn-disabled($disbaleColor) {
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: $disbaleColor;
+  color: $white;
+  &:hover {
+    color: $white;
+    background-color: $disbaleColor;
+  }
+  &:active {
+    background-color: $disbaleColor;
+  }
+}
+
 
 @mixin btn-size($height, $padding) {
   height: $height;
@@ -100,19 +117,6 @@
   }
 }
 
-// 非 plain 类型的 button disabled 的样式
-@mixin base-btn-disabled($disbaleColor) {
-  cursor: not-allowed;
-  background-color: $disbaleColor;
-  color: $white;
-  &:hover {
-    color: $white;
-    background-color: $disbaleColor;
-  }
-  &:active {
-    background-color: $disbaleColor;
-  }
-}
 
 .rf-btn-default {
   background-color: $white;
@@ -131,6 +135,7 @@
     @extend .rf-btn-default;
   }
   &.is-disabled {
+    pointer-events: none;
     cursor: not-allowed;
     color: $grey;
     border: 1px solid $grey-lighten-2;
@@ -187,7 +192,7 @@
       @include plain-btn-disabled(
         rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3),
         $red-lighten-4,
-        $blue-lighten-2,
+        $red-lighten-2,
         rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3)
       );
     }
@@ -279,5 +284,10 @@
   }
   &:active {
     color: $blue-darken-2;
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: $blue-lighten-3;
   }
 }
