@@ -44,4 +44,21 @@ describe('button class names', () => {
       expect(buttonElement).toHaveClass('rf-btn', 'rf-btn-default', 'rf-btn-' + buttonSize)
     })
   })
+
+  test('plain button component should have correct plain styles', () => {
+    const buttonTypeList: Array<ButtonType> = [
+      'primary',
+      'danger',
+      'default',
+      'success',
+      'text',
+      'warning',
+    ]
+    buttonTypeList.forEach(buttonType => {
+    const {container} = render(<Button plain buttonType={buttonType}>{buttonType}</Button>)
+    const buttonElement = container.querySelector('button')
+
+    expect(buttonElement).toHaveClass('rf-btn', 'rf-btn-' + buttonType, 'rf-btn-medium', 'is-plain')
+    })
+  })
 })
