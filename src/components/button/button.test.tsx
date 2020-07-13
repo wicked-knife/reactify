@@ -49,7 +49,7 @@ describe('button class names', () => {
   test('button component should have corrent buttonType class names', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button buttonType={buttonType}>{buttonType}</Button>
+        <Button type={buttonType}>{buttonType}</Button>
       )
       const buttonElement = container.querySelector('button')
       expect(buttonElement).toHaveClass(
@@ -78,7 +78,7 @@ describe('button class names', () => {
   test('plain button component should have correct plain styles', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button plain buttonType={buttonType}>
+        <Button plain type={buttonType}>
           {buttonType}
         </Button>
       )
@@ -96,7 +96,7 @@ describe('button class names', () => {
   test('disabled button component should have correct disabled styles', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button disabled buttonType={buttonType}>
+        <Button disabled type={buttonType}>
           {buttonType}
         </Button>
       )
@@ -114,7 +114,7 @@ describe('button class names', () => {
   test('disabled plain button component should have correct disabled styles', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button disabled plain buttonType={buttonType}>
+        <Button disabled plain type={buttonType}>
           {buttonType}
         </Button>
       )
@@ -133,7 +133,7 @@ describe('button class names', () => {
   test('round button should have correct styles', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button round buttonType={buttonType}>
+        <Button round type={buttonType}>
           {buttonType}
         </Button>
       )
@@ -151,7 +151,7 @@ describe('button class names', () => {
   test('block button should have correct styles', () => {
     buttonTypeList.forEach(buttonType => {
       const { container } = render(
-        <Button block buttonType={buttonType}>
+        <Button block type={buttonType}>
           {buttonType}
         </Button>
       )
@@ -164,5 +164,29 @@ describe('button class names', () => {
         'is-block'
       )
     })
+  })
+
+  test('button component should have custom class name', () => {
+    const {container} = render(<Button className='custom-btn'>custom</Button>)
+    const buttonElement = container.querySelector('button')
+
+    expect(buttonElement).toHaveClass('rf-btn', 'rf-btn-default', 'rf-btn-medium', 'custom-btn')
+  })
+  
+})
+
+describe('button component htmlType', () => {
+  test('button component should have correct button native type', () => {
+    const {container} = render(<Button>button</Button>)
+    const buttonElement = container.querySelector('button')
+
+    expect(buttonElement!.type).toBe('button')
+  })
+
+  test('button component should have correct button native type', () => {
+    const {container} = render(<Button htmlType="submit">button</Button>)
+    const buttonElement = container.querySelector('button')
+
+    expect(buttonElement!.type).toBe('submit')
   })
 })

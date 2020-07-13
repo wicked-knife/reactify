@@ -5,14 +5,16 @@ import './button.scss'
 export type ButtonType = 'default' | 'primary' | 'danger' | 'text' | 'success' | 'warning'
 export type ButtonSize = 'small' | 'medium' | 'large'
 
-interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
+
+interface BaseButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type'> {
   block?: boolean
   disabled?: boolean
   className?: string
-  buttonType?: ButtonType
+  type?: ButtonType
   size?: ButtonSize
   plain?: boolean
-  round?: boolean
+  round?: boolean,
+  htmlType?: React.ButtonHTMLAttributes<HTMLElement>['type']
 }
 
 type ButtonProps = BaseButtonProps  
@@ -22,16 +24,17 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   className,
   children,
-  buttonType,
+  type,
   size,
   plain,
   round,
+  htmlType,
   ...props
 }) => {
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
-      [`rf-btn-${buttonType}`]: buttonType,
+      [`rf-btn-${type}`]: type,
       'is-block': block,
       'is-disabled': disabled,
       [`rf-btn-${size}`]: true,
@@ -41,16 +44,17 @@ const Button: React.FC<ButtonProps> = ({
     className
   )
 
-  return <button className={computedClassNames} {...props} disabled={disabled}><span className='rf-btn-span'>{children}</span></button>
+  return <button className={computedClassNames} {...props} disabled={disabled} type={htmlType}><span className='rf-btn-span'>{children}</span></button>
 }
 
 Button.defaultProps = {
   block: false,
-  buttonType: 'default',
+  type: 'default',
   size: 'medium',
   plain: false,
   round: false,
-  disabled: false
+  disabled: false,
+  htmlType: 'button'
 }
 
 export default Button
