@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import Button, { ButtonType, ButtonSize } from './button'
 const buttonTypeList: Array<ButtonType> = [
@@ -189,4 +189,21 @@ describe('button component htmlType', () => {
 
     expect(buttonElement!.type).toBe('submit')
   })
+})
+
+describe('button component ref', () => {
+  test('button component should have correct ref', () => {
+    const ref = React.createRef()
+    const {container} = render(<Button ref={ref}>button</Button>)
+    const buttonElement = container.querySelector('button')
+    expect(buttonElement).toEqual(ref.current)
+  })
+
+  test('button element should be focused after calling button element focus function', () => {
+    const ref = React.createRef<HTMLButtonElement>()
+    render(<Button ref={ref}>button</Button>)
+    ref.current!.focus()
+    expect(ref.current!.focus).toBeTruthy()
+  })
+
 })

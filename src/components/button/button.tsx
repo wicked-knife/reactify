@@ -1,36 +1,46 @@
-import React from 'react'
+import React, {ForwardRefRenderFunction} from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
-export type ButtonType = 'default' | 'primary' | 'danger' | 'text' | 'success' | 'warning'
+export type ButtonType =
+  | 'default'
+  | 'primary'
+  | 'danger'
+  | 'text'
+  | 'success'
+  | 'warning'
 export type ButtonSize = 'small' | 'medium' | 'large'
 
-
-interface BaseButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type'> {
+interface BaseButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type'> {
   block?: boolean
   disabled?: boolean
   className?: string
   type?: ButtonType
   size?: ButtonSize
   plain?: boolean
-  round?: boolean,
+  round?: boolean
+  ref?: React.Ref<any>
   htmlType?: React.ButtonHTMLAttributes<HTMLElement>['type']
 }
 
-type ButtonProps = BaseButtonProps  
+type ButtonProps = BaseButtonProps
 
-const Button: React.FC<ButtonProps> = ({
-  block,
-  disabled,
-  className,
-  children,
-  type,
-  size,
-  plain,
-  round,
-  htmlType,
-  ...props
-}) => {
+const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
+  {
+    block,
+    disabled,
+    className,
+    children,
+    type,
+    size,
+    plain,
+    round,
+    htmlType,
+    ...props
+  },
+  propRef: React.Ref<any>
+) => {
   const computedClassNames = useClassNames(
     {
       'rf-btn': true,
@@ -39,13 +49,24 @@ const Button: React.FC<ButtonProps> = ({
       'is-disabled': disabled,
       [`rf-btn-${size}`]: true,
       [`is-plain`]: plain,
-      'rf-btn-round': round
+      'rf-btn-round': round,
     },
     className
   )
 
-  return <button className={computedClassNames} {...props} disabled={disabled} type={htmlType}><span className='rf-btn-span'>{children}</span></button>
+  return (
+    <button
+      {...props}
+      className={computedClassNames}
+      disabled={disabled}
+      type={htmlType}
+      ref={propRef}>
+      <span className='rf-btn-span'>{children}</span>
+    </button>
+  )
 }
+
+const Button = React.forwardRef<any, ButtonProps>(BaseButton)
 
 Button.defaultProps = {
   block: false,
@@ -54,7 +75,7 @@ Button.defaultProps = {
   plain: false,
   round: false,
   disabled: false,
-  htmlType: 'button'
+  htmlType: 'button',
 }
 
 export default Button
