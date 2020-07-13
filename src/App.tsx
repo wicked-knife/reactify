@@ -1,46 +1,19 @@
-import React, { useCallback, } from 'react'
-import Button, {ButtonType} from './components/button/button'
+import React, { useRef } from 'react'
+import Message from './components/message/message'
+import Button from './components/button/button'
 import './styles/index.scss'
 
 const App: React.FC = () => {
-  const clickHandler = useCallback((event: React.MouseEvent) => {
-    event.persist()
-    console.log(event)
-  }, [])
+  const ref = useRef<any>(null)
 
-  const buttons: Array<ButtonType> = ['default', 'primary', 'danger', 'text', 'success', 'warning']
-
-  return (
-    <div className='App'>
-      {buttons.map(
-        buttonType => (
-          <Button buttonType={buttonType} key={buttonType} onClick={clickHandler} round size="small" >
-            按钮
-          </Button>
-        )
-      )}
-
-      <div style={{marginTop: '100px'}}>
-      {buttons.map(
-        buttonType => (
-          <Button buttonType={buttonType} key={buttonType} onClick={clickHandler} round size="medium" plain disabled >
-            {buttonType}
-          </Button>
-        )
-      )}
-      </div>
-
-      <div style={{marginTop: '100px'}}>
-      {buttons.map(
-        buttonType => (
-          <Button buttonType={buttonType} key={buttonType} onClick={clickHandler} round size="large">
-            {buttonType}
-          </Button>
-        )
-      )}
-      </div>
-    </div>
-  )
+  const handleClick = () => {
+    console.log(ref)
+    ref.current.focus()
+  }
+  return <div>
+    <Message />
+    <Button ref={ref} onClick={handleClick}>button</Button>
+  </div>
 }
 
 export default App
