@@ -1,4 +1,4 @@
-import React, {ForwardRefRenderFunction} from 'react'
+import React, { ForwardRefRenderFunction } from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
@@ -42,13 +42,11 @@ const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
   propRef: React.Ref<any>
 ) => {
   const computedClassNames = useClassNames(
+    ['rf-btn', `rf-btn-${type}`, `rf-btn-${size}`],
     {
-      'rf-btn': true,
-      [`rf-btn-${type}`]: type,
       'is-block': block,
       'is-disabled': disabled,
-      [`rf-btn-${size}`]: true,
-      [`is-plain`]: plain,
+      'is-plain': plain,
       'rf-btn-round': round,
     },
     className

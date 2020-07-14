@@ -17,7 +17,7 @@ const Message: React.FC<MessageProps> = ({
   })
 
   return <div className={computedClassNames}>
-    message
+    message <i className="iconfont icon-info_filled"></i>
   </div>
 }
 

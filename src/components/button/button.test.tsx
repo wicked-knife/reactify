@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import Button, { ButtonType, ButtonSize } from './button'
 const buttonTypeList: Array<ButtonType> = [
