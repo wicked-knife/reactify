@@ -5,7 +5,7 @@ import './styles/index.scss'
 const App: React.FC = () => {
   
   return <div>
-    <Icon className="icon-info_filled"/>
+    <Icon className="icon-info_filled">bla bla</Icon>
   </div>
 }
 
