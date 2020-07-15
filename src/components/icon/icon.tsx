@@ -29,8 +29,7 @@ const BaseIcon: ForwardRefRenderFunction<any, IconProps> = (
 const Icon = React.forwardRef(BaseIcon)
 
 Icon.defaultProps = {
-  size: 16,
-  color: '#333',
+  size: 16
 }
 
 export default Icon

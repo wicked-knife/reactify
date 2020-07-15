@@ -5,7 +5,7 @@
   min-width: 380px;
   box-sizing: border-box;
   border-radius: 4px;
-  position: fixed;
+  // position: fixed;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -14,6 +14,25 @@
 }
 
 .rf-message-info{
-  color: $grey-darken-1;
-  background-color: #edf2fc;
+  border: 1px solid $blue-lighten-4;
+  color: $blue-darken-2;
+  background-color: lighten($color: $blue-lighten-4, $amount: 2.5);
+}
+
+.rf-message-error{
+  border: 1px solid $red-lighten-4;
+  color: $red-darken-2;
+  background-color: lighten($color: $red-lighten-4, $amount: 2.5);
+}
+
+.rf-message-warning{
+  border: 1px solid $orange-lighten-4;
+  color: $orange-darken-2;
+  background-color: $orange-lighten-5;
+}
+
+.rf-message-success{
+  border: 1px solid $light-green-lighten-4;
+  color: $light-green-darken-2;
+  background-color: $light-green-lighten-5;
 }
