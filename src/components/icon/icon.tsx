@@ -22,9 +22,7 @@ const BaseIcon: ForwardRefRenderFunction<any, IconProps> = (
   }
 
   return (
-    <i ref={ref} className={computedClassNames} style={styles} {...props}>
-      {children}
-    </i>
+    <i ref={ref} className={computedClassNames} style={styles} {...props} />
   )
 }
 
