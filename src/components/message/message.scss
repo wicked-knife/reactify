@@ -11,6 +11,12 @@
   overflow: hidden;
   padding: 15px 15px 15px 20px;
   font-size: $font-size-subtitle-2;
+  .message-close{
+    cursor: pointer;
+  }
+  .message-content{
+    flex: 1
+  }
 }
 
 .rf-message-info{

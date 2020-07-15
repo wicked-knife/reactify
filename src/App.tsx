@@ -14,7 +14,9 @@ const App: React.FC = () => {
       <Message key={type} type={type} className="mb-2">hello world</Message>
     )}
 
-    <Button onClick={handleClick}>click me</Button>
+    {messageType.map(type => 
+      <Button key={type} onClick={() => Message[type]('hello world')}>show {type}</Button>
+    )}
   </div>
 }
 
