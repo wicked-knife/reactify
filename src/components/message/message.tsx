@@ -26,6 +26,7 @@ interface MessageFunc {
 }
 
 interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+  duration?: number
   type?: MessageType
   onClose?: () => void
   onExited?: () => void
@@ -41,6 +42,7 @@ interface MessageInterface extends React.FC<MessageProps> {
 }
 
 const Message: MessageInterface = ({
+  duration,
   type,
   className,
   children,
@@ -55,15 +57,33 @@ const Message: MessageInterface = ({
     className
   )
   const nodeRef = useRef(null)
-
-  useEffect(() => {
-    setVisibility(true)
-  }, [])
-
+  
   const closeMessage = () => {
     setVisibility(false)
     onClose!()
   }
+
+  /**
+   * trigger enter animation
+   */
+  useEffect(() => {
+    setVisibility(true)
+  }, [])
+
+  /**
+   * auto close
+   */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if(visibility) {
+        setVisibility(false)
+        onClose!()
+      }
+    }, duration)
+    return () => clearTimeout(timer)
+    /* eslint-disable-next-line */
+  }, [visibility])
+
 
   return (
     <CSSTransition in={visibility} timeout={300} classNames='message' unmountOnExit nodeRef={nodeRef} onExited={onExited}>
@@ -100,6 +120,7 @@ const mergeOptions = (propOptions: MessageOptions | string) : MessageOptions => 
 }
 
 Message.defaultProps = {
+  duration: 3000,
   type: 'info',
   onClose: noop,
   onExited: noop
