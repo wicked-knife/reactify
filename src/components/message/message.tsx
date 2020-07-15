@@ -11,7 +11,8 @@ interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 
 const Message: React.FC<MessageProps> = ({
   type,
-  className
+  className,
+  children
 }) => {
   const computedClassNames = useClassNames(
     'rf-message',
@@ -20,7 +21,7 @@ const Message: React.FC<MessageProps> = ({
   )
 
   return <div className={computedClassNames}>
-    <Icon className="icon-info mr-2" size={20} />  message
+    <Icon className="icon-info mr-2" size={20} />  {children}
   </div>
 }
 
