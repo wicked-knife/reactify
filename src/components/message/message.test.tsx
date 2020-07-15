@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import Message, {MessageType} from '../message/message'
+import Message, {MessageType} from './index'
 const messageTypeList: Array<MessageType> = ['info', 'error', 'success', 'warning']
 
 describe('message component should be mounted', () => {
