@@ -1,6 +1,6 @@
 import React, { } from 'react'
-import Message, {MessageType} from './components/message/message'
-import Button from './components/button/button'
+import Message, {MessageType} from './components/message'
+import Button from './components/button'
 import './styles/index.scss'
 
 const App: React.FC = () => {

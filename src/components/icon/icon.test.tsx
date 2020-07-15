@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import Icon from './icon'
+import Icon from './index'
 
 describe('icon component should be mounted', () => {
   test('icon component should be render in screen', () => {
