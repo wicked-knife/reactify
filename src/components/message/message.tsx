@@ -5,19 +5,21 @@ import Icon from '../icon/icon'
 import { CSSTransition } from 'react-transition-group'
 import './message.scss'
 
-const noop = () => { }
+const noop = () => {}
+
+const duration = 1500
 
 export type MessageType = 'success' | 'warning' | 'error' | 'info'
 
 export type MessageOptions = {
-  message?: string,
-  duration?: number,
-  onClose?: () => void,
+  message?: string
+  duration?: number
+  onClose?: () => void
 }
 
 const defaults: MessageOptions = {
   message: '',
-  duration: 3000,
+  duration: duration,
   onClose: noop,
 }
 
@@ -33,11 +35,11 @@ interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 interface MessageInterface extends React.FC<MessageProps> {
-  info: MessageFunc,
-  error: MessageFunc,
-  success: MessageFunc,
-  warning: MessageFunc,
-  warn: MessageFunc,
+  info: MessageFunc
+  error: MessageFunc
+  success: MessageFunc
+  warning: MessageFunc
+  warn: MessageFunc
   alert: MessageFunc
 }
 
@@ -47,7 +49,7 @@ const Message: MessageInterface = ({
   className,
   children,
   onClose,
-  onExited
+  onExited,
 }) => {
   const [visibility, setVisibility] = useState(false)
 
@@ -57,7 +59,7 @@ const Message: MessageInterface = ({
     className
   )
   const nodeRef = useRef(null)
-  
+
   const closeMessage = () => {
     setVisibility(false)
     onClose!()
@@ -75,7 +77,7 @@ const Message: MessageInterface = ({
    */
   useEffect(() => {
     const timer = setTimeout(() => {
-      if(visibility) {
+      if (visibility) {
         setVisibility(false)
         onClose!()
       }
@@ -84,32 +86,44 @@ const Message: MessageInterface = ({
     /* eslint-disable-next-line */
   }, [visibility])
 
-
   return (
-    <CSSTransition in={visibility} timeout={300} classNames='message' unmountOnExit nodeRef={nodeRef} onExited={onExited}>
+    <CSSTransition
+      in={visibility}
+      timeout={300}
+      classNames='message'
+      unmountOnExit
+      nodeRef={nodeRef}
+      onExited={onExited}>
       <div className={computedClassNames} ref={nodeRef}>
-        <Icon className="icon-info mr-2" size={20} />
-        <div className="message-content">
-          {children}
-        </div>
-        <Icon className="icon-close message-close" size={20} onClick={closeMessage} />
+        <Icon className='icon-info mr-2' size={20} />
+        <div className='message-content'>{children}</div>
+        <Icon
+          className='icon-close message-close'
+          size={20}
+          onClick={closeMessage}
+        />
       </div>
     </CSSTransition>
   )
 }
 
-const renderComponent = (options: MessageOptions , messageType: MessageType) => {
+const renderComponent = (options: MessageOptions, messageType: MessageType) => {
   const container = document.createElement('div')
   const removeContainer = () => {
     ReactDOM.unmountComponentAtNode(container)
     container.remove()
   }
 
-  ReactDOM.render(<Message type={messageType} onExited={removeContainer}>{options.message}</Message>, container)
+  ReactDOM.render(
+    <Message type={messageType} onExited={removeContainer} duration={options.duration}>
+      {options.message}
+    </Message>,
+    container
+  )
   document.body.append(container)
 }
 
-const mergeOptions = (propOptions: MessageOptions | string) : MessageOptions => {
+const mergeOptions = (propOptions: MessageOptions | string): MessageOptions => {
   let options: MessageOptions = {}
   if (typeof propOptions === 'string') {
     options = { ...defaults, message: propOptions }
@@ -120,28 +134,28 @@ const mergeOptions = (propOptions: MessageOptions | string) : MessageOptions => 
 }
 
 Message.defaultProps = {
-  duration: 3000,
+  duration: duration,
   type: 'info',
   onClose: noop,
-  onExited: noop
+  onExited: noop,
 }
 
-Message.alert = Message.info = (opt) => {
+Message.alert = Message.info = opt => {
   const mergedOptions = mergeOptions(opt)
   renderComponent(mergedOptions, 'info')
 }
 
-Message.error = (opt) => {
+Message.error = opt => {
   const mergedOptions = mergeOptions(opt)
   renderComponent(mergedOptions, 'error')
 }
 
-Message.success = (opt) => {
+Message.success = opt => {
   const mergedOptions = mergeOptions(opt)
   renderComponent(mergedOptions, 'success')
 }
 
-Message.warn = Message.warning = (opt) => {
+Message.warn = Message.warning = opt => {
   const mergedOptions = mergeOptions(opt)
   renderComponent(mergedOptions, 'warning')
 }
