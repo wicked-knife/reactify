@@ -32,6 +32,7 @@ const BaseMessage: ForwardRefRenderFunction<any, MessageProps> = ({
     style,
     onClose,
     onExited,
+    ...props
 }, nodeRef) => {
     const [visibility, setVisibility] = useState(false)
 
@@ -75,7 +76,7 @@ const BaseMessage: ForwardRefRenderFunction<any, MessageProps> = ({
         unmountOnExit
         nodeRef={nodeRef}
         onExited={onExited}>
-        <div className={computedClassNames} ref={nodeRef} style={{...style}}>
+        <div className={computedClassNames} ref={nodeRef} style={{...style}} {...props}>
           {
             MessageIcon[type!]
           }

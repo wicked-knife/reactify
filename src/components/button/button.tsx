@@ -1,4 +1,4 @@
-import React, { ForwardRefRenderFunction } from 'react'
+import React, { ForwardRefRenderFunction, ButtonHTMLAttributes, forwardRef  } from 'react'
 import useClassNames from 'classnames'
 import './button.scss'
 
@@ -12,7 +12,7 @@ export type ButtonType =
 export type ButtonSize = 'small' | 'medium' | 'large'
 
 interface BaseButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLElement>, 'type'> {
+  extends Omit<ButtonHTMLAttributes<HTMLElement>, 'type'> {
   block?: boolean
   disabled?: boolean
   className?: string
@@ -20,8 +20,7 @@ interface BaseButtonProps
   size?: ButtonSize
   plain?: boolean
   round?: boolean
-  ref?: React.Ref<any>
-  htmlType?: React.ButtonHTMLAttributes<HTMLElement>['type']
+  htmlType?: ButtonHTMLAttributes<HTMLElement>['type']
 }
 
 type ButtonProps = BaseButtonProps
@@ -39,7 +38,7 @@ const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
     htmlType,
     ...props
   },
-  propRef: React.Ref<any>
+  propRef
 ) => {
   const computedClassNames = useClassNames(
     ['rf-btn', `rf-btn-${type}`, `rf-btn-${size}`],
@@ -64,7 +63,7 @@ const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
   )
 }
 
-const Button = React.forwardRef<any, ButtonProps>(BaseButton)
+const Button = forwardRef<any, ButtonProps>(BaseButton)
 
 Button.defaultProps = {
   block: false,
