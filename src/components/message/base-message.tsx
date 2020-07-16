@@ -9,6 +9,13 @@ export const Duration = 5000
 
 export type MessageType = 'success' | 'warning' | 'error' | 'info'
 
+const MessageIcon = {
+  'success': <Icon className="icon-check mr-2" size={20}/>,
+  'warning': <Icon className="icon-caution mr-2" size={20}/>,
+  'error': <Icon className="icon-forbidden mr-2" size={20}/>,
+  'info': <Icon className="icon-info mr-2" size={20}/>
+}
+
 export interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     duration?: number
     type?: MessageType
@@ -69,7 +76,9 @@ const BaseMessage: ForwardRefRenderFunction<any, MessageProps> = ({
         nodeRef={nodeRef}
         onExited={onExited}>
         <div className={computedClassNames} ref={nodeRef} style={{...style}}>
-          <Icon className='icon-info mr-2' size={20} />
+          {
+            MessageIcon[type!]
+          }
           <div className='message-content'>{children}</div>
           <Icon
             className='icon-close message-close'
