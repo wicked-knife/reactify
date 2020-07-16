@@ -3,16 +3,22 @@
 
 .rf-message{
   min-width: 380px;
+  max-width: 1280px;
   box-sizing: border-box;
   border-radius: 4px;
-  // position: fixed;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   overflow: hidden;
   padding: 15px 15px 15px 20px;
   font-size: $font-size-subtitle-2;
+  transition: top 0.3s ease;
   .message-close{
     cursor: pointer;
+    margin-left: 16px;
   }
   .message-content{
     flex: 1
@@ -46,11 +52,11 @@
 
 .message-enter {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.9) translateX(-50%);
 }
 .message-enter-active {
   opacity: 1;
-  transform: translateX(0);
+  transform: scale(1) translateX(-50%);
   transition: opacity 300ms, transform 300ms;
 }
 .message-exit {
@@ -58,6 +64,6 @@
 }
 .message-exit-active {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.9) translateX(-50%);
   transition: opacity 300ms, transform 300ms;
 }

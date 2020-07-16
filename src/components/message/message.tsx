@@ -1,15 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import useClassNames from 'classnames'
-import Icon from '../icon/icon'
-import { CSSTransition } from 'react-transition-group'
+import BaseMessage, { MessageType, Duration } from './base-message'
 import './message.scss'
 
-const noop = () => {}
-
-const duration = 1500
-
-export type MessageType = 'success' | 'warning' | 'error' | 'info'
+const BaseTop = 32
 
 export type MessageOptions = {
   message?: string
@@ -19,108 +13,87 @@ export type MessageOptions = {
 
 const defaults: MessageOptions = {
   message: '',
-  duration: duration,
-  onClose: noop,
+  duration: Duration,
+  onClose: () => { },
 }
 
 interface MessageFunc {
-  (opt: MessageOptions | string): void
+  (opt: MessageOptions | string): Function
 }
 
-interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  duration?: number
-  type?: MessageType
-  onClose?: () => void
-  onExited?: () => void
+interface MessageInterface extends MessageFunc {
+  info: MessageFunc,
+  alert: MessageFunc,
+  error: MessageFunc,
+  warning: MessageFunc,
+  warn: MessageFunc,
+  success: MessageFunc,
+  messageList: HTMLElement[]
 }
 
-interface MessageInterface extends React.FC<MessageProps> {
-  info: MessageFunc
-  error: MessageFunc
-  success: MessageFunc
-  warning: MessageFunc
-  warn: MessageFunc
-  alert: MessageFunc
+const Message: MessageInterface = opt => {
+  return renderComponent(mergeOptions(opt), 'info')
 }
 
-const Message: MessageInterface = ({
-  duration,
-  type,
-  className,
-  children,
-  onClose,
-  onExited,
-}) => {
-  const [visibility, setVisibility] = useState(false)
+Message.messageList = []
 
-  const computedClassNames = useClassNames(
-    'rf-message',
-    `rf-message-${type}`,
-    className
-  )
-  const nodeRef = useRef(null)
-
-  const closeMessage = () => {
-    setVisibility(false)
-    onClose!()
-  }
-
-  /**
-   * trigger enter animation
-   */
-  useEffect(() => {
-    setVisibility(true)
-  }, [])
-
-  /**
-   * auto close
-   */
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (visibility) {
-        setVisibility(false)
-        onClose!()
-      }
-    }, duration)
-    return () => clearTimeout(timer)
-    /* eslint-disable-next-line */
-  }, [visibility])
-
-  return (
-    <CSSTransition
-      in={visibility}
-      timeout={300}
-      classNames='message'
-      unmountOnExit
-      nodeRef={nodeRef}
-      onExited={onExited}>
-      <div className={computedClassNames} ref={nodeRef}>
-        <Icon className='icon-info mr-2' size={20} />
-        <div className='message-content'>{children}</div>
-        <Icon
-          className='icon-close message-close'
-          size={20}
-          onClick={closeMessage}
-        />
-      </div>
-    </CSSTransition>
-  )
+/**
+ * 计算 message 组件的top偏移量
+ * @param messageList 
+ */
+const calcOffsetTop = (messageList : HTMLElement[]) : number => {
+  const total = messageList.reduce((prevValue, curValue) => {
+    return prevValue + curValue.offsetHeight
+  }, 0)
+  return (messageList.length + 1) * BaseTop + total
 }
 
-const renderComponent = (options: MessageOptions, messageType: MessageType) => {
+/**
+ * 当有 message 从页面上移除时，自动更新页面上存在的 message 的top值
+ * @param messageList 
+ */
+const updateOffsetTop = (messageList: HTMLElement[], deletedElement: HTMLElement) : void => {
+  const deletedHeight = deletedElement.offsetHeight + BaseTop
+  const deletedIndex = messageList.findIndex(el => el === deletedElement)
+  messageList.forEach((element, index) => {
+    if(index <= deletedIndex) {
+      return
+    }
+    const currentOffsetTop = parseInt(element.style.top)
+    element.style.top = currentOffsetTop - deletedHeight + 'px'
+  })
+}
+
+const renderComponent = (options: MessageOptions, messageType: MessageType) : Function => {
+  
   const container = document.createElement('div')
+  const ref = React.createRef<HTMLElement>()
   const removeContainer = () => {
+    updateOffsetTop(Message.messageList, ref.current!)
+    const index = Message.messageList.findIndex(element => element === ref.current)
+    Message.messageList.splice(index, 1)
     ReactDOM.unmountComponentAtNode(container)
     container.remove()
   }
 
+  const offsetTop = calcOffsetTop(Message.messageList)
+
   ReactDOM.render(
-    <Message type={messageType} onExited={removeContainer} duration={options.duration}>
+    <BaseMessage type={messageType} onExited={removeContainer} duration={options.duration} style={{top: offsetTop}}
+      ref={ref}>
       {options.message}
-    </Message>,
-    container
+    </BaseMessage>,
+    container,
+    () => {
+      setTimeout(() => {
+        Message.messageList.push(ref.current!)
+      })
+    }
   )
+
   document.body.append(container)
+
+  return removeContainer
 }
 
 const mergeOptions = (propOptions: MessageOptions | string): MessageOptions => {
@@ -133,31 +106,19 @@ const mergeOptions = (propOptions: MessageOptions | string): MessageOptions => {
   return options
 }
 
-Message.defaultProps = {
-  duration: duration,
-  type: 'info',
-  onClose: noop,
-  onExited: noop,
-}
 
-Message.alert = Message.info = opt => {
-  const mergedOptions = mergeOptions(opt)
-  renderComponent(mergedOptions, 'info')
-}
+Message.alert = Message.info = Message
 
 Message.error = opt => {
-  const mergedOptions = mergeOptions(opt)
-  renderComponent(mergedOptions, 'error')
+  return renderComponent(mergeOptions(opt), 'error')
 }
 
 Message.success = opt => {
-  const mergedOptions = mergeOptions(opt)
-  renderComponent(mergedOptions, 'success')
+  return renderComponent(mergeOptions(opt), 'success')
 }
 
 Message.warn = Message.warning = opt => {
-  const mergedOptions = mergeOptions(opt)
-  renderComponent(mergedOptions, 'warning')
+  return renderComponent(mergeOptions(opt), 'warning')
 }
 
 export default Message
