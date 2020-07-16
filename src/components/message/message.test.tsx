@@ -50,7 +50,7 @@ describe('message close function call', () => {
   })
 
   test('message will close and DOM will remove when call close function', () => {
-    const closeFunc = Message({message: 'hello world', duration: 2000})
+    const closeFunc = Message({ message: 'hello world', duration: 2000 })
     setTimeout(() => {
       const messageElement = document.querySelector('.rf-message')
       expect(messageElement).toBeInTheDocument()
@@ -60,6 +60,16 @@ describe('message close function call', () => {
     setTimeout(() => {
       const messageElement = document.querySelector('.rf-message')
       expect(messageElement).toBeNull()
-    }, 100);
+    }, 100)
+  })
+})
+
+describe('message onClose callback', () => {
+  test('should call onClose callback when message close', () => {
+    const callback = jest.fn()
+    Message({ message: 'hello', onClose: callback })
+    setTimeout(() => {
+      expect(callback).toBeCalled()
+    })
   })
 })
