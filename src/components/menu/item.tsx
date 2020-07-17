@@ -6,11 +6,12 @@ export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
 }
 
 const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = ({
-    className
+    className,
+    children
 }, ref) => {
     const foo = useContext(MenuContext)
     return <div ref={ref}>
-        {foo}
+        {children}
     </div>
 }
 
