@@ -6,7 +6,10 @@ const App: React.FC = () => {
 
   return <div>
     <Menu>
+      <Menu.SubMenu>
+        submenu
       <Menu.Item></Menu.Item>
+      </Menu.SubMenu>
     </Menu>
   </div>
 }
