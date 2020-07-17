@@ -6,7 +6,7 @@ const App: React.FC = () => {
 
   return <div>
     <Menu>
-      
+      <Menu.Item></Menu.Item>
     </Menu>
   </div>
 }
