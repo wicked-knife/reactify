@@ -1,12 +1,15 @@
 import React, { forwardRef, ForwardRefRenderFunction, HTMLAttributes, ReactNode } from 'react'
+import Icon from '../icon'
 import useClassnames from 'classnames'
 
 export interface SubMenuProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
-    title?: string | ReactNode
+    title?: string | ReactNode,
+    icon?: ReactNode
 }
 
 const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = ({
     title,
+    icon,
     className,
     children
 }, ref) => {
@@ -15,7 +18,15 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = ({
         className
     )
     return <div className={computedClassnames} ref={ref}>
-        {typeof title === 'string' ? <div className="menu-subtitle">{title}</div> : title}
+        <div className="menu-subtitle">
+            {icon && <div className="icon-wrapper">
+                {icon}
+            </div>}
+            {title}
+            <div className="menu-arrow">
+                <Icon className="icon-arrow_down" />
+            </div>
+        </div>
         <ul>
             {children}
         </ul>
