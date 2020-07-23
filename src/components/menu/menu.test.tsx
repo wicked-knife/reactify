@@ -31,3 +31,16 @@ describe('Menu component children', () => {
         expect(target).toBeInTheDocument()
     })
 })
+
+describe('horizontal Menu', () => {
+    test('horizontal Menu should not have arrow icon', () => {
+        const {container} = render(<Menu mode="horizontal">
+            <Menu.SubMenu title="subMenu-1">
+                <Menu.Item>menu 1</Menu.Item>
+            </Menu.SubMenu>
+        </Menu>)
+
+        const IconElement = container.querySelector('i.icon-arrow_down')
+        expect(IconElement).toBe(null)
+    })
+})

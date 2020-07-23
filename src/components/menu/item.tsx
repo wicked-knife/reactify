@@ -1,6 +1,5 @@
-import React, { ForwardRefRenderFunction, HTMLAttributes, forwardRef, useContext } from 'react'
+import React, { ForwardRefRenderFunction, HTMLAttributes, forwardRef } from 'react'
 import useClassNames from 'classnames'
-import { MenuContext } from './menu'
 
 export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
 
@@ -14,7 +13,6 @@ const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = ({
         'rf-menu-item',
         className
     )
-    const foo = useContext(MenuContext)
     return <div ref={ref} className={computedClassNames}>
         {children}
     </div>

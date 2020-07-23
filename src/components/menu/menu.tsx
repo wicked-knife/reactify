@@ -1,4 +1,4 @@
-import React, { HTMLAttributes,ForwardRefRenderFunction, forwardRef, createContext, ForwardRefExoticComponent } from 'react'
+import React, { HTMLAttributes,ForwardRefRenderFunction, forwardRef, createContext, ForwardRefExoticComponent, useState, useCallback } from 'react'
 import useClassNames from 'classnames'
 import MenuItem from './item'
 import SubMenu from './sub-menu'
@@ -13,7 +13,13 @@ interface MenuInterface extends ForwardRefExoticComponent<MenuProps> {
   SubMenu: typeof SubMenu
 }
 
-export const MenuContext = createContext('foo')
+interface MenuContext {
+  mode: 'vertical' | 'horizontal'
+}
+
+export const MenuContext = createContext<MenuContext>({
+  mode: 'vertical'
+})
 
 const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = ({
   mode,
@@ -27,9 +33,10 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = ({
     className
   )
 
+  console.log(children);
 
   return (
-    <MenuContext.Provider value={'foo'}>
+    <MenuContext.Provider value={{mode: mode!}}>
       <ul className={computedClassNames}>
         {children}
       </ul>

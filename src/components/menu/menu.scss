@@ -43,7 +43,11 @@
                 position: absolute;
                 right: 10px;
                 top: 50%;
-                transform: translateY(-50%);
+                transition: transform 0.3s ease;
+                transform: translateY(-50%) rotateX(0);
+                &.is-fold{
+                    transform: translateY(-50%) rotateX(180deg);
+                }
             }
         }
     }
@@ -72,6 +76,8 @@
 
     .icon-wrapper{
         margin-right: 8px;
+        transition: transform 0.3s ease;
+        transform: rotateZ(0);
     }
 
 }
