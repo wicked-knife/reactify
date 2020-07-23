@@ -1,4 +1,4 @@
-import React, { forwardRef, ForwardRefRenderFunction, HTMLAttributes, ReactNode, useState, useCallback, useMemo, useContext } from 'react'
+import React, { forwardRef, ForwardRefRenderFunction, HTMLAttributes, ReactNode, useState, useCallback, useContext } from 'react'
 import Icon from '../icon'
 import useClassnames from 'classnames'
 import {MenuContext} from './index'
