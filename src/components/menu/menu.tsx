@@ -32,9 +32,7 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = ({
     `is-${mode}`,
     className
   )
-
-  console.log(children);
-
+  
   return (
     <MenuContext.Provider value={{mode: mode!}}>
       <ul className={computedClassNames}>

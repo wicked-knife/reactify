@@ -12,14 +12,11 @@ const App: React.FC = () => {
         <Menu.Item>menu 2</Menu.Item>
         <Menu.Item>menu 3</Menu.Item>
       </Menu.SubMenu>
-      <Menu.SubMenu title='vertical' icon={<Icon className="icon-like" />}>
+      <Menu.SubMenu title='vertical' icon={<Icon className="icon-like" />} defaultOpen={false}>
         <Menu.Item>menu 1</Menu.Item>
         <Menu.Item>menu 2</Menu.Item>
         <Menu.Item>menu 3</Menu.Item>
       </Menu.SubMenu>
-      <Menu.Item>menu 4</Menu.Item>
-      <Menu.Item>menu 5</Menu.Item>
-      <Menu.Item>menu 6</Menu.Item>
     </Menu>
 
     <hr></hr>
