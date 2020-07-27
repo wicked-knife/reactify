@@ -8,6 +8,12 @@ describe('icon component should be mounted', () => {
     const iconElement = container.querySelector('i')
     expect(iconElement).toBeInTheDocument()
   })
+
+  test('icon children should not be rendered', () => {
+    const {container} = render(<Icon className="icon-user" >hello world</Icon>) 
+    const iconElement = container.querySelector('i')
+    expect(iconElement!.innerText).toBe(undefined)
+  })
 })
 
 

@@ -28,8 +28,7 @@ describe('Menu component children', () => {
   test('Menu component children should be rendered', () => {
     const { queryByText } = render(
       <Menu mode='horizontal'>
-        {' '}
-        <span>hello world</span>{' '}
+        <span>hello world</span>
       </Menu>
     )
     const target = queryByText('hello world')
