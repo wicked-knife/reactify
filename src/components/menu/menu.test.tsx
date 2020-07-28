@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, cleanup } from '@testing-library/react'
 import Menu from './menu'
 
 describe('Menu component should mount', () => {
@@ -25,14 +25,29 @@ describe('Menu component class names', () => {
 })
 
 describe('Menu component children', () => {
-  test('Menu component children should be rendered', () => {
+  test('Menu component children should not be rendered if children is invalid', () => {
     const { queryByText } = render(
       <Menu mode='horizontal'>
         <span>hello world</span>
       </Menu>
     )
     const target = queryByText('hello world')
+    expect(target).not.toBeInTheDocument()
+  })
+
+  test('Menu component children should be rendered if children is valid', () => {
+    const { queryByText } = render(
+      <Menu mode='horizontal'>
+        <Menu.Item>hello world</Menu.Item>
+        <Menu.SubMenu>
+          <Menu.Item>menu 1</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
+    )
+    const target = queryByText('hello world')
+    const target2 = queryByText('menu 1')
     expect(target).toBeInTheDocument()
+    expect(target2).toBeInTheDocument()
   })
 })
 

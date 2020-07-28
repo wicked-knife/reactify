@@ -7,17 +7,21 @@ import React, {
   useCallback,
   useContext,
   useRef,
+  FunctionComponentElement,
 } from 'react'
 import Icon from '../icon'
 import useClassnames from 'classnames'
 import { MenuContext } from './index'
 import { CSSTransition } from 'react-transition-group'
+import {MenuItemProps} from './item'
 export interface SubMenuProps
   extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   title?: string | ReactNode
   icon?: ReactNode
   defaultOpen?: boolean
 }
+
+type SubMenuChild = FunctionComponentElement<MenuItemProps>
 
 const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
   { title, icon, defaultOpen, className, children },
@@ -32,6 +36,22 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
   const toggleOpen = useCallback(() => setOpen(prev => !prev), [])
 
   const nodeRef = useRef(null)
+
+  const renderChildren = () => {
+    const validDisplayName = 'MenuItem'
+    return React.Children.map(children, (child, index) => {
+      const childElement = (child as SubMenuChild)
+      if(!childElement.type ||
+         !childElement.type.displayName ||
+          childElement.type.displayName !== validDisplayName) {
+        return console.error('Warning: Menu.SubMenu component child should be Menu.Item')
+      }
+      if(childElement.type.displayName === validDisplayName) {
+        return child
+      }
+    })
+  }
+
   return (
     <div className={computedClassnames} ref={ref}>
       <div className='menu-subtitle' onClick={toggleOpen}>
@@ -49,7 +69,7 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
         in={open}
         nodeRef={nodeRef}
         unmountOnExit>
-        <ul ref={nodeRef} className="menu-item-list">{children}</ul>
+        <ul ref={nodeRef} className="menu-item-list">{renderChildren()}</ul>
       </CSSTransition>
     </div>
   )
@@ -61,5 +81,7 @@ SubMenu.defaultProps = {
   title: '',
   defaultOpen: true,
 }
+
+SubMenu.displayName = 'SubMenu'
 
 export default SubMenu

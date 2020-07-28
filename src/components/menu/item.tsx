@@ -24,4 +24,6 @@ MenuItem.defaultProps = {
 
 }
 
+MenuItem.displayName = 'MenuItem'
+
 export default MenuItem

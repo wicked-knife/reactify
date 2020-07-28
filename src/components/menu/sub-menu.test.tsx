@@ -27,11 +27,21 @@ describe('SubMenu component class names', () => {
 })
 
 describe('SubMenu component children', () => {
-  test('SubMenu component children should be rendered', () => {
+  test('SubMenu component children should not be rendered if children is invalid', () => {
     const { queryByText } = render(
       <Menu.SubMenu>
         {' '}
         <span>hello world</span>{' '}
+      </Menu.SubMenu>
+    )
+    const target = queryByText('hello world')
+    expect(target).not.toBeInTheDocument()
+  })
+
+  test('SubMenu component children should be rendered if children is valid', () => {
+    const { queryByText } = render(
+      <Menu.SubMenu>
+        <Menu.Item>hello world</Menu.Item>
       </Menu.SubMenu>
     )
     const target = queryByText('hello world')
