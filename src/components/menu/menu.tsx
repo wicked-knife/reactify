@@ -6,6 +6,7 @@ import React, {
   ForwardRefExoticComponent,
   useState,
   FunctionComponentElement,
+  ReactElement,
 } from 'react'
 import useClassNames from 'classnames'
 import MenuItem, { MenuItemProps } from './item'
@@ -24,7 +25,8 @@ interface MenuInterface extends ForwardRefExoticComponent<MenuProps> {
 
 interface MenuContext {
   mode: 'vertical' | 'horizontal'
-  selectedKey: number | string
+  selectedKey: number | string,
+  setSelectedKey: React.Dispatch<number | string>
 }
 
 type MenuChild =
@@ -34,6 +36,7 @@ type MenuChild =
 export const MenuContext = createContext<MenuContext>({
   mode: 'vertical',
   selectedKey: 0,
+  setSelectedKey: () => {}
 })
 
 const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
@@ -47,7 +50,10 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
   const initialContextValue: MenuContext = {
     mode: mode!,
     selectedKey: selectedKey,
+    setSelectedKey: setSelectedKey
   }
+
+  let menuCount = -1
 
   const renderChildren = () => {
     const validDisplayName = ['SubMenu', 'MenuItem']
@@ -62,8 +68,24 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
           'Warning: Menu component child should be Menu.SubMenu or Menu.Item'
         )
       }
-      if (validDisplayName.includes(childElement.type.displayName)) {
-        return child
+      const {displayName} = childElement.type
+      if (validDisplayName.includes(displayName)) {
+        if(displayName === 'MenuItem') {
+          menuCount++
+          return React.cloneElement(childElement as ReactElement, {menuIndex: menuCount})
+        }
+        if(displayName === 'SubMenu') {
+          return React.cloneElement(childElement as ReactElement, {}, [
+            React.Children.map(childElement.props.children, (_child, _index) => {
+              const subMenuChild = _child as MenuChild
+              if(subMenuChild.type.displayName === 'MenuItem') {
+                menuCount++
+                return React.cloneElement(subMenuChild as ReactElement, {menuIndex: menuCount})
+              }
+              return subMenuChild
+            })
+          ])
+        }
       }
     })
   }

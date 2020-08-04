@@ -44,7 +44,7 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
       if(!childElement.type ||
          !childElement.type.displayName ||
           childElement.type.displayName !== validDisplayName) {
-        return console.error('Warning: Menu.SubMenu component child should be Menu.Item')
+        return console.warn('Warning: Menu.SubMenu component child should be Menu.Item')
       }
       if(childElement.type.displayName === validDisplayName) {
         return child

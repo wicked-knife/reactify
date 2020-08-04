@@ -49,6 +49,34 @@ describe('Menu component children', () => {
     expect(target).toBeInTheDocument()
     expect(target2).toBeInTheDocument()
   })
+
+  test('Count of Menu component child should be correct', () => {
+    const { container } = render(
+      <Menu mode='horizontal'>
+        <Menu.Item>hello world</Menu.Item>
+        <Menu.SubMenu>
+          <Menu.Item>menu 1</Menu.Item>
+          <Menu.Item>menu 2</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
+    )
+    const menuItems = container.querySelectorAll('.rf-menu-item')
+    expect(menuItems.length).toBe(3)
+  })
+
+  test('Correct Menu.Item component should be activated', () => {
+    const { queryByText } = render(
+      <Menu defaultSelectedKey={0}>
+        <Menu.Item>hello world</Menu.Item>
+        <Menu.SubMenu>
+          <Menu.Item>menu 1</Menu.Item>
+          <Menu.Item>menu 2</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
+    )
+    const element = queryByText('hello world')
+    expect(element).toHaveClass('is-active')
+  })
 })
 
 describe('horizontal Menu', () => {
