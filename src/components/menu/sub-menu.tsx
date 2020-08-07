@@ -27,9 +27,9 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
   { title, icon, defaultOpen, className, children },
   ref
 ) => {
-  const computedClassnames = useClassnames('rf-sub-menu', className)
-
   const { mode } = useContext(MenuContext)
+
+  const computedClassnames = useClassnames('rf-sub-menu', className)
 
   const [open, setOpen] = useState(defaultOpen)
 
@@ -69,7 +69,7 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
         in={open}
         nodeRef={nodeRef}
         unmountOnExit>
-        <ul ref={nodeRef} className="menu-item-list">{renderChildren()}</ul>
+        <ul ref={nodeRef} className={`menu-item-list ${mode === 'horizontal' ? 'box-shadow' : ''}`}>{renderChildren()}</ul>
       </CSSTransition>
     </div>
   )

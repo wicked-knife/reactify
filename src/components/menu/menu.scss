@@ -18,13 +18,83 @@
   box-sizing: border-box;
   display: flex;
   min-height: 400px;
+
   &.is-vertical {
     flex-direction: column;
     min-width: 240px;
     width: 240px;
     border-right: 1px solid $grey-lighten-2;
+    & > .rf-menu-item{
+      text-indent: 0;
+    }
+    .menu-item-list > .rf-menu-item{
+      text-indent: 24px;
+      &::after {
+        height: 0;
+        top: 50%;
+      }
+      &.is-active {
+        &::after {
+          width: 2px;
+          height: 100%;
+          right: 0;
+          top: 0;
+        }
+      }
+    }
   }
+
   &.is-horizontal {
+    .rf-sub-menu {
+      margin: 0 6px;
+      &:hover {
+        .menu-subtitle {
+          color: $primary;
+          background-color: #e6f7ff;
+          &::after {
+            content: '';
+            left: 0%;
+            width: 100%;
+            height: 2px;
+          }
+        }
+      }
+    }
+    .menu-subtitle {
+      &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        left: 50%;
+        bottom: 0;
+        transition: all 0.3s ease;
+        background-color: $blue-darken-2;
+      }
+    }
+    .menu-item-list {
+      position: absolute;
+      width: 100%;
+      box-sizing: border-box;
+      & > .rf-menu-item {
+        width: 100%;
+      }
+    }
+    & > .rf-menu-item {
+      margin: 0 6px;
+      &::after {
+        content: '';
+        width: 0;
+        left: 50%;
+        bottom: 0;
+      }
+      &.is-active {
+        &::after {
+          left: 0%;
+          width: 100%;
+          height: 2px;
+        }
+      }
+    }
   }
 
   .rf-sub-menu {
@@ -35,9 +105,8 @@
       position: relative;
       &:hover {
         color: $primary;
-        background-color: #ecf5ff;
+        background-color: #e6f7ff;
       }
-
       .menu-arrow {
         position: absolute;
         right: 10px;
@@ -58,20 +127,22 @@
     @extend .base-menu-styles;
     transition: all 0.3s ease;
     min-height: 40px;
+    &::after {
+      position: absolute;
+      content: '';
+      transition: all 0.3s ease;
+    }
     &:hover {
-      background-color: #ecf5ff;
+      background-color: #e6f7ff;
       color: $primary;
     }
     &.is-active {
       position: relative;
+      background-color: #e6f7ff;
+      color: $primary;
       &::after {
         content: '';
-        position: absolute;
-        width: 2px;
         background-color: $blue-darken-2;
-        height: 100%;
-        right: 0;
-        top: 0;
       }
     }
   }
@@ -82,8 +153,6 @@
     transform: rotateZ(0);
   }
 }
-
-
 
 .menu-enter {
   max-height: 0;
