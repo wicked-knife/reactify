@@ -52,9 +52,16 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
     })
   }
 
+
+  const verticalProps = mode === 'vertical' ? {onClick: toggleOpen} : {}
+  const horizontalProps = mode === 'horizontal' ? {
+    onMouseLeave: () => setOpen(false),
+    onMouseEnter: () => setOpen(true),
+  } : {}
+
   return (
-    <div className={computedClassnames} ref={ref}>
-      <div className='menu-subtitle' onClick={toggleOpen}>
+    <div className={computedClassnames} ref={ref} {...horizontalProps}> 
+      <div className='menu-subtitle' {...verticalProps}>
         {icon && <div className='icon-wrapper'>{icon}</div>}
         {title}
         {mode === 'vertical' && (
@@ -69,7 +76,9 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
         in={open}
         nodeRef={nodeRef}
         unmountOnExit>
-        <ul ref={nodeRef} className={`menu-item-list ${mode === 'horizontal' ? 'box-shadow' : ''}`}>{renderChildren()}</ul>
+        <ul ref={nodeRef} className={`menu-item-list ${mode === 'horizontal' ? 'box-shadow' : ''}`}>
+          {renderChildren()}
+        </ul>
       </CSSTransition>
     </div>
   )
@@ -79,7 +88,7 @@ const SubMenu = forwardRef(BaseSubMenu)
 
 SubMenu.defaultProps = {
   title: '',
-  defaultOpen: true,
+  defaultOpen: false,
 }
 
 SubMenu.displayName = 'SubMenu'

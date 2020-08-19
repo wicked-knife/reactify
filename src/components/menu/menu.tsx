@@ -25,7 +25,7 @@ interface MenuInterface extends ForwardRefExoticComponent<MenuProps> {
 
 interface MenuContext {
   mode: 'vertical' | 'horizontal'
-  selectedKey: number | string,
+  selectedKey: number | string
   setSelectedKey: React.Dispatch<number | string>
 }
 
@@ -36,24 +36,27 @@ type MenuChild =
 export const MenuContext = createContext<MenuContext>({
   mode: 'vertical',
   selectedKey: 0,
-  setSelectedKey: () => {}
+  setSelectedKey: () => {},
 })
 
 const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
   { mode, className, children, defaultSelectedKey },
   ref
 ) => {
-  const [selectedKey, setSelectedKey] = useState(defaultSelectedKey!)
+  const [selectedKey, setSelectedKey] = useState(
+    mode === 'vertical' ? defaultSelectedKey! : -1
+  )
 
   const computedClassNames = useClassNames('rf-menu', `is-${mode}`, className)
 
   const initialContextValue: MenuContext = {
     mode: mode!,
     selectedKey: selectedKey,
-    setSelectedKey: setSelectedKey
+    setSelectedKey: setSelectedKey,
   }
 
   let menuCount = -1
+  let subMenuCount = -1
 
   const renderChildren = () => {
     const validDisplayName = ['SubMenu', 'MenuItem']
@@ -68,23 +71,35 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
           'Warning: Menu component child should be Menu.SubMenu or Menu.Item'
         )
       }
-      const {displayName} = childElement.type
+      const { displayName } = childElement.type
       if (validDisplayName.includes(displayName)) {
-        if(displayName === 'MenuItem') {
+        if (displayName === 'MenuItem') {
           menuCount++
-          return React.cloneElement(childElement as ReactElement, {menuIndex: menuCount})
+          return React.cloneElement(childElement as ReactElement, {
+            menuIndex: menuCount,
+          })
         }
-        if(displayName === 'SubMenu') {
-          return React.cloneElement(childElement as ReactElement, {}, [
-            React.Children.map(childElement.props.children, (_child, _index) => {
-              const subMenuChild = _child as MenuChild
-              if(subMenuChild.type.displayName === 'MenuItem') {
-                menuCount++
-                return React.cloneElement(subMenuChild as ReactElement, {menuIndex: menuCount})
-              }
-              return subMenuChild
-            })
-          ])
+        if (displayName === 'SubMenu') {
+          subMenuCount++
+          return React.cloneElement(
+            childElement as ReactElement,
+            {defaultOpen: (childElement.props as SubMenuProps).defaultOpen ? true : subMenuCount === selectedKey},
+            [
+              React.Children.map(
+                childElement.props.children,
+                (_child, _index) => {
+                  const subMenuChild = _child as MenuChild
+                  if (subMenuChild.type.displayName === 'MenuItem') {
+                    menuCount++
+                    return React.cloneElement(subMenuChild as ReactElement, {
+                      menuIndex: menuCount,
+                    })
+                  }
+                  return subMenuChild
+                }
+              ),
+            ]
+          )
         }
       }
     })

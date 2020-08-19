@@ -26,6 +26,18 @@
     border-right: 1px solid $grey-lighten-2;
     & > .rf-menu-item{
       text-indent: 0;
+      &::after {
+        height: 0;
+        top: 50%;
+      }
+      &.is-active {
+        &::after {
+          width: 2px;
+          height: 100%;
+          right: 0;
+          top: 0;
+        }
+      }
     }
     .menu-item-list > .rf-menu-item{
       text-indent: 24px;
@@ -45,6 +57,7 @@
   }
 
   &.is-horizontal {
+    min-height: auto;
     .rf-sub-menu {
       margin: 0 6px;
       &:hover {
