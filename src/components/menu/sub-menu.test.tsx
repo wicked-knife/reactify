@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, fireEvent} from '@testing-library/react'
 import Menu from './index'
 
 describe('SubMenu component should mount', () => {
@@ -29,23 +29,28 @@ describe('SubMenu component class names', () => {
 describe('SubMenu component children', () => {
   test('SubMenu component children should not be rendered if children is invalid', () => {
     const { queryByText } = render(
-      <Menu.SubMenu>
-        {' '}
-        <span>hello world</span>{' '}
-      </Menu.SubMenu>
+      <Menu>
+        <Menu.SubMenu>
+          <span>hello world</span>
+        </Menu.SubMenu>
+      </Menu>
     )
+
     const target = queryByText('hello world')
     expect(target).not.toBeInTheDocument()
   })
 
   test('SubMenu component children should be rendered if children is valid', () => {
     const { queryByText } = render(
-      <Menu.SubMenu>
-        <Menu.Item>hello world</Menu.Item>
-      </Menu.SubMenu>
+      <Menu>
+        <Menu.SubMenu>
+          <Menu.Item>hello world</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
     )
     const target = queryByText('hello world')
-    expect(target).toBeInTheDocument()
+    expect(target).not.toBeInTheDocument()
+
   })
 })
 
@@ -73,9 +78,11 @@ describe('SubMenu component title props', () => {
 describe('SubMenu default open', () => {
   test('SubMenu should be open by default', () => {
     const { container } = render(
-      <Menu.SubMenu title='subMenu-1'>
-        <Menu.Item>menu 1</Menu.Item>
-      </Menu.SubMenu>
+      <Menu>
+        <Menu.SubMenu title='subMenu-1' defaultOpen>
+          <Menu.Item>menu 1</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
     )
 
     const IconElement = container.querySelector('.menu-arrow')

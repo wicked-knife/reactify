@@ -43,6 +43,7 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
   { mode, className, children, defaultSelectedKey },
   ref
 ) => {
+
   const [selectedKey, setSelectedKey] = useState(
     mode === 'vertical' ? defaultSelectedKey! : -1
   )
@@ -56,7 +57,6 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
   }
 
   let menuCount = -1
-  let subMenuCount = -1
 
   const renderChildren = () => {
     const validDisplayName = ['SubMenu', 'MenuItem']
@@ -80,10 +80,8 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
           })
         }
         if (displayName === 'SubMenu') {
-          subMenuCount++
           return React.cloneElement(
             childElement as ReactElement,
-            {defaultOpen: (childElement.props as SubMenuProps).defaultOpen ? true : subMenuCount === selectedKey},
             [
               React.Children.map(
                 childElement.props.children,
@@ -107,7 +105,7 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
 
   return (
     <MenuContext.Provider value={initialContextValue}>
-      <ul className={computedClassNames}>{renderChildren()}</ul>
+      <ul className={computedClassNames} ref={ref}>{renderChildren()}</ul>
     </MenuContext.Provider>
   )
 }

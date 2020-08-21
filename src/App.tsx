@@ -6,38 +6,13 @@ import './styles/index.scss'
 const App: React.FC = () => {
 
   return <div>
-    <Menu>
-      <Menu.SubMenu title={<span>vertical</span>} icon={<Icon className="icon-like" />}>
+    <Menu mode='horizontal'>
+      <Menu.SubMenu title='subMenu-1'>
         <Menu.Item>menu 1</Menu.Item>
+      </Menu.SubMenu>
+      <Menu.SubMenu title='subMenu-2' defaultOpen>
         <Menu.Item>menu 2</Menu.Item>
-        <Menu.Item>menu 3</Menu.Item>
       </Menu.SubMenu>
-      <Menu.SubMenu title='vertical' icon={<Icon className="icon-like" />}>
-        <Menu.Item>menu 4</Menu.Item>
-        <Menu.Item>menu 5</Menu.Item>
-        <Menu.Item>menu 6</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item>menu 7</Menu.Item>
-      <Menu.Item>menu 8</Menu.Item>
-      <Menu.Item>menu 9</Menu.Item>
-    </Menu>
-
-    <hr></hr>
-
-    <Menu mode="horizontal">
-      <Menu.SubMenu title={<span>vertical</span>} icon={<Icon className="icon-like" />} >
-        <Menu.Item>menu 21</Menu.Item>
-        <Menu.Item>menu 2</Menu.Item>
-        <Menu.Item>menu 3</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.SubMenu title='horizontal' icon={<Icon className="icon-like" />}>
-        <Menu.Item>menu 4</Menu.Item>
-        <Menu.Item>menu 5</Menu.Item>
-        <Menu.Item>menu 6</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item>menu 7</Menu.Item>
-      <Menu.Item>menu 8</Menu.Item>
-      <Menu.Item>menu 9</Menu.Item>
     </Menu>
   </div>
 }
