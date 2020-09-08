@@ -12,7 +12,7 @@ export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
 }
 
 const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = (
-  { className, children, menuIndex },
+  { className, children, menuIndex, onClick },
   ref
 ) => {
   const context = useContext(MenuContext)
@@ -21,8 +21,9 @@ const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = (
     'is-active': menuIndex === context.selectedKey,
   })
 
-  const handleMenuItemClick = () => {
+  const handleMenuItemClick = (ev: React.MouseEvent<HTMLElement, MouseEvent>) => {
       context.setSelectedKey(menuIndex!)
+      typeof onClick === 'function' && onClick(ev)
   }
 
   return (
