@@ -9,11 +9,11 @@ describe('MenuItem click event', () => {
     const {queryByText} = render(<Menu>
       <MenuItem onClick={clickHandler}>click me</MenuItem>
     </Menu>)
-
-    fireEvent.click(queryByText('click me')!)
-
+    const element = queryByText('click me')
+    fireEvent.click(element!)
     expect(clickHandler).toBeCalled()
     expect(clickHandler).toBeCalledTimes(1)
+    expect(element).toHaveClass('is-active')
   })
 
   test('MenuItem click handler should receive click event as first argument', () => {
