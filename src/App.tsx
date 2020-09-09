@@ -8,7 +8,7 @@ const App: React.FC = () => {
 
   return <div>
     <Button onClick={() => setVisible(prev => !prev)}>toggle</Button>
-    <Modal visible={visible}/>
+    <Modal visible={visible} onClose={() => setVisible(false)}/>
   </div>
 }
 
