@@ -35,7 +35,7 @@ type MenuChild =
 
 export const MenuContext = createContext<MenuContext>({
   mode: "vertical",
-  selectedKey: 0,
+  selectedKey: -1,
   setSelectedKey: () => {},
 });
 
@@ -45,7 +45,7 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
 ) => {
   const [selectedKey, setSelectedKey] = useState(
     mode === "vertical" ? defaultSelectedKey! : -1
-  );
+  )
 
   const computedClassNames = useClassNames("rf-menu", `is-${mode}`, className);
 
@@ -117,7 +117,7 @@ const Menu: MenuInterface = Object.assign(forwardRef(BaseMenu), {
 
 Menu.defaultProps = {
   mode: "vertical",
-  defaultSelectedKey: 0,
+  defaultSelectedKey: -1,
 };
 
 export default Menu;

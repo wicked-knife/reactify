@@ -27,3 +27,20 @@ describe('MenuItem click event', () => {
     fireEvent.click(queryByText('click me')!)
   })
 })
+
+describe('Disabled MenuItem', () => {
+  const clickHandler = jest.fn()
+  const {queryByText} = render(<Menu>
+    <MenuItem onClick={clickHandler} disabled>disabled</MenuItem>
+  </Menu>)
+  const menuItem = queryByText('disabled')
+  test('Disabled MenuItem should have correct class name', () => {
+    expect(menuItem).toHaveClass('rf-menu-item', 'is-disabled')
+  })
+  
+  test('Disabled MenuItem click event should be triggered', () => {
+    fireEvent.click(menuItem!)
+    expect(clickHandler).not.toBeCalled()
+    expect(menuItem).not.toHaveClass('is-active')
+  })
+})

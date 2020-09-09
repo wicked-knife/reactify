@@ -140,14 +140,16 @@
     @extend .base-menu-styles;
     transition: all 0.3s ease;
     min-height: 40px;
-    &::after {
-      position: absolute;
-      content: '';
-      transition: all 0.3s ease;
-    }
-    &:hover {
-      background-color: #e6f7ff;
-      color: $primary;
+    &:not(.is-disabled){
+      &::after {
+        position: absolute;
+        content: '';
+        transition: all 0.3s ease;
+      }
+      &:hover {
+        background-color: #e6f7ff;
+        color: $primary;
+      }
     }
     &.is-active {
       position: relative;
@@ -157,6 +159,10 @@
         content: '';
         background-color: $blue-darken-2;
       }
+    }
+    &.is-disabled{
+      cursor: not-allowed;
+      color: $grey
     }
   }
 

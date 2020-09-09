@@ -30,17 +30,17 @@
 }
 
 // 非 plain 类型的 button disabled 的样式
-@mixin base-btn-disabled($disbaleColor) {
+@mixin base-btn-disabled($disableColor) {
   pointer-events: none;
   cursor: not-allowed;
-  background-color: $disbaleColor;
+  background-color: $disableColor;
   color: $white;
   &:hover {
     color: $white;
-    background-color: $disbaleColor;
+    background-color: $disableColor;
   }
   &:active {
-    background-color: $disbaleColor;
+    background-color: $disableColor;
   }
 }
 

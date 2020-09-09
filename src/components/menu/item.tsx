@@ -8,22 +8,27 @@ import useClassNames from 'classnames'
 import { MenuContext } from './menu'
 
 export interface MenuItemProps extends HTMLAttributes<HTMLElement> {
-  menuIndex?: number
+  menuIndex?: number,
+  disabled?: boolean
 }
 
 const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = (
-  { className, children, menuIndex, onClick },
+  { className, children, menuIndex, onClick, disabled },
   ref
 ) => {
   const context = useContext(MenuContext)
 
   const computedClassNames = useClassNames('rf-menu-item', className, {
     'is-active': menuIndex === context.selectedKey,
+    'is-disabled': disabled
   })
 
   const handleMenuItemClick = (ev: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      context.setSelectedKey(menuIndex!)
-      typeof onClick === 'function' && onClick(ev)
+    if(disabled) {
+      return
+    }
+    context.setSelectedKey(menuIndex!)
+    typeof onClick === 'function' && onClick(ev)
   }
 
   return (
@@ -35,7 +40,9 @@ const BaseMenuItem: ForwardRefRenderFunction<any, MenuItemProps> = (
 
 const MenuItem = forwardRef(BaseMenuItem)
 
-MenuItem.defaultProps = {}
+MenuItem.defaultProps = {
+  disabled: false
+}
 
 MenuItem.displayName = 'MenuItem'
 

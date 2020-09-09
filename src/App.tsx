@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <Menu.Item>menu 5</Menu.Item>
         <Menu.Item>menu 6</Menu.Item>
       </Menu.SubMenu>
-      <Menu.Item>menu 7</Menu.Item>
+      <Menu.Item disabled>menu 7</Menu.Item>
       <Menu.Item>menu 8</Menu.Item>
       <Menu.Item>menu 9</Menu.Item>
     </Menu>
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         <Menu.Item>menu 5</Menu.Item>
         <Menu.Item>menu 6</Menu.Item>
       </Menu.SubMenu>
-      <Menu.Item>menu 7</Menu.Item>
+      <Menu.Item disabled>menu 7</Menu.Item>
       <Menu.Item>menu 8</Menu.Item>
       <Menu.Item>menu 9</Menu.Item>
     </Menu>
