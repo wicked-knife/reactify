@@ -27,9 +27,10 @@ const Modal: ModalInterface = ({ visible, onClose }) => {
         Modal.wrapper = null;
       }
     }
-  }, [onClose, visible]);
+  /* eslint-disable-next-line */
+  }, [visible]);
 
-  return null;
+  return null
 };
 
 export default Modal;
