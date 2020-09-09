@@ -100,3 +100,25 @@ describe('SubMenu default open', () => {
     expect(IconElement).not.toHaveClass('is-open')
   })
 })
+
+describe('SubMenu click toggle fold', () => {
+  test('SubMenu click toggle fold', () => {
+    const { container } = render(
+      <Menu>
+        <Menu.SubMenu title='subMenu-1'>
+          <Menu.Item>menu 1</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
+    )
+    setTimeout(() => {
+      const element = container.querySelector('.menu-item-list')
+      const subMenuElement = container.querySelector('.menu-subtitle')
+      expect(element).toBeInTheDocument()
+      fireEvent.click(subMenuElement!)
+      expect(subMenuElement).not.toBeInTheDocument()
+      fireEvent.click(subMenuElement!)
+      expect(element).toBeInTheDocument()
+    })
+  })
+
+})
