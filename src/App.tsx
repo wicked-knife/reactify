@@ -1,44 +1,14 @@
-import React from 'react'
-import Menu from './components/menu'
-import Icon from './components/icon'
+import React, { useState } from 'react'
+import Modal from './components/modal'
+import Button from './components/button'
 import './styles/index.scss'
 
 const App: React.FC = () => {
+  const [visible, setVisible] = useState(false)
 
   return <div>
-    <Menu>
-      <Menu.SubMenu title={<span>vertical</span>} icon={<Icon className="icon-like" />}>
-        <Menu.Item>menu 1</Menu.Item>
-        <Menu.Item>menu 2</Menu.Item>
-        <Menu.Item>menu 3</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.SubMenu title='vertical' icon={<Icon className="icon-like" />}>
-        <Menu.Item>menu 4</Menu.Item>
-        <Menu.Item>menu 5</Menu.Item>
-        <Menu.Item>menu 6</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item disabled>menu 7</Menu.Item>
-      <Menu.Item>menu 8</Menu.Item>
-      <Menu.Item>menu 9</Menu.Item>
-    </Menu>
-
-    <hr></hr>
-
-    <Menu mode="horizontal">
-      <Menu.SubMenu title={<span>vertical</span>} icon={<Icon className="icon-like" />} >
-        <Menu.Item>menu 21</Menu.Item>
-        <Menu.Item>menu 2</Menu.Item>
-        <Menu.Item>menu 3</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.SubMenu title='horizontal' icon={<Icon className="icon-like" />}>
-        <Menu.Item>menu 4</Menu.Item>
-        <Menu.Item>menu 5</Menu.Item>
-        <Menu.Item>menu 6</Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item disabled>menu 7</Menu.Item>
-      <Menu.Item>menu 8</Menu.Item>
-      <Menu.Item>menu 9</Menu.Item>
-    </Menu>
+    <Button onClick={() => setVisible(prev => !prev)}>toggle</Button>
+    <Modal visible={visible}/>
   </div>
 }
 
