@@ -1,7 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
-import "./modal.scss";
 export interface ModalProps {
   visible: boolean;
   onClose?: () => void;
@@ -16,8 +15,8 @@ const Modal: ModalInterface = ({ visible, onClose }) => {
     if (visible) {
       if (!Modal.wrapper) {
         Modal.wrapper = document.createElement("div");
-        ReactDOM.render(<BaseModal onClose={onClose}/>, Modal.wrapper);
         document.body.appendChild(Modal.wrapper);
+        ReactDOM.render(<BaseModal onClose={onClose} visible={visible}/>, Modal.wrapper);
       }
     } else {
       if (Modal.wrapper) {
