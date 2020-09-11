@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
 export interface ModalProps {
@@ -14,16 +14,18 @@ const Modal: ModalInterface = ({ visible, onClose }) => {
   useEffect(() => {
     if (visible) {
       if (!Modal.wrapper) {
+        const unmountHandler = () => {
+          ReactDOM.unmountComponentAtNode(Modal.wrapper!);
+          Modal.wrapper!.remove();
+          Modal.wrapper = null;
+        }
         Modal.wrapper = document.createElement("div");
         document.body.appendChild(Modal.wrapper);
-        ReactDOM.render(<BaseModal onClose={onClose} visible={visible}/>, Modal.wrapper);
+        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler}/>, Modal.wrapper);
       }
     } else {
       if (Modal.wrapper) {
         typeof onClose === 'function' && onClose()
-        ReactDOM.unmountComponentAtNode(Modal.wrapper);
-        Modal.wrapper.remove();
-        Modal.wrapper = null;
       }
     }
   /* eslint-disable-next-line */
