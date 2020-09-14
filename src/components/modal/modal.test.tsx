@@ -55,6 +55,10 @@ describe('Modal Ref', () => {
       }, 300);
     }, 300);
   })
+
+  test('Call ref.closeModal() Modal should be closed', () => {
+    // TODO:
+  })
 })
 
 describe('Modal children', () => {
@@ -64,5 +68,17 @@ describe('Modal children', () => {
     setTimeout(() => {
       expect(element).toBeInTheDocument()
     }, 300);
+  })
+})
+
+describe('Modal rerender', () => {
+  test('Modal children should rerender when parent component rerender', () => {
+    //TODO:
+  })
+})
+
+describe('Modal functional call', () => {
+  test('Call Modal.show() Modal should render in screen', () => {
+    // TODO:
   })
 })
