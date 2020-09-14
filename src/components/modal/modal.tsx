@@ -7,7 +7,7 @@ import React, {
   useCallback, RefAttributes
 } from "react";
 import ReactDOM from "react-dom";
-import BaseModal from "./base-modal";
+import BaseModal, {RefInterface} from "./base-modal";
 
 export type ModalShowOption = {children: ReactNode} | string;
 export interface ModalProps {
@@ -16,7 +16,7 @@ export interface ModalProps {
   children?: ReactNode;
 }
 
-export interface MainModalInterface extends ForwardRefRenderFunction<any, ModalProps> {
+export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
   container?: HTMLElement | null
 }
 
@@ -58,11 +58,11 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, ...props },
   return null;
 };
 
-export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<any>> {
+export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
   show: (opt: ModalShowOption) => Promise<boolean>;
 }
 
-const Modal = forwardRef<any, ModalProps>(MainModal) as ModalInterface;
+const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface;
 
 Modal.show = (config) => {
   return new Promise((resolve, reject) => {

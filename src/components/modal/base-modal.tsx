@@ -21,7 +21,7 @@ export interface RefInterface {
   closeModal: () => void
 }
 
-const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = (
+const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
   { maskClosable, onClose, onExited, visible, children, ...props },
   ref
 ) => {
@@ -42,12 +42,12 @@ const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = (
     setV(visible);
   }, [visible]);
 
-  useImperativeHandle<any, RefInterface>(ref, () => ({
+  useImperativeHandle<RefInterface, RefInterface>(ref, () => ({
     closeModal: () => handleClose(),
   }));
 
   return (
-    <div className="rf-modal-root" ref={ref} {...props}>
+    <div className="rf-modal-root" {...props}>
       <CSSTransition
         in={v}
         classNames="modal-fade"
