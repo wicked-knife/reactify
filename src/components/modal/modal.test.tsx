@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Modal from "./modal";
+import Modal, {RefInterface} from "./index";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 import { renderHook, act } from "@testing-library/react-hooks";
 
@@ -42,12 +42,12 @@ describe('Modal mask', () => {
 
 describe('Modal Ref', () => {
   test('Parent component should receive Modal ref', () => {
-    const {result: refResult} = renderHook(() => useRef(null))
+    const {result: refResult} = renderHook(() => useRef<RefInterface>(null))
     const {result: stateResult} = renderHook(() => useState(false))
     const {rerender} = render(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
     setTimeout(() => {
       expect(refResult.current.current).not.toBeNull()
-      expect(refResult.current.current.closeModal).not.toBeNull()
+      expect(refResult.current.current!.closeModal).not.toBeNull()
       act(() => stateResult.current[1](false))
       rerender(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
       setTimeout(() => {

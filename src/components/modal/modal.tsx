@@ -1,60 +1,82 @@
-import React, { useEffect, ForwardRefRenderFunction, forwardRef, ReactNode} from "react";
+import React, {
+  useEffect,
+  ForwardRefRenderFunction,
+  forwardRef,
+  ReactNode,
+  ForwardRefExoticComponent, 
+  useCallback, RefAttributes
+} from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
 
-type ModalShowOption = {
-  children: ReactNode
-} | string
+export type ModalShowOption = {children: ReactNode} | string;
 export interface ModalProps {
   visible: boolean;
   onClose?: () => void;
-  children?: ReactNode,
+  children?: ReactNode;
 }
 
-interface MainModalInterface extends ForwardRefRenderFunction<any, ModalProps>  {
-  wrapper?: HTMLDivElement | null;
+export interface MainModalInterface extends ForwardRefRenderFunction<any, ModalProps> {
+  container?: HTMLElement | null
 }
 
 const unmountComponent = (dom: HTMLElement) => {
   ReactDOM.unmountComponentAtNode(dom);
   dom.remove();
-}
-
-const MainModal: MainModalInterface = ({ visible, onClose, children }, ref) => {
-  useEffect(() => {
-    if (visible) {
-      if (!MainModal.wrapper) {
-        const unmountHandler = () => {
-          unmountComponent(MainModal.wrapper!)
-          MainModal.wrapper = null;
-        }
-        MainModal.wrapper = document.createElement("div");
-        document.body.appendChild(MainModal.wrapper);
-        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}>{children}</BaseModal>, MainModal.wrapper);
-      }
-    }
-  /* eslint-disable-next-line */
-  }, [visible]);
-
-  return null
 };
 
-interface ModalInterface extends ReturnType<typeof forwardRef> {
-  show: (opt: ModalShowOption) => Promise<boolean>
-}
+const MainModal: MainModalInterface = ({ visible, onClose, children, ...props }, ref) => {
+  const unmountHandler = useCallback(() => {
+    unmountComponent(MainModal.container!)
+    MainModal.container = null
+  }, [])
 
-const m  = forwardRef(MainModal) as ModalInterface
+  const renderComponent = () => {
+    ReactDOM.render(<BaseModal           
+      onClose={onClose}
+      visible={visible}
+      onExited={unmountHandler}
+      ref={ref}
+      {...props}>{children}</BaseModal>, MainModal.container!)
+  }
 
-m.show = (config) => {
-  return new Promise((resolve, reject) => {
-    let wrapper: HTMLElement | null = document.createElement('div')
-    document.body.appendChild(wrapper)
-    const unmountHandler = () => {
-      unmountComponent(wrapper!)
-      wrapper = null
+  useEffect(() => {
+    if (visible) {
+      MainModal.container = document.createElement("div");
+      document.body.appendChild(MainModal.container);
+      renderComponent()
     }
-    ReactDOM.render(<BaseModal visible={true} onExited={unmountHandler}/>, wrapper)
+    /* eslint-disable-next-line */
+  }, [visible]);
+
+  useEffect(() => {
+    if(MainModal.container) {
+      renderComponent()
+    }
   })
+
+  return null;
+};
+
+export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<any>> {
+  show: (opt: ModalShowOption) => Promise<boolean>;
 }
 
-export default m
+const Modal = forwardRef<any, ModalProps>(MainModal) as ModalInterface;
+
+Modal.show = (config) => {
+  return new Promise((resolve, reject) => {
+    let wrapper: HTMLElement | null = document.createElement("div");
+    document.body.appendChild(wrapper);
+    const unmountHandler = () => {
+      unmountComponent(wrapper!);
+      wrapper = null;
+    };
+    ReactDOM.render(
+      <BaseModal visible={true} onExited={unmountHandler} />,
+      wrapper
+    );
+  });
+};
+
+export default Modal;
