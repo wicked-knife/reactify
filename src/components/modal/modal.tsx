@@ -1,9 +1,10 @@
-import React, { useEffect, ForwardRefRenderFunction, forwardRef} from "react";
+import React, { useEffect, ForwardRefRenderFunction, forwardRef, ReactNode} from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
 export interface ModalProps {
   visible: boolean;
   onClose?: () => void;
+  children?: ReactNode
 }
 
 interface ModalInterface extends ForwardRefRenderFunction<any, ModalProps>  {
@@ -15,7 +16,7 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove();
 }
 
-const Modal: ModalInterface = ({ visible, onClose }, ref) => {
+const Modal: ModalInterface = ({ visible, onClose, children }, ref) => {
   useEffect(() => {
     if (visible) {
       if (!Modal.wrapper) {
@@ -25,7 +26,7 @@ const Modal: ModalInterface = ({ visible, onClose }, ref) => {
         }
         Modal.wrapper = document.createElement("div");
         document.body.appendChild(Modal.wrapper);
-        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}/>, Modal.wrapper);
+        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}>{children}</BaseModal>, Modal.wrapper);
       }
     }
   /* eslint-disable-next-line */

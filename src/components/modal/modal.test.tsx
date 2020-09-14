@@ -56,3 +56,13 @@ describe('Modal Ref', () => {
     }, 300);
   })
 })
+
+describe('Modal children', () => {
+  test('Modal children should be rendered', () => {
+    const {container} = render(<Modal visible={true}><div className="test-node">hello world</div></Modal>)
+    const element = container.querySelector('text-node')
+    setTimeout(() => {
+      expect(element).toBeInTheDocument()
+    }, 300);
+  })
+})

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef, ForwardRefRenderFunction, useImperativeHandle } from "react";
+import React, { useEffect, useState, forwardRef, ForwardRefRenderFunction, useImperativeHandle, ReactNode } from "react";
 import { CSSTransition } from "react-transition-group";
 import Icon from '../icon'
 import "./modal.scss";
@@ -6,7 +6,8 @@ interface BaseModalProps {
   maskClosable?: boolean;
   visible: boolean;
   onClose?: () => void;
-  onExited: () => void
+  onExited: () => void;
+  children: ReactNode
 }
 
 const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = ({
@@ -14,6 +15,7 @@ const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = ({
   onClose,
   onExited,
   visible,
+  children
 }, ref) => {
   const [v, setV] = useState(false)
 
@@ -46,6 +48,7 @@ const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = ({
           <div>
             <Icon className="icon-close_filled" onClick={handleClose}/>
           </div>
+          {children}
         </div>
       </CSSTransition>
     </div>

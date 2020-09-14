@@ -17,7 +17,8 @@ const App: React.FC = () => {
 
   return <div>
     <Button onClick={show}>show</Button>
-    <Modal visible={visible} onClose={close} ref={ref}/>
+
+    <Modal visible={true}><div className="test-node">hello world</div></Modal>
   </div>
 }
 
