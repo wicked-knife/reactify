@@ -18,6 +18,9 @@ div.rf-modal-root{
     margin-left: -100px;
     background-color: white;
     z-index: 10001;
+    .icon-close_filled{
+      cursor: pointer;
+    }
   }
 }
 

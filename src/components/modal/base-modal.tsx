@@ -1,5 +1,6 @@
 import React, { useEffect, useState, forwardRef, ForwardRefRenderFunction, useImperativeHandle } from "react";
 import { CSSTransition } from "react-transition-group";
+import Icon from '../icon'
 import "./modal.scss";
 interface BaseModalProps {
   maskClosable?: boolean;
@@ -15,28 +16,37 @@ const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = ({
   visible,
 }, ref) => {
   const [v, setV] = useState(false)
+
+  const handleClose = () => {
+    typeof onClose === "function" && onClose();
+    setV(false)
+  }
+  
   const handleMaskClick = () => {
     if (maskClosable) {
-      typeof onClose === "function" && onClose();
-      setV(false)
+      handleClose()
     }
   };
-  
+
   useEffect(() => {
     setV(visible)
   }, [visible])
 
   useImperativeHandle(ref, () => ({
-    closeModal: () => setV(false)
-  }), [])
+    closeModal: () => handleClose()
+  }))
   
   return (
-    <div className="rf-modal-root" >
+    <div className="rf-modal-root" ref={ref}>
       <CSSTransition in={v} classNames="modal-fade" timeout={300} unmountOnExit onExited={onExited}>
         <div className="rf-modal-mask" onClick={handleMaskClick}></div>
       </CSSTransition>
       <CSSTransition in={v} classNames="modal" timeout={300} unmountOnExit onExited={onExited}>
-        <div className="rf-modal">this is modal</div>
+        <div className="rf-modal">
+          <div>
+            <Icon className="icon-close_filled" onClick={handleClose}/>
+          </div>
+        </div>
       </CSSTransition>
     </div>
   );

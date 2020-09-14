@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { useEffect, ForwardRefRenderFunction, forwardRef} from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
 export interface ModalProps {
@@ -6,26 +6,26 @@ export interface ModalProps {
   onClose?: () => void;
 }
 
-interface ModalInterface extends FC<ModalProps> {
+interface ModalInterface extends ForwardRefRenderFunction<any, ModalProps>  {
   wrapper?: HTMLDivElement | null;
 }
 
-const Modal: ModalInterface = ({ visible, onClose }) => {
+const unmountComponent = (dom: HTMLElement) => {
+  ReactDOM.unmountComponentAtNode(dom);
+  dom.remove();
+}
+
+const Modal: ModalInterface = ({ visible, onClose }, ref) => {
   useEffect(() => {
     if (visible) {
       if (!Modal.wrapper) {
         const unmountHandler = () => {
-          ReactDOM.unmountComponentAtNode(Modal.wrapper!);
-          Modal.wrapper!.remove();
+          unmountComponent(Modal.wrapper!)
           Modal.wrapper = null;
         }
         Modal.wrapper = document.createElement("div");
         document.body.appendChild(Modal.wrapper);
-        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler}/>, Modal.wrapper);
-      }
-    } else {
-      if (Modal.wrapper) {
-        typeof onClose === 'function' && onClose()
+        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}/>, Modal.wrapper);
       }
     }
   /* eslint-disable-next-line */
@@ -34,4 +34,4 @@ const Modal: ModalInterface = ({ visible, onClose }) => {
   return null
 };
 
-export default Modal;
+export default forwardRef(Modal);
