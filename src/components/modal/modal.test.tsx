@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Modal from "./modal";
+import React, { useRef, useState } from "react";
+import Modal, {RefInterface} from "./index";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 import { renderHook, act } from "@testing-library/react-hooks";
 
@@ -14,10 +14,13 @@ describe("Modal render", () => {
 
     act(() => result.current[1](false));
     rerender(<Modal visible={result.current[0]}></Modal>);
-    expect(document.querySelector(".rf-modal-root")).toBeNull();
-    expect(document.querySelector(".rf-modal-mask")).toBeNull();
-    expect(document.querySelector(".rf-modal")).toBeNull();
-    cleanup();
+    // 等待3000ms动画结束
+    setTimeout(() => { 
+      expect(document.querySelector(".rf-modal-root")).toBeNull();
+      expect(document.querySelector(".rf-modal-mask")).toBeNull();
+      expect(document.querySelector(".rf-modal")).toBeNull();
+      cleanup();
+    }, 3000);
   });
 });
 
@@ -26,10 +29,56 @@ describe('Modal mask', () => {
     const {result} = renderHook(() => useState(true))
     const handleModalClose = () => act(() => result.current[1](false))
     const {rerender} = render(<Modal visible={result.current[0]} onClose={handleModalClose}></Modal>)
-      fireEvent.click(document.querySelector('.rf-modal-mask')!)
-      rerender(<Modal visible={result.current[0]} onClose={handleModalClose}></Modal>)
+    fireEvent.click(document.querySelector('.rf-modal-mask')!)
+    rerender(<Modal visible={result.current[0]} onClose={handleModalClose}></Modal>)
+    // 等待3000ms动画结束
+    setTimeout(() => {
       expect(document.querySelector('.rf-modal-root')).toBeNull()
       expect(document.querySelector('.rf-modal-mask')).toBeNull()
       expect(document.querySelector('.rf-modal')).toBeNull()
+    }, 3000);
+  })
+})
+
+describe('Modal Ref', () => {
+  test('Parent component should receive Modal ref', () => {
+    const {result: refResult} = renderHook(() => useRef<RefInterface>(null))
+    const {result: stateResult} = renderHook(() => useState(false))
+    const {rerender} = render(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+    setTimeout(() => {
+      expect(refResult.current.current).not.toBeNull()
+      expect(refResult.current.current!.closeModal).not.toBeNull()
+      act(() => stateResult.current[1](false))
+      rerender(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+      setTimeout(() => {
+        expect(refResult.current.current).toBeNull()
+      }, 300);
+    }, 300);
+  })
+
+  test('Call ref.closeModal() Modal should be closed', () => {
+    // TODO:
+  })
+})
+
+describe('Modal children', () => {
+  test('Modal children should be rendered', () => {
+    const {container} = render(<Modal visible={true}><div className="test-node">hello world</div></Modal>)
+    const element = container.querySelector('text-node')
+    setTimeout(() => {
+      expect(element).toBeInTheDocument()
+    }, 300);
+  })
+})
+
+describe('Modal rerender', () => {
+  test('Modal children should rerender when parent component rerender', () => {
+    //TODO:
+  })
+})
+
+describe('Modal functional call', () => {
+  test('Call Modal.show() Modal should render in screen', () => {
+    // TODO:
   })
 })

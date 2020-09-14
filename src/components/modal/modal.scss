@@ -11,21 +11,41 @@ div.rf-modal-root{
     z-index: 1000;
   }
   .rf-modal{
-    position: relative;
+    position: fixed;
     width: 200px;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
     background-color: white;
     z-index: 10001;
+    .icon-close_filled{
+      cursor: pointer;
+    }
   }
 }
 
+.modal-fade-enter {
+  opacity: 0;
+}
+.modal-fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.modal-fade-exit {
+  opacity: 1;
+}
+.modal-fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
 
 .modal-enter {
   opacity: 0;
-  transform: scale(0.9) translateX(-50%);
+  transform: scale(0.9);
 }
 .modal-enter-active {
   opacity: 1;
-  transform: scale(1) translateX(-50%);
+  transform: translateX(0);
   transition: opacity 300ms, transform 300ms;
 }
 .modal-exit {
@@ -33,6 +53,6 @@ div.rf-modal-root{
 }
 .modal-exit-active {
   opacity: 0;
-  transform: scale(0.9) translateX(-50%);
+  transform: scale(0.9);
   transition: opacity 300ms, transform 300ms;
 }
