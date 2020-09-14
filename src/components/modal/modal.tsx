@@ -1,13 +1,17 @@
 import React, { useEffect, ForwardRefRenderFunction, forwardRef, ReactNode} from "react";
 import ReactDOM from "react-dom";
 import BaseModal from "./base-modal";
+
+type ModalShowOption = {
+  children: ReactNode
+} | string
 export interface ModalProps {
   visible: boolean;
   onClose?: () => void;
-  children?: ReactNode
+  children?: ReactNode,
 }
 
-interface ModalInterface extends ForwardRefRenderFunction<any, ModalProps>  {
+interface MainModalInterface extends ForwardRefRenderFunction<any, ModalProps>  {
   wrapper?: HTMLDivElement | null;
 }
 
@@ -16,17 +20,17 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove();
 }
 
-const Modal: ModalInterface = ({ visible, onClose, children }, ref) => {
+const MainModal: MainModalInterface = ({ visible, onClose, children }, ref) => {
   useEffect(() => {
     if (visible) {
-      if (!Modal.wrapper) {
+      if (!MainModal.wrapper) {
         const unmountHandler = () => {
-          unmountComponent(Modal.wrapper!)
-          Modal.wrapper = null;
+          unmountComponent(MainModal.wrapper!)
+          MainModal.wrapper = null;
         }
-        Modal.wrapper = document.createElement("div");
-        document.body.appendChild(Modal.wrapper);
-        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}>{children}</BaseModal>, Modal.wrapper);
+        MainModal.wrapper = document.createElement("div");
+        document.body.appendChild(MainModal.wrapper);
+        ReactDOM.render(<BaseModal onClose={onClose} visible={visible} onExited={unmountHandler} ref={ref}>{children}</BaseModal>, MainModal.wrapper);
       }
     }
   /* eslint-disable-next-line */
@@ -35,4 +39,22 @@ const Modal: ModalInterface = ({ visible, onClose, children }, ref) => {
   return null
 };
 
-export default forwardRef(Modal);
+interface ModalInterface extends ReturnType<typeof forwardRef> {
+  show: (opt: ModalShowOption) => Promise<boolean>
+}
+
+const m  = forwardRef(MainModal) as ModalInterface
+
+m.show = (config) => {
+  return new Promise((resolve, reject) => {
+    let wrapper: HTMLElement | null = document.createElement('div')
+    document.body.appendChild(wrapper)
+    const unmountHandler = () => {
+      unmountComponent(wrapper!)
+      wrapper = null
+    }
+    ReactDOM.render(<BaseModal visible={true} onExited={unmountHandler}/>, wrapper)
+  })
+}
+
+export default m

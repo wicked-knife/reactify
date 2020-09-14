@@ -7,7 +7,7 @@ interface BaseModalProps {
   visible: boolean;
   onClose?: () => void;
   onExited: () => void;
-  children: ReactNode
+  children?: ReactNode
 }
 
 const BaseModal: ForwardRefRenderFunction<any, BaseModalProps> = ({
