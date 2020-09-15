@@ -10,23 +10,36 @@ import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
 import useClassnames from 'classnames'
 import './modal.scss'
+import Button from '../button'
 export interface BaseModalProps {
   maskClosable?: boolean;
   visible: boolean;
   onClose?: () => void;
   onExited: () => void;
   children?: ReactNode;
-  className?: string,
-  style?: React.CSSProperties,
-  title?: string
+  className?: string;
+  style?: React.CSSProperties;
+  title?: string;
+  footer?: string | ReactNode;
 }
 
 export interface RefInterface {
-  closeModal: () => void
+  closeModal: () => void;
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
-  { maskClosable, onClose, onExited, visible, children, className, style, title, ...props },
+  {
+    maskClosable,
+    onClose,
+    onExited,
+    visible,
+    children,
+    className,
+    style,
+    title,
+    footer,
+    ...props
+  },
   ref
 ) => {
   const [v, setV] = useState(false)
@@ -70,13 +83,18 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         onExited={onExited}
       >
         <div className={computedClassnames} style={style}>
-          {
-            title && <div className="rf-modal-title">{title}</div>
-          }
-          <div>
-            <Icon className="icon-close_filled" onClick={handleClose} />
+
+          <div className={`rf-modal-title ${title ? '' : 'no-title'}`}>
+            {title}
+            <div className="icon-wrapper" onClick={handleClose}>
+              <Icon className="icon-close_filled" />
+            </div>
           </div>
-          {children}
+
+          <div className="rf-modal-body">{children}</div>
+
+          {footer && <div className="rf-modal-footer">{footer}</div>}
+          
         </div>
       </CSSTransition>
     </div>
@@ -86,7 +104,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
 const MainModal = forwardRef(BaseModal)
 
 MainModal.defaultProps = {
-  maskClosable: true,
+  maskClosable: false,
   visible: false,
 }
 

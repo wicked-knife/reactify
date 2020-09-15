@@ -23,7 +23,7 @@ describe('Modal render', () => {
   })
 })
 
-describe('Modal mask', () => {
+describe('Modal maskClosable', () => {
   test('Click modal mask modal should close by default', () => {
     const {result} = renderHook(() => useState(true))
     const handleModalClose = () => act(() => result.current[1](false))

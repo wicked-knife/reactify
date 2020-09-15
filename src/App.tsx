@@ -12,7 +12,7 @@ const App: React.FC = () => {
   }
   return <div>
     <Button onClick={() => setV(true)}>show</Button>
-    <Modal visible={v} onClose={() => setV(false)} ref={re} title="hello world">
+    <Modal visible={v} onClose={() => setV(false)} ref={re} >
       <Button onClick={testRef}>render</Button>
     </Modal>
   </div>
