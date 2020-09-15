@@ -143,3 +143,16 @@ describe('Modal title', () => {
     }, 300)
   })
 })
+
+describe('Modal footer', () => {
+  test('Modal footer children should render in footer element', () => {
+    const {container} = render(<Modal visible={true}>
+      <Modal.Footer>
+        <span className="test-node">hello world</span>
+      </Modal.Footer>
+    </Modal>)
+    setTimeout(() => {
+      expect(container.querySelector('.rf-modal-footer>.test-node')).toBeInTheDocument()
+    }, 300)
+  })
+})

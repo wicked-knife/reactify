@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   ForwardRefRenderFunction,
   useImperativeHandle,
-  ReactNode,
+  ReactNode, FunctionComponentElement
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -19,11 +19,36 @@ export interface BaseModalProps {
   className?: string;
   style?: React.CSSProperties;
   title?: string;
-  footer?: string | ReactNode;
 }
 
 export interface RefInterface {
   closeModal: () => void;
+}
+
+const wrapModalContent = (children: ReactNode) => {
+  return <div className="rf-modal-body">
+    {
+      React.Children.map(children, (child) => {
+        if(!(child as FunctionComponentElement<HTMLElement>).type.displayName) {
+          return child
+        }
+        return null
+      }) 
+    }
+    </div>
+}
+
+const wrapModalFooter = (children: ReactNode) => {
+  return <div className="rf-modal-footer">
+    {
+      React.Children.map(children, (child) => {
+        if((child as FunctionComponentElement<HTMLElement>).type.displayName === 'ModalFooter') {
+          return child
+        }
+        return null
+      }) 
+    }
+    </div>
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
@@ -36,7 +61,6 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     className,
     style,
     title,
-    footer,
     ...props
   },
   ref
@@ -90,9 +114,13 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
             </div>
           </div>
 
-          <div className="rf-modal-body">{children}</div>
+          {
+            wrapModalContent(children)
+          }
 
-          {footer && <div className="rf-modal-footer">{footer}</div>}
+          {
+            wrapModalFooter(children)
+          }
           
         </div>
       </CSSTransition>

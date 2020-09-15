@@ -14,6 +14,9 @@ const App: React.FC = () => {
     <Button onClick={() => setV(true)}>show</Button>
     <Modal visible={v} onClose={() => setV(false)} ref={re} >
       <Button onClick={testRef}>render</Button>
+      <Modal.Footer>
+        xxx
+      </Modal.Footer>
     </Modal>
   </div>
 }

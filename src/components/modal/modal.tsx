@@ -4,10 +4,11 @@ import React, {
   forwardRef,
   ReactNode,
   ForwardRefExoticComponent, 
-  useCallback, RefAttributes
+  useCallback, RefAttributes,
 } from 'react'
 import ReactDOM from 'react-dom'
 import BaseModal, {RefInterface} from './base-modal'
+import Footer from './footer'
 export interface ModalProps {
   visible: boolean
   onClose?: () => void
@@ -71,7 +72,8 @@ export type ModalShowOption = {
 } | string;
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalShowOption) => Promise<boolean>;
+  show: (opt: ModalShowOption) => Promise<boolean>
+  Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
@@ -90,5 +92,6 @@ Modal.show = (config) => {
     )
   })
 }
+Modal.Footer = Footer
 
 export default Modal
