@@ -10,7 +10,6 @@ import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
 import useClassnames from 'classnames'
 import './modal.scss'
-import Button from '../button'
 export interface BaseModalProps {
   maskClosable?: boolean;
   visible: boolean;
