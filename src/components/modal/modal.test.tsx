@@ -1,27 +1,27 @@
-import React, { useRef, useState } from "react";
-import Modal, {RefInterface} from "./index";
-import { render, cleanup, fireEvent, queryByText } from "@testing-library/react";
-import { renderHook, act } from "@testing-library/react-hooks";
+import React, { useRef, useState } from 'react'
+import Modal, {RefInterface} from './index'
+import { render, fireEvent } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react-hooks'
 
-describe("Modal render", () => {
-  test("Modal should be rendered if props visible is true, modal should close when change visible to false", () => {
-    const { result } = renderHook(() => useState(true));
-    const { rerender } = render(<Modal visible={result.current[0]}></Modal>);
+describe('Modal render', () => {
+  test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
+    const { result } = renderHook(() => useState(true))
+    const { rerender } = render(<Modal visible={result.current[0]}></Modal>)
 
-    expect(document.querySelector(".rf-modal-root")).toBeInTheDocument();
-    expect(document.querySelector(".rf-modal-mask")).toBeInTheDocument();
-    expect(document.querySelector(".rf-modal")).toBeInTheDocument();
+    expect(document.querySelector('.rf-modal-root')).toBeInTheDocument()
+    expect(document.querySelector('.rf-modal-mask')).toBeInTheDocument()
+    expect(document.querySelector('.rf-modal')).toBeInTheDocument()
 
-    act(() => result.current[1](false));
-    rerender(<Modal visible={result.current[0]}></Modal>);
+    act(() => result.current[1](false))
+    rerender(<Modal visible={result.current[0]}></Modal>)
     // 等待3000ms动画结束
     setTimeout(() => { 
-      expect(document.querySelector(".rf-modal-root")).toBeNull();
-      expect(document.querySelector(".rf-modal-mask")).toBeNull();
-      expect(document.querySelector(".rf-modal")).toBeNull();;
-    }, 3000);
-  });
-});
+      expect(document.querySelector('.rf-modal-root')).toBeNull()
+      expect(document.querySelector('.rf-modal-mask')).toBeNull()
+      expect(document.querySelector('.rf-modal')).toBeNull()
+    }, 3000)
+  })
+})
 
 describe('Modal mask', () => {
   test('Click modal mask modal should close by default', () => {
@@ -35,7 +35,7 @@ describe('Modal mask', () => {
       expect(document.querySelector('.rf-modal-root')).toBeNull()
       expect(document.querySelector('.rf-modal-mask')).toBeNull()
       expect(document.querySelector('.rf-modal')).toBeNull()
-    }, 3000);
+    }, 3000)
   })
 })
 
@@ -51,8 +51,8 @@ describe('Modal Ref', () => {
       rerender(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
       setTimeout(() => {
         expect(refResult.current.current).toBeNull()
-      }, 300);
-    }, 300);
+      }, 300)
+    }, 300)
   })
 
   test('Call ref.closeModal() Modal should be closed', () => {
@@ -66,8 +66,8 @@ describe('Modal Ref', () => {
       setTimeout(() => {
         expect(refResult.current.current).toBeNull()
         expect(document.querySelector('.rf-modal-root')).toBeNull()
-      }, 300);
-    }, 300);
+      }, 300)
+    }, 300)
   })
 })
 
@@ -77,7 +77,7 @@ describe('Modal children', () => {
     const element = container.querySelector('text-node')
     setTimeout(() => {
       expect(element).toBeInTheDocument()
-    }, 300);
+    }, 300)
   })
 })
 
@@ -86,7 +86,7 @@ describe('Modal rerender', () => {
     const {queryByText} = render(<Modal visible={true}><div>hello world</div></Modal>)
     setTimeout(() => {
       expect(queryByText('hello world')).toBeInTheDocument()
-    }, 300);
+    }, 300)
   })
 })
 
@@ -95,6 +95,6 @@ describe('Modal functional call', () => {
     Modal.show('test')
     setTimeout(() => {
       expect(document.querySelector('.rf-modal-root')).toBeInTheDocument()
-    }, 300);
+    }, 300)
   })
 })

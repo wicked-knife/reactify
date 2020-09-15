@@ -5,10 +5,10 @@ import React, {
   ForwardRefRenderFunction,
   useImperativeHandle,
   ReactNode,
-} from "react";
-import { CSSTransition } from "react-transition-group";
-import Icon from "../icon";
-import "./modal.scss";
+} from 'react'
+import { CSSTransition } from 'react-transition-group'
+import Icon from '../icon'
+import './modal.scss'
 export interface BaseModalProps {
   maskClosable?: boolean;
   visible: boolean;
@@ -25,26 +25,26 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
   { maskClosable, onClose, onExited, visible, children, ...props },
   ref
 ) => {
-  const [v, setV] = useState(false);
+  const [v, setV] = useState(false)
 
   const handleClose = () => {
-    typeof onClose === "function" && onClose();
-    setV(false);
-  };
+    typeof onClose === 'function' && onClose()
+    setV(false)
+  }
 
   const handleMaskClick = () => {
     if (maskClosable) {
-      handleClose();
+      handleClose()
     }
-  };
+  }
 
   useEffect(() => {
-    setV(visible);
-  }, [visible]);
+    setV(visible)
+  }, [visible])
 
   useImperativeHandle<RefInterface, RefInterface>(ref, () => ({
     closeModal: () => handleClose(),
-  }));
+  }))
 
   return (
     <div className="rf-modal-root" {...props}>
@@ -72,14 +72,14 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         </div>
       </CSSTransition>
     </div>
-  );
-};
+  )
+}
 
-const MainModal = forwardRef(BaseModal);
+const MainModal = forwardRef(BaseModal)
 
 MainModal.defaultProps = {
   maskClosable: true,
   visible: false,
-};
+}
 
-export default MainModal;
+export default MainModal

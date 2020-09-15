@@ -5,9 +5,9 @@ import React, {
   ReactNode,
   ForwardRefExoticComponent, 
   useCallback, RefAttributes
-} from "react";
-import ReactDOM from "react-dom";
-import BaseModal, {RefInterface} from "./base-modal";
+} from 'react'
+import ReactDOM from 'react-dom'
+import BaseModal, {RefInterface} from './base-modal'
 
 export type ModalShowOption = {children: ReactNode} | string;
 export interface ModalProps {
@@ -21,9 +21,9 @@ export interface MainModalInterface extends ForwardRefRenderFunction<RefInterfac
 }
 
 const unmountComponent = (dom: HTMLElement) => {
-  ReactDOM.unmountComponentAtNode(dom);
-  dom.remove();
-};
+  ReactDOM.unmountComponentAtNode(dom)
+  dom.remove()
+}
 
 const MainModal: MainModalInterface = ({ visible, onClose, children, ...props }, ref) => {
   const unmountHandler = useCallback(() => {
@@ -42,8 +42,8 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, ...props },
 
   useEffect(() => {
     if (visible) {
-      MainModal.container = document.createElement("div");
-      document.body.appendChild(MainModal.container);
+      MainModal.container = document.createElement('div')
+      document.body.appendChild(MainModal.container)
       renderComponent()
     }
     /* eslint-disable-next-line */
@@ -55,28 +55,28 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, ...props },
     }
   })
 
-  return null;
-};
+  return null
+}
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
   show: (opt: ModalShowOption) => Promise<boolean>;
 }
 
-const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface;
+const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
 Modal.show = (config) => {
   return new Promise((resolve, reject) => {
-    let wrapper: HTMLElement | null = document.createElement("div");
-    document.body.appendChild(wrapper);
+    let wrapper: HTMLElement | null = document.createElement('div')
+    document.body.appendChild(wrapper)
     const unmountHandler = () => {
-      unmountComponent(wrapper!);
-      wrapper = null;
-    };
+      unmountComponent(wrapper!)
+      wrapper = null
+    }
     ReactDOM.render(
       <BaseModal visible={true} onExited={unmountHandler} />,
       wrapper
-    );
-  });
-};
+    )
+  })
+}
 
-export default Modal;
+export default Modal
