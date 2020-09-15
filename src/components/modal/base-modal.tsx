@@ -15,6 +15,8 @@ export interface BaseModalProps {
   onClose?: () => void;
   onExited: () => void;
   children?: ReactNode;
+  className?: string,
+  style?: React.CSSProperties
 }
 
 export interface RefInterface {
@@ -22,7 +24,7 @@ export interface RefInterface {
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
-  { maskClosable, onClose, onExited, visible, children, ...props },
+  { maskClosable, onClose, onExited, visible, children, className, style, ...props },
   ref
 ) => {
   const [v, setV] = useState(false)
@@ -64,7 +66,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         unmountOnExit
         onExited={onExited}
       >
-        <div className="rf-modal">
+        <div className={'rf-modal ' + className} style={style}>
           <div>
             <Icon className="icon-close_filled" onClick={handleClose} />
           </div>

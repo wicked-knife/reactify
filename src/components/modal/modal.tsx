@@ -8,12 +8,12 @@ import React, {
 } from 'react'
 import ReactDOM from 'react-dom'
 import BaseModal, {RefInterface} from './base-modal'
-
-export type ModalShowOption = {children: ReactNode} | string;
 export interface ModalProps {
-  visible: boolean;
-  onClose?: () => void;
-  children?: ReactNode;
+  visible: boolean
+  onClose?: () => void
+  children?: ReactNode
+  className?: string,
+  style?: React.CSSProperties
 }
 
 export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
@@ -25,7 +25,7 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove()
 }
 
-const MainModal: MainModalInterface = ({ visible, onClose, children, ...props }, ref) => {
+const MainModal: MainModalInterface = ({ visible, onClose, children, className, style, ...props }, ref) => {
   const unmountHandler = useCallback(() => {
     unmountComponent(MainModal.container!)
     MainModal.container = null
@@ -37,6 +37,8 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, ...props },
       visible={visible}
       onExited={unmountHandler}
       ref={ref}
+      className={className}
+      style={style}
       {...props}>{children}</BaseModal>, MainModal.container!)
   }
 
@@ -57,6 +59,14 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, ...props },
 
   return null
 }
+
+export type ModalShowOption = {
+  children?: ReactNode
+  className?: string
+  style?: React.CSSProperties
+  onClose?: () => void
+  maskClosable: boolean
+} | string;
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
   show: (opt: ModalShowOption) => Promise<boolean>;
