@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Modal, {RefInterface} from "./index";
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, cleanup, fireEvent, queryByText } from "@testing-library/react";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 describe("Modal render", () => {
@@ -18,8 +18,7 @@ describe("Modal render", () => {
     setTimeout(() => { 
       expect(document.querySelector(".rf-modal-root")).toBeNull();
       expect(document.querySelector(".rf-modal-mask")).toBeNull();
-      expect(document.querySelector(".rf-modal")).toBeNull();
-      cleanup();
+      expect(document.querySelector(".rf-modal")).toBeNull();;
     }, 3000);
   });
 });
@@ -57,7 +56,18 @@ describe('Modal Ref', () => {
   })
 
   test('Call ref.closeModal() Modal should be closed', () => {
-    // TODO:
+    const {result: refResult} = renderHook(() => useRef<RefInterface>(null))
+    const {result: stateResult} = renderHook(() => useState(false))
+    render(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+    setTimeout(() => {
+      expect(refResult.current.current).not.toBeNull()
+      expect(refResult.current.current!.closeModal).not.toBeNull()
+      refResult.current.current?.closeModal()
+      setTimeout(() => {
+        expect(refResult.current.current).toBeNull()
+        expect(document.querySelector('.rf-modal-root')).toBeNull()
+      }, 300);
+    }, 300);
   })
 })
 
@@ -73,12 +83,18 @@ describe('Modal children', () => {
 
 describe('Modal rerender', () => {
   test('Modal children should rerender when parent component rerender', () => {
-    //TODO:
+    const {queryByText} = render(<Modal visible={true}><div>hello world</div></Modal>)
+    setTimeout(() => {
+      expect(queryByText('hello world')).toBeInTheDocument()
+    }, 300);
   })
 })
 
 describe('Modal functional call', () => {
   test('Call Modal.show() Modal should render in screen', () => {
-    // TODO:
+    Modal.show('test')
+    setTimeout(() => {
+      expect(document.querySelector('.rf-modal-root')).toBeInTheDocument()
+    }, 300);
   })
 })
