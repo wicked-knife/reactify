@@ -13,7 +13,8 @@ export interface ModalProps {
   onClose?: () => void
   children?: ReactNode
   className?: string,
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  title?: string
 }
 
 export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
@@ -25,7 +26,7 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove()
 }
 
-const MainModal: MainModalInterface = ({ visible, onClose, children, className, style, ...props }, ref) => {
+const MainModal: MainModalInterface = ({ visible, onClose, children, className, style, title, ...props }, ref) => {
   const unmountHandler = useCallback(() => {
     unmountComponent(MainModal.container!)
     MainModal.container = null
@@ -39,6 +40,7 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, className, 
       ref={ref}
       className={className}
       style={style}
+      title={title}
       {...props}>{children}</BaseModal>, MainModal.container!)
   }
 
@@ -49,7 +51,7 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, className, 
       renderComponent()
     }
     /* eslint-disable-next-line */
-  }, [visible]);
+  }, [visible])
 
   useEffect(() => {
     if(MainModal.container) {

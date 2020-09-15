@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
+import useClassnames from 'classnames'
 import './modal.scss'
 export interface BaseModalProps {
   maskClosable?: boolean;
@@ -16,7 +17,8 @@ export interface BaseModalProps {
   onExited: () => void;
   children?: ReactNode;
   className?: string,
-  style?: React.CSSProperties
+  style?: React.CSSProperties,
+  title?: string
 }
 
 export interface RefInterface {
@@ -24,7 +26,7 @@ export interface RefInterface {
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
-  { maskClosable, onClose, onExited, visible, children, className, style, ...props },
+  { maskClosable, onClose, onExited, visible, children, className, style, title, ...props },
   ref
 ) => {
   const [v, setV] = useState(false)
@@ -47,6 +49,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
   useImperativeHandle<RefInterface, RefInterface>(ref, () => ({
     closeModal: () => handleClose(),
   }))
+  const computedClassnames = useClassnames('rf-modal', className)
 
   return (
     <div className="rf-modal-root" {...props}>
@@ -66,7 +69,10 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         unmountOnExit
         onExited={onExited}
       >
-        <div className={'rf-modal ' + className} style={style}>
+        <div className={computedClassnames} style={style}>
+          {
+            title && <div className="rf-modal-title">{title}</div>
+          }
           <div>
             <Icon className="icon-close_filled" onClick={handleClose} />
           </div>

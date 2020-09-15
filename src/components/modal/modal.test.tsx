@@ -133,3 +133,13 @@ describe('Modal className and styles', () => {
     }, 300)
   })
 })
+
+describe('Modal title', () => {
+  test('Modal should have title if title is truthy', () => {
+    const {queryByText} = render(<Modal visible={true} title="hello world"></Modal>)
+    setTimeout(() => {
+      const element = queryByText('hello world')
+      expect(element).toBeInTheDocument()
+    }, 300)
+  })
+})

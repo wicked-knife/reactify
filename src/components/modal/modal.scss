@@ -11,13 +11,11 @@ div.rf-modal-root{
     z-index: 1000;
   }
   .rf-modal{
-    position: fixed;
-    width: 200px;
-    left: 50%;
-    top: 50%;
-    margin-left: -100px;
+    position: relative;
+    margin:  0 auto;
     background-color: white;
     z-index: 10001;
+    min-width: 520px;
     .icon-close_filled{
       cursor: pointer;
     }
