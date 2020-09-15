@@ -109,7 +109,7 @@ describe('horizontal Menu', () => {
       expect(menu1).not.toBeInTheDocument()
       setTimeout(() => {
         expect(menu2).toBeInTheDocument()
-      }, 300);
+      }, 300)
       cleanup()
   })
 
@@ -119,7 +119,7 @@ describe('horizontal Menu', () => {
       fireEvent.mouseEnter(subMenu1!)
       expect(menu1).toBeInTheDocument()
       cleanup()
-    }, 300);
+    }, 300)
   })
   
   test('subMenu should fold if mouseleave subMenu', () => {
@@ -128,6 +128,6 @@ describe('horizontal Menu', () => {
       fireEvent.mouseLeave(subMenu2!)
       expect(menu2).not.toBeInTheDocument()
       cleanup()
-    }, 300);
+    }, 300)
   })
 })
