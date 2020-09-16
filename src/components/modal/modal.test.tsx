@@ -145,6 +145,40 @@ describe('Modal title', () => {
   })
 })
 
+describe('Modal closable', () => {
+  test('Modal close icon should not be rendered iff closable is false', () => {
+    const {container} = render(<Modal visible={true} closable={false}></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.icon-wrapper')
+      expect(element).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should not render modal title dom container if props title is falsy and props closable is falsy', () => {
+    const {container} = render(<Modal visible={true} closable={false}></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should render modal title dom container if props title is truthy', () => {
+    const {container} = render(<Modal visible={true} closable={false} title="hello world"></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should render modal title dom container if props closable is truthy', () => {
+    const {container} = render(<Modal visible={true} closable={true} ></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).toBeInTheDocument()
+    }, 300)
+  })
+})
+
 describe('Modal footer', () => {
   test('Modal footer children should render in footer element', () => {
     const {container} = render(<Modal visible={true}>
