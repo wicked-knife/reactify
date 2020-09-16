@@ -56,22 +56,27 @@ const MainModal: MainModalInterface = ({ visible, children, onExited, ...props }
   return null
 }
 
-export type ModalShowOption = {
-  children?: ReactNode
+interface ModalFunctionCallOptions {
+  content?: ReactNode
   className?: string
-  style?: React.CSSProperties
   onClose?: () => void
-  maskClosable: boolean
-} | string;
+  maskClosable?: boolean
+  //TODO:
+}
+
+interface ModalInfoOptions extends ModalFunctionCallOptions {
+  //TODO:
+}
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalShowOption) => Promise<boolean>
+  show: (opt: ModalInfoOptions) => Promise<boolean>
+  info: (opt: ModalInfoOptions) => Promise<boolean>
   Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
-Modal.show = (config) => {
+Modal.show = Modal.info = (config) => {
   return new Promise((resolve, reject) => {
     let wrapper: HTMLElement | null = document.createElement('div')
     document.body.appendChild(wrapper)

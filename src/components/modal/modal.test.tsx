@@ -7,11 +7,9 @@ describe('Modal render', () => {
   test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
     const { result } = renderHook(() => useState(true))
     const { rerender } = render(<Modal visible={result.current[0]}></Modal>)
-
     expect(document.querySelector('.rf-modal-root')).toBeInTheDocument()
     expect(document.querySelector('.rf-modal-mask')).toBeInTheDocument()
     expect(document.querySelector('.rf-modal')).toBeInTheDocument()
-
     act(() => result.current[1](false))
     rerender(<Modal visible={result.current[0]}></Modal>)
     // 等待3000ms动画结束
