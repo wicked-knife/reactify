@@ -60,8 +60,16 @@ interface ModalFunctionCallOptions {
   content?: ReactNode
   className?: string
   onClose?: () => void
+  onExited?: () => void
   maskClosable?: boolean
+  title?: string
   //TODO:
+}
+
+const ModalFunctionCallDefaults: ModalFunctionCallOptions = {
+  maskClosable: true,
+  onClose: () => {},
+  onExited: () => {}
 }
 
 interface ModalInfoOptions extends ModalFunctionCallOptions {
@@ -69,24 +77,34 @@ interface ModalInfoOptions extends ModalFunctionCallOptions {
 }
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalInfoOptions) => Promise<boolean>
-  info: (opt: ModalInfoOptions) => Promise<boolean>
+  show: (opt: ModalInfoOptions | string) => Promise<boolean>
+  info: (opt: ModalInfoOptions | string) => Promise<boolean>
   Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
+const normalizeConfig = (config:ModalFunctionCallOptions | string) : ModalFunctionCallOptions => {
+  if(typeof config === 'string') {
+    return {...ModalFunctionCallDefaults, content: config}
+  }
+  return {...ModalFunctionCallDefaults, ...config}
+}
+
 Modal.show = Modal.info = (config) => {
-  return new Promise((resolve, reject) => {
+  const mergedConfig = normalizeConfig(config)
+  return new Promise((resolve) => {
     let wrapper: HTMLElement | null = document.createElement('div')
     document.body.appendChild(wrapper)
     const unmountHandler = () => {
       unmountComponent(wrapper!)
       wrapper = null
+      mergedConfig.onExited!()
     }
     ReactDOM.render(
-      <BaseModal visible={true} onExited={unmountHandler} />,
-      wrapper
+    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} >{mergedConfig.content}</BaseModal>,
+      wrapper,
+      resolve
     )
   })
 }

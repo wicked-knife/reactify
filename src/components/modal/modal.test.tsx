@@ -245,3 +245,7 @@ describe('Modal exited', () => {
     }, 3000)
   })
 })
+
+describe('Modal functional call', () => {
+  // TODO:
+})

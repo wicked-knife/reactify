@@ -5,7 +5,7 @@ import React, {
   ForwardRefRenderFunction,
   useImperativeHandle,
   ReactNode,
-  FunctionComponentElement,
+  FunctionComponentElement
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -31,11 +31,13 @@ export interface RefInterface {
 
 const wrapModalContent = (children: ReactNode) => {
   return (
-    <div className="rf-modal-body">
+    <div className='rf-modal-body'>
       {React.Children.map(children, (child) => {
-        if (
-          !(child as FunctionComponentElement<HTMLElement>).type.displayName
-        ) {
+        const childElement = child as FunctionComponentElement<HTMLElement>
+        if(typeof childElement === 'string') {
+          return child
+        }
+        if(childElement.type && childElement.type.displayName !== 'ModalFooter') {
           return child
         }
         return null
@@ -47,10 +49,8 @@ const wrapModalContent = (children: ReactNode) => {
 const wrapModalFooter = (children: ReactNode) => {
   let footerVisible = false
   const childElements = React.Children.map(children, (child) => {
-    if (
-      (child as FunctionComponentElement<HTMLElement>).type.displayName ===
-      'ModalFooter'
-    ) {
+    const childElement = child as FunctionComponentElement<HTMLElement>
+    if ( childElement.type && childElement.type.displayName === 'ModalFooter') {
       footerVisible = true
       return child
     }
