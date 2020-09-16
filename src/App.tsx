@@ -10,9 +10,10 @@ const App: React.FC = () => {
   const testRef = () => {
     re.current!.closeModal()
   }
+
   return <div>
     <Button onClick={() => setV(true)}>show</Button>
-    <Modal visible={v} onClose={() => setV(false)} ref={re} title="hello world">
+    <Modal visible={v} onClose={() => setV(false)} ref={re}>
       <Button onClick={testRef}>render</Button>
       <div style={{}}></div>
       <Modal.Footer>

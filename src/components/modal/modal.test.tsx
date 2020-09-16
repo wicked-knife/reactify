@@ -43,12 +43,13 @@ describe('Modal Ref', () => {
   test('Parent component should receive Modal ref', () => {
     const {result: refResult} = renderHook(() => useRef<RefInterface>(null))
     const {result: stateResult} = renderHook(() => useState(false))
-    const {rerender} = render(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+    const component = <Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>
+    const {rerender} = render(component)
     setTimeout(() => {
       expect(refResult.current.current).not.toBeNull()
       expect(refResult.current.current!.closeModal).not.toBeNull()
       act(() => stateResult.current[1](false))
-      rerender(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+      rerender(component)
       setTimeout(() => {
         expect(refResult.current.current).toBeNull()
       }, 300)
@@ -181,7 +182,6 @@ describe('Modal width', () => {
   })
 })
 
-
 describe('Modal zIndex', () => {
   test('Modal should have correct zIndex if set props zIndex', () => {
     const {container} = render(<Modal visible={true} zIndex={200}>
@@ -192,5 +192,24 @@ describe('Modal zIndex', () => {
       const styles = window.getComputedStyle(element!)
       expect(styles.zIndex).toBe(200)
     }, 300)
+  })
+})
+
+describe('Modal exited', () => {
+  test('Modal onExited event should be triggered when Modal destroyed', () => {
+    const {result} = renderHook(() => useState(true))
+    const handleModalClose = () => act(() => result.current[1](false))
+    const handleExited = jest.fn()
+    const component = <Modal visible={result.current[0]} onClose={handleModalClose} onExited={handleExited}></Modal>
+    const {rerender} = render(component)
+    fireEvent.click(document.querySelector('.rf-modal-mask')!)
+    rerender(component)
+    // 等待3000ms动画结束
+    setTimeout(() => {
+      expect(document.querySelector('.rf-modal-root')).toBeNull()
+      expect(document.querySelector('.rf-modal-mask')).toBeNull()
+      expect(document.querySelector('.rf-modal')).toBeNull()
+      expect(handleExited).toBeCalled()
+    }, 3000)
   })
 })
