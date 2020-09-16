@@ -4,7 +4,8 @@ import React, {
   forwardRef,
   ForwardRefRenderFunction,
   useImperativeHandle,
-  ReactNode, FunctionComponentElement
+  ReactNode,
+  FunctionComponentElement
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -19,6 +20,9 @@ export interface BaseModalProps {
   className?: string;
   style?: React.CSSProperties;
   title?: string;
+  width?: string | number;
+  zIndex?: number;
+  closable?: boolean;
 }
 
 export interface RefInterface {
@@ -26,29 +30,35 @@ export interface RefInterface {
 }
 
 const wrapModalContent = (children: ReactNode) => {
-  return <div className="rf-modal-body">
-    {
-      React.Children.map(children, (child) => {
-        if(!(child as FunctionComponentElement<HTMLElement>).type.displayName) {
+  return (
+    <div className='rf-modal-body'>
+      {React.Children.map(children, (child) => {
+        const childElement = child as FunctionComponentElement<HTMLElement>
+        if(typeof childElement === 'string') {
+          return child
+        }
+        if(childElement.type && childElement.type.displayName !== 'ModalFooter') {
           return child
         }
         return null
-      }) 
-    }
+      })}
     </div>
+  )
 }
 
 const wrapModalFooter = (children: ReactNode) => {
-  return <div className="rf-modal-footer">
-    {
-      React.Children.map(children, (child) => {
-        if((child as FunctionComponentElement<HTMLElement>).type.displayName === 'ModalFooter') {
-          return child
-        }
-        return null
-      }) 
+  let footerVisible = false
+  const childElements = React.Children.map(children, (child) => {
+    const childElement = child as FunctionComponentElement<HTMLElement>
+    if ( childElement.type && childElement.type.displayName === 'ModalFooter') {
+      footerVisible = true
+      return child
     }
-    </div>
+    return null
+  })
+  return footerVisible ? (
+    <div className="rf-modal-footer">{childElements}</div>
+  ) : null
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
@@ -61,6 +71,9 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     className,
     style,
     title,
+    width,
+    zIndex,
+    closable,
     ...props
   },
   ref
@@ -105,23 +118,21 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         unmountOnExit
         onExited={onExited}
       >
-        <div className={computedClassnames} style={style}>
-
-          <div className={`rf-modal-title ${title ? '' : 'no-title'}`}>
-            {title}
-            <div className="icon-wrapper" onClick={handleClose}>
-              <Icon className="icon-close_filled" />
+        <div className={computedClassnames} style={{ ...style, width, minWidth: width, zIndex }}>
+          {(title || closable) && (
+            <div className={`rf-modal-title ${title ? '' : 'no-title'}`}>
+              {title}
+              {closable && (
+                <div className="icon-wrapper" onClick={handleClose}>
+                  <Icon className="icon-close_filled" />
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
-          {
-            wrapModalContent(children)
-          }
+          {wrapModalContent(children)}
 
-          {
-            wrapModalFooter(children)
-          }
-          
+          {wrapModalFooter(children)}
         </div>
       </CSSTransition>
     </div>
@@ -131,8 +142,9 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
 const MainModal = forwardRef(BaseModal)
 
 MainModal.defaultProps = {
-  maskClosable: false,
+  maskClosable: true,
   visible: false,
+  closable: true,
 }
 
 export default MainModal

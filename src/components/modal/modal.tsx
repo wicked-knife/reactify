@@ -7,15 +7,10 @@ import React, {
   useCallback, RefAttributes,
 } from 'react'
 import ReactDOM from 'react-dom'
-import BaseModal, {RefInterface} from './base-modal'
+import BaseModal, {RefInterface, BaseModalProps} from './base-modal'
 import Footer from './footer'
-export interface ModalProps {
-  visible: boolean
-  onClose?: () => void
-  children?: ReactNode
-  className?: string,
-  style?: React.CSSProperties,
-  title?: string
+export interface ModalProps extends Omit<BaseModalProps, 'onExited'>{
+  onExited?: () => void
 }
 
 export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
@@ -27,21 +22,19 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove()
 }
 
-const MainModal: MainModalInterface = ({ visible, onClose, children, className, style, title, ...props }, ref) => {
+const MainModal: MainModalInterface = ({ visible, children, onExited, ...props }, ref) => {
   const unmountHandler = useCallback(() => {
     unmountComponent(MainModal.container!)
     MainModal.container = null
+    typeof onExited === 'function' && onExited()
+    /* eslint-disable-next-line */
   }, [])
 
   const renderComponent = () => {
-    ReactDOM.render(<BaseModal           
-      onClose={onClose}
+    ReactDOM.render(<BaseModal
       visible={visible}
       onExited={unmountHandler}
       ref={ref}
-      className={className}
-      style={style}
-      title={title}
       {...props}>{children}</BaseModal>, MainModal.container!)
   }
 
@@ -63,32 +56,55 @@ const MainModal: MainModalInterface = ({ visible, onClose, children, className, 
   return null
 }
 
-export type ModalShowOption = {
-  children?: ReactNode
+interface ModalFunctionCallOptions {
+  content?: ReactNode
   className?: string
-  style?: React.CSSProperties
   onClose?: () => void
-  maskClosable: boolean
-} | string;
+  onExited?: () => void
+  maskClosable?: boolean
+  title?: string
+  //TODO:
+}
+
+const ModalFunctionCallDefaults: ModalFunctionCallOptions = {
+  maskClosable: true,
+  onClose: () => {},
+  onExited: () => {}
+}
+
+interface ModalInfoOptions extends ModalFunctionCallOptions {
+  //TODO:
+}
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalShowOption) => Promise<boolean>
+  show: (opt: ModalInfoOptions | string) => Promise<boolean>
+  info: (opt: ModalInfoOptions | string) => Promise<boolean>
   Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
-Modal.show = (config) => {
-  return new Promise((resolve, reject) => {
+const normalizeConfig = (config:ModalFunctionCallOptions | string) : ModalFunctionCallOptions => {
+  if(typeof config === 'string') {
+    return {...ModalFunctionCallDefaults, content: config}
+  }
+  return {...ModalFunctionCallDefaults, ...config}
+}
+
+Modal.show = Modal.info = (config) => {
+  const mergedConfig = normalizeConfig(config)
+  return new Promise((resolve) => {
     let wrapper: HTMLElement | null = document.createElement('div')
     document.body.appendChild(wrapper)
     const unmountHandler = () => {
       unmountComponent(wrapper!)
       wrapper = null
+      mergedConfig.onExited!()
     }
     ReactDOM.render(
-      <BaseModal visible={true} onExited={unmountHandler} />,
-      wrapper
+    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} >{mergedConfig.content}</BaseModal>,
+      wrapper,
+      resolve
     )
   })
 }

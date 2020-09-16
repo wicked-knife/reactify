@@ -1,23 +1,17 @@
-import React, { useRef, useState } from 'react'
-import Modal, {RefInterface} from './components/modal'
+import React, { } from 'react'
+import Modal, {} from './components/modal'
 import Button from './components/button'
 import './styles/index.scss'
 
 const App: React.FC = () => {
-  const [v, setV] = useState(false)
-  const re = useRef<RefInterface>(null)
-
-  const testRef = () => {
-    re.current!.closeModal()
+  const showModal = () => {
+    Modal.show(
+      {content: <div>hello world</div>, 
+        title: 'this is title'
+      }).then(() => console.log('modal render'))
   }
   return <div>
-    <Button onClick={() => setV(true)}>show</Button>
-    <Modal visible={v} onClose={() => setV(false)} ref={re} >
-      <Button onClick={testRef}>render</Button>
-      <Modal.Footer>
-        xxx
-      </Modal.Footer>
-    </Modal>
+    <Button onClick={showModal}>show</Button>
   </div>
 }
 

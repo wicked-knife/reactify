@@ -7,11 +7,9 @@ describe('Modal render', () => {
   test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
     const { result } = renderHook(() => useState(true))
     const { rerender } = render(<Modal visible={result.current[0]}></Modal>)
-
     expect(document.querySelector('.rf-modal-root')).toBeInTheDocument()
     expect(document.querySelector('.rf-modal-mask')).toBeInTheDocument()
     expect(document.querySelector('.rf-modal')).toBeInTheDocument()
-
     act(() => result.current[1](false))
     rerender(<Modal visible={result.current[0]}></Modal>)
     // 等待3000ms动画结束
@@ -43,12 +41,13 @@ describe('Modal Ref', () => {
   test('Parent component should receive Modal ref', () => {
     const {result: refResult} = renderHook(() => useRef<RefInterface>(null))
     const {result: stateResult} = renderHook(() => useState(false))
-    const {rerender} = render(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+    const component = <Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>
+    const {rerender} = render(component)
     setTimeout(() => {
       expect(refResult.current.current).not.toBeNull()
       expect(refResult.current.current!.closeModal).not.toBeNull()
       act(() => stateResult.current[1](false))
-      rerender(<Modal visible={stateResult.current[0]} ref={refResult.current}></Modal>)
+      rerender(component)
       setTimeout(() => {
         expect(refResult.current.current).toBeNull()
       }, 300)
@@ -144,6 +143,40 @@ describe('Modal title', () => {
   })
 })
 
+describe('Modal closable', () => {
+  test('Modal close icon should not be rendered iff closable is false', () => {
+    const {container} = render(<Modal visible={true} closable={false}></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.icon-wrapper')
+      expect(element).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should not render modal title dom container if props title is falsy and props closable is falsy', () => {
+    const {container} = render(<Modal visible={true} closable={false}></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should render modal title dom container if props title is truthy', () => {
+    const {container} = render(<Modal visible={true} closable={false} title="hello world"></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).toBeInTheDocument()
+    }, 300)
+  })
+
+  test('Modal should render modal title dom container if props closable is truthy', () => {
+    const {container} = render(<Modal visible={true} closable={true} ></Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal-title')
+      expect(element).toBeInTheDocument()
+    }, 300)
+  })
+})
+
 describe('Modal footer', () => {
   test('Modal footer children should render in footer element', () => {
     const {container} = render(<Modal visible={true}>
@@ -155,4 +188,64 @@ describe('Modal footer', () => {
       expect(container.querySelector('.rf-modal-footer>.test-node')).toBeInTheDocument()
     }, 300)
   })
+
+  test('Modal footer should not render if don\'t have Modal.Footer components', () => {
+    const {container} = render(<Modal visible={true}>
+        <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      expect(container.querySelector('.rf-modal-footer')).not.toBeInTheDocument()
+    }, 300)
+  })
+})
+
+describe('Modal width', () => {
+  test('Modal should have correct width and min-width if set props width', () => {
+    const modalWidth = '300px'
+    const {container} = render(<Modal visible={true} width={modalWidth}>
+      <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal')
+      const styles = window.getComputedStyle(element!)
+      expect(styles.width).toBe(modalWidth)
+      expect(styles.minWidth).toBe(modalWidth)
+    }, 300)
+  })
+})
+
+describe('Modal zIndex', () => {
+  test('Modal should have correct zIndex if set props zIndex', () => {
+    const {container} = render(<Modal visible={true} zIndex={200}>
+      <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal')
+      const styles = window.getComputedStyle(element!)
+      expect(styles.zIndex).toBe(200)
+    }, 300)
+  })
+})
+
+describe('Modal exited', () => {
+  test('Modal onExited event should be triggered when Modal destroyed', () => {
+    const {result} = renderHook(() => useState(true))
+    const handleModalClose = () => act(() => result.current[1](false))
+    const handleExited = jest.fn()
+    const component = <Modal visible={result.current[0]} onClose={handleModalClose} onExited={handleExited}></Modal>
+    const {rerender} = render(component)
+    fireEvent.click(document.querySelector('.rf-modal-mask')!)
+    rerender(component)
+    // 等待3000ms动画结束
+    setTimeout(() => {
+      expect(document.querySelector('.rf-modal-root')).toBeNull()
+      expect(document.querySelector('.rf-modal-mask')).toBeNull()
+      expect(document.querySelector('.rf-modal')).toBeNull()
+      expect(handleExited).toBeCalled()
+    }, 3000)
+  })
+})
+
+describe('Modal functional call', () => {
+  // TODO:
 })
