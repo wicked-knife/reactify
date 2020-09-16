@@ -11,14 +11,15 @@ import Icon from '../icon'
 import useClassnames from 'classnames'
 import './modal.scss'
 export interface BaseModalProps {
-  maskClosable?: boolean;
-  visible: boolean;
-  onClose?: () => void;
-  onExited: () => void;
-  children?: ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  title?: string;
+  maskClosable?: boolean
+  visible: boolean
+  onClose?: () => void
+  onExited: () => void
+  children?: ReactNode
+  className?: string
+  style?: React.CSSProperties
+  title?: string
+  width?: string | number
 }
 
 export interface RefInterface {
@@ -39,16 +40,15 @@ const wrapModalContent = (children: ReactNode) => {
 }
 
 const wrapModalFooter = (children: ReactNode) => {
-  return <div className="rf-modal-footer">
-    {
-      React.Children.map(children, (child) => {
-        if((child as FunctionComponentElement<HTMLElement>).type.displayName === 'ModalFooter') {
-          return child
-        }
-        return null
-      }) 
+  let footerVisible = false
+  const childElements = React.Children.map(children, (child) => {
+    if((child as FunctionComponentElement<HTMLElement>).type.displayName === 'ModalFooter') {
+      footerVisible = true
+      return child
     }
-    </div>
+    return null
+  }) 
+  return footerVisible ? <div className="rf-modal-footer">{childElements}</div> : null
 }
 
 const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
@@ -61,6 +61,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     className,
     style,
     title,
+    width,
     ...props
   },
   ref
@@ -88,7 +89,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
   const computedClassnames = useClassnames('rf-modal', className)
 
   return (
-    <div className="rf-modal-root" {...props}>
+    <div className="rf-modal-root" {...props} >
       <CSSTransition
         in={v}
         classNames="modal-fade"
@@ -105,8 +106,8 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         unmountOnExit
         onExited={onExited}
       >
-        <div className={computedClassnames} style={style}>
-
+        <div className={computedClassnames} style={{...style, width, minWidth: width}}>
+          
           <div className={`rf-modal-title ${title ? '' : 'no-title'}`}>
             {title}
             <div className="icon-wrapper" onClick={handleClose}>

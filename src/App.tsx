@@ -12,8 +12,9 @@ const App: React.FC = () => {
   }
   return <div>
     <Button onClick={() => setV(true)}>show</Button>
-    <Modal visible={v} onClose={() => setV(false)} ref={re} >
+    <Modal visible={v} onClose={() => setV(false)} ref={re} title="hello world">
       <Button onClick={testRef}>render</Button>
+      <div style={{}}></div>
       <Modal.Footer>
         xxx
       </Modal.Footer>

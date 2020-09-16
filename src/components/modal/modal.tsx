@@ -7,15 +7,10 @@ import React, {
   useCallback, RefAttributes,
 } from 'react'
 import ReactDOM from 'react-dom'
-import BaseModal, {RefInterface} from './base-modal'
+import BaseModal, {RefInterface, BaseModalProps} from './base-modal'
 import Footer from './footer'
-export interface ModalProps {
-  visible: boolean
-  onClose?: () => void
-  children?: ReactNode
-  className?: string,
-  style?: React.CSSProperties,
-  title?: string
+export interface ModalProps extends Omit<BaseModalProps, 'onExited'>{
+  onExited?: () => void
 }
 
 export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
@@ -27,21 +22,19 @@ const unmountComponent = (dom: HTMLElement) => {
   dom.remove()
 }
 
-const MainModal: MainModalInterface = ({ visible, onClose, children, className, style, title, ...props }, ref) => {
+const MainModal: MainModalInterface = ({ visible, children, onExited, ...props }, ref) => {
   const unmountHandler = useCallback(() => {
     unmountComponent(MainModal.container!)
     MainModal.container = null
+    typeof onExited === 'function' && onExited()
+    /* eslint-disable-next-line */
   }, [])
 
   const renderComponent = () => {
-    ReactDOM.render(<BaseModal           
-      onClose={onClose}
+    ReactDOM.render(<BaseModal
       visible={visible}
       onExited={unmountHandler}
       ref={ref}
-      className={className}
-      style={style}
-      title={title}
       {...props}>{children}</BaseModal>, MainModal.container!)
   }
 

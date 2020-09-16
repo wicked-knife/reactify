@@ -155,4 +155,28 @@ describe('Modal footer', () => {
       expect(container.querySelector('.rf-modal-footer>.test-node')).toBeInTheDocument()
     }, 300)
   })
+
+  test('Modal footer should not render if don\'t have Modal.Footer components', () => {
+    const {container} = render(<Modal visible={true}>
+        <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      expect(container.querySelector('.rf-modal-footer')).not.toBeInTheDocument()
+    }, 300)
+  })
+})
+
+describe('Modal width', () => {
+  test('Modal should have correct width and min-width if set props width', () => {
+    const modalWidth = '300px'
+    const {container} = render(<Modal visible={true} width={modalWidth}>
+      <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal')
+      const styles = window.getComputedStyle(element!)
+      expect(styles.width).toBe(modalWidth)
+      expect(styles.minWidth).toBe(modalWidth)
+    }, 300)
+  })
 })

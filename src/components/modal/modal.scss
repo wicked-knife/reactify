@@ -66,6 +66,10 @@ div.rf-modal-root {
         }
       }
     }
+    .rf-modal-body{
+      box-sizing: border-box;
+      padding: 16px;
+    }
     .rf-modal-footer{
       border-top: 1px solid $grey-lighten-3;
       box-sizing: border-box;
