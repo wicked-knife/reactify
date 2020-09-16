@@ -4,7 +4,7 @@ import React, {
   forwardRef,
   ForwardRefRenderFunction,
   useImperativeHandle,
-  ReactNode, FunctionComponentElement
+  ReactNode, FunctionComponentElement,
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -20,6 +20,7 @@ export interface BaseModalProps {
   style?: React.CSSProperties
   title?: string
   width?: string | number
+  zIndex?: number
 }
 
 export interface RefInterface {
@@ -62,6 +63,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     style,
     title,
     width,
+    zIndex,
     ...props
   },
   ref
@@ -106,8 +108,8 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
         unmountOnExit
         onExited={onExited}
       >
-        <div className={computedClassnames} style={{...style, width, minWidth: width}}>
-          
+        <div className={computedClassnames} style={{...style, width, minWidth: width, zIndex}}>
+
           <div className={`rf-modal-title ${title ? '' : 'no-title'}`}>
             {title}
             <div className="icon-wrapper" onClick={handleClose}>

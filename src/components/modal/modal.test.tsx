@@ -180,3 +180,17 @@ describe('Modal width', () => {
     }, 300)
   })
 })
+
+
+describe('Modal zIndex', () => {
+  test('Modal should have correct zIndex if set props zIndex', () => {
+    const {container} = render(<Modal visible={true} zIndex={200}>
+      <span className="test-node">hello world</span>
+    </Modal>)
+    setTimeout(() => {
+      const element = container.querySelector('.rf-modal')
+      const styles = window.getComputedStyle(element!)
+      expect(styles.zIndex).toBe(200)
+    }, 300)
+  })
+})
