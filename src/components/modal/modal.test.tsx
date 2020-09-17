@@ -330,6 +330,16 @@ describe('Modal functional call', () => {
         }, 300)
       }
     })
+
+    test('Modal should have "no-title" class name if title is falsy and closable is truthy', () => {
+      (Modal[method] as FuncTypes)('hello world')
+      setTimeout(() => {
+        const modalBody = document.querySelector('.rf-modal-body')
+        expect(modalBody).toHaveClass('no-title')
+        const styles = window.getComputedStyle(modalBody!)
+        expect(styles.paddingTop).toBe('0px')
+      }, 300)
+    })
   })
 })
 

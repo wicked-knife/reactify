@@ -5,7 +5,7 @@ import './styles/index.scss'
 
 const App: React.FC = () => {
   const showModal = () => {
-    Modal.show('hello world')
+    Modal.confirm('hello world')
   }
   return <div>
     <Button onClick={showModal}>show</Button>

@@ -33,21 +33,17 @@ export interface ModalRefObject extends Omit<RefObject<RefInterface>, 'current'>
   readonly current: RefInterface
 }
 
-const wrapModalContent = (children: ReactNode) => {
-  return (
-    <div className='rf-modal-body'>
-      {React.Children.map(children, (child) => {
-        const childElement = child as FunctionComponentElement<HTMLElement>
-        if(typeof childElement === 'string') {
-          return child
-        }
-        if(childElement && childElement.type && childElement.type.displayName !== 'ModalFooter') {
-          return child
-        }
-        return null
-      })}
-    </div>
-  )
+const filterModalContent = (children: ReactNode) => {
+  return React.Children.map(children, (child) => {
+    const childElement = child as FunctionComponentElement<HTMLElement>
+    if(typeof childElement === 'string') {
+      return child
+    }
+    if(childElement && childElement.type && childElement.type.displayName !== 'ModalFooter') {
+      return child
+    }
+    return null
+  })
 }
 
 const wrapModalFooter = (children: ReactNode) => {
@@ -103,6 +99,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     closeModal: () => handleClose(),
   }))
   const computedClassnames = useClassnames('rf-modal', className)
+  const computedModalBodyClassnames = useClassnames('rf-modal-body', {'no-title': !title && closable})
 
   return (
     <div className="rf-modal-root" {...props}>
@@ -133,8 +130,9 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
               )}
             </div>
           )}
-
-          {wrapModalContent(children)}
+          <div className={computedModalBodyClassnames}>
+            {filterModalContent(children)}
+          </div>
 
           {wrapModalFooter(children)}
         </div>
