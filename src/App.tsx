@@ -5,12 +5,12 @@ import './styles/index.scss'
 
 const App: React.FC = () => {
   const showModal = () => {
-    Modal.show(
+    Modal.confirm(
       {content: <div>hello world</div>, 
         title: 'this is title',
         zIndex: 2000,
-        footer: <Button>click me</Button>
-      }).then((ref) => {
+      }).then((confirmed) => {
+        console.log('confirmed? ', confirmed)
       })
   }
   return <div>
