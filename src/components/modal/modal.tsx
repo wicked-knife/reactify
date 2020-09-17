@@ -66,6 +66,7 @@ interface ModalFunctionCallOptions {
   width?: number | string
   zIndex?: number
   closable?: boolean
+  footer?: ReactNode
 }
 
 const ModalFunctionCallDefaults: ModalFunctionCallOptions = {
@@ -102,7 +103,10 @@ Modal.show = Modal.info = (config) => {
       mergedConfig.onExited!()
     }
     ReactDOM.render(
-    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} ref={ref}>{mergedConfig.content}</BaseModal>,
+    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} ref={ref}>
+      {mergedConfig.content}
+      {mergedConfig.footer && <Footer>{mergedConfig.footer}</Footer>}
+      </BaseModal>,
       wrapper,
       () => resolve(ref as ModalRefObject)
     )

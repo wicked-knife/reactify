@@ -8,11 +8,9 @@ const App: React.FC = () => {
     Modal.show(
       {content: <div>hello world</div>, 
         title: 'this is title',
-        zIndex: 2000
+        zIndex: 2000,
+        footer: <Button>click me</Button>
       }).then((ref) => {
-        setTimeout(() => {
-          ref.current.closeModal()
-        }, 1000)
       })
   }
   return <div>
