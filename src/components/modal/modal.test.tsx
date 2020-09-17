@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import Modal, {RefInterface} from './index'
 import { render, fireEvent } from '@testing-library/react'
 import { renderHook, act } from '@testing-library/react-hooks'
-import { reverse } from 'dns'
 
 describe('Modal render', () => {
   test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
