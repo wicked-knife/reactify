@@ -118,7 +118,7 @@
 }
 
 
-.rf-btn-default {
+.rf-btn.rf-btn-default {
   background-color: $white;
   color: $grey-darken-3;
   border: 1px solid $grey-lighten-1;
@@ -151,7 +151,7 @@
   }
 }
 
-.rf-btn-primary {
+.rf-btn.rf-btn-primary {
   background-color: $primary;
   color: $white;
   &:hover {
@@ -177,7 +177,7 @@
   }
 }
 
-.rf-btn-danger {
+.rf-btn.rf-btn-danger {
   background-color: $danger;
   color: $white;
   &:hover {
@@ -203,7 +203,7 @@
   }
 }
 
-.rf-btn-success {
+.rf-btn.rf-btn-success {
   background-color: $light-green;
   color: $white;
   &:hover {
@@ -232,7 +232,7 @@
   }
 }
 
-.rf-btn-warning {
+.rf-btn.rf-btn-warning {
   background-color: $warning;
   color: $white;
   &:hover {

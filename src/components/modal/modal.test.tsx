@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import Modal, {RefInterface} from './index'
 import { render, fireEvent } from '@testing-library/react'
 import { renderHook, act } from '@testing-library/react-hooks'
+import { reverse } from 'dns'
 
 describe('Modal render', () => {
   test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
@@ -246,6 +247,173 @@ describe('Modal exited', () => {
   })
 })
 
+const methods = ['show', 'info', 'confirm'] as Array<keyof typeof Modal>
+type FuncTypes = typeof Modal.show | typeof Modal.confirm
+
 describe('Modal functional call', () => {
-  // TODO:
+  methods.forEach(method => {
+    test('Call Modal.info or Modal.show should show modal', () => {
+      (Modal[method] as FuncTypes)('test modal info')
+      setTimeout(() => {
+        const modalBody = document.querySelector('.rf-modal-body') as HTMLElement
+        expect(modalBody).toBeInTheDocument()
+        expect(modalBody!.innerText).toBe('test modal info')
+      }, 300)
+    })
+  
+    test('Modal should render title if option.title is truthy', () => {
+       (Modal[method] as FuncTypes)({title: 'hello world'})
+      setTimeout(() => {
+        const modalTitle = document.querySelector('.rf-modal-title') as HTMLElement
+        expect(modalTitle).toBeInTheDocument()
+        expect(modalTitle.innerText).toBe('hello world')
+      }, 300)
+    })
+  
+    test('Modal should have correct width if option.width is set', () => {
+       (Modal[method] as FuncTypes)({width: 2000})
+      setTimeout(() => {
+        const modal = document.querySelector('.rf-modal')
+        const styles = window.getComputedStyle(modal!)
+        expect(styles.width).toBe('2000px')
+      }, 300)
+    })
+  
+    test('Modal should have correct zIndex if option.zIndex is set', () => {
+       (Modal[method] as FuncTypes)({zIndex: 2000})
+      setTimeout(() => {
+        const modal = document.querySelector('.rf-modal')
+        const styles = window.getComputedStyle(modal!)
+        expect(styles.zIndex).toBe(2000)
+      }, 300)
+    })
+
+    test('Modal can be closed if option.closable is set truthy', () => {
+      // option.closable is default true
+      (Modal[method] as FuncTypes)('hello world')
+      setTimeout(() => {
+        const close = document.querySelector('.rf-modal .icon-wrapper')
+        expect(close).toBeInTheDocument()
+        fireEvent.click(close!)
+        setTimeout(() => {
+          expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+        })
+      }, 300)
+    })
+
+    test('Modal should trigger onClose event when modal close', () => {
+      const fn = jest.fn();
+      (Modal[method] as FuncTypes)({onClose: fn}).then(ref => {
+        ref.current.closeModal()
+        expect(fn).toBeCalled()
+        expect(fn).toBeCalledTimes(1)
+      })
+    })
+
+    test('Modal should trigger onExit event when modal destroyed', () => {
+      const fn = jest.fn();
+      (Modal[method] as FuncTypes)({onExited: fn}).then(ref => {
+        ref.current.closeModal()
+        setTimeout(() => {
+        expect(fn).toBeCalled()
+        expect(fn).toBeCalledTimes(1)
+        }, 300)
+      })
+    })
+
+    test('Modal.show and Modal.info should render footer if footer is truthy', () => {
+      if(['show', 'info'].includes(method)) {
+        (Modal[method] as FuncTypes)({footer: <div id="test-node">hello world</div>})
+        setTimeout(() => {
+          const element = document.getElementById('test-node')
+          expect(element).toBeInTheDocument()
+        }, 300)
+      }
+    })
+
+    test('Modal should have "no-title" class name if title is falsy and closable is truthy', () => {
+      (Modal[method] as FuncTypes)('hello world')
+      setTimeout(() => {
+        const modalBody = document.querySelector('.rf-modal-body')
+        expect(modalBody).toHaveClass('no-title')
+        const styles = window.getComputedStyle(modalBody!)
+        expect(styles.paddingTop).toBe('0px')
+      }, 300)
+    })
+  })
+})
+
+describe('Modal functional call returns', () => {
+  methods.forEach(method => {
+    test('Modal should receive a Promise Object', () => {
+      const p = (Modal[method] as FuncTypes)('hello world')
+      expect(Object.prototype.toString.call(p)).toBe('[object Promise]')
+    })
+  
+    test('Promise object should receive ref object in promise.then', () => {
+     (Modal[method] as FuncTypes)('hello world').then((ref) => {
+        expect(ref).not.toBeNull()
+        expect(ref.current).not.toBeNull()
+        expect(typeof ref.current.closeModal === 'function').toBeTruthy()
+      })
+    })
+  
+    test('After call ref.closeModal Modal should unmount', () => {
+      (Modal[method] as FuncTypes)('hello world').then(ref => {
+        ref.current.closeModal()
+        setTimeout(() => {
+          expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+        }, 300)
+      })
+    })
+  })
+})
+
+describe('Modal.confirm call', () => {
+  test('Modal.confirm should render footer by default, even if option.footer is set truthy', () => {
+    Modal.confirm({footer: <div id="test-footer">should not be rendered</div>})
+    setTimeout(() => {
+      const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      expect(cancelButton).toBeInTheDocument()
+      expect(confirmButton).toBeInTheDocument()
+      const optionFooter = document.getElementById('test-footer')
+      expect(optionFooter).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('onConfirm event should be triggered if click confirm button', () => {
+    const fn = jest.fn()
+    Modal.confirm({onConfirm: fn})
+    setTimeout(() => {
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      fireEvent.click(confirmButton!)
+      expect(fn).toBeCalledTimes(1)
+    }, 300)
+  })
+
+  test('onCancel event should be triggered if click cancel button', () => {
+    const fn = jest.fn()
+    Modal.confirm({onConfirm: fn})
+    setTimeout(() => {
+      const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+      fireEvent.click(cancelButton!)
+      expect(fn).toBeCalledTimes(1)
+    }, 300)
+  })
+
+  test('Modal can be closed if not set option.onConfirm or option.onCancel', () => {
+    Modal.confirm({})
+    setTimeout(() => {
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      fireEvent.click(confirmButton!)
+      expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+      Modal.confirm({})
+      setTimeout(() => {
+        const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+        fireEvent.click(cancelButton!)
+        expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+      }, 300)
+    }, 300)
+  })
 })

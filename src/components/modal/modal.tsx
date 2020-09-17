@@ -4,10 +4,11 @@ import React, {
   forwardRef,
   ReactNode,
   ForwardRefExoticComponent, 
-  useCallback, RefAttributes,
+  useCallback, RefAttributes
 } from 'react'
 import ReactDOM from 'react-dom'
-import BaseModal, {RefInterface, BaseModalProps} from './base-modal'
+import Button from '../button'
+import BaseModal, {RefInterface, BaseModalProps, ModalRefObject} from './base-modal'
 import Footer from './footer'
 export interface ModalProps extends Omit<BaseModalProps, 'onExited'>{
   onExited?: () => void
@@ -16,6 +17,7 @@ export interface ModalProps extends Omit<BaseModalProps, 'onExited'>{
 export interface MainModalInterface extends ForwardRefRenderFunction<RefInterface, ModalProps> {
   container?: HTMLElement | null
 }
+const noop = () => {}
 
 const unmountComponent = (dom: HTMLElement) => {
   ReactDOM.unmountComponentAtNode(dom)
@@ -63,36 +65,42 @@ interface ModalFunctionCallOptions {
   onExited?: () => void
   maskClosable?: boolean
   title?: string
-  //TODO:
+  width?: number | string
+  zIndex?: number
+  closable?: boolean
+  footer?: ReactNode
 }
 
-const ModalFunctionCallDefaults: ModalFunctionCallOptions = {
+interface ModalConfirmCallOptions extends ModalFunctionCallOptions {
+  onConfirm?: (ref: ModalRefObject) => void
+  onCancel?: (ref: ModalRefObject) => void
+}
+
+const modalFunctionCallDefaults: ModalFunctionCallOptions = {
   maskClosable: true,
-  onClose: () => {},
-  onExited: () => {}
+  onClose: noop,
+  onExited: noop,
+  closable: true
 }
-
-interface ModalInfoOptions extends ModalFunctionCallOptions {
-  //TODO:
-}
-
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalInfoOptions | string) => Promise<boolean>
-  info: (opt: ModalInfoOptions | string) => Promise<boolean>
+  show: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
+  info: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
+  confirm: (opt: ModalConfirmCallOptions | string) => Promise<ModalRefObject>
   Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
-const normalizeConfig = (config:ModalFunctionCallOptions | string) : ModalFunctionCallOptions => {
+const mergeConfig = (config: ModalFunctionCallOptions | string, defaults: ModalFunctionCallOptions | ModalConfirmCallOptions) : ModalFunctionCallOptions => {
   if(typeof config === 'string') {
-    return {...ModalFunctionCallDefaults, content: config}
+    return {...defaults, content: config}
   }
-  return {...ModalFunctionCallDefaults, ...config}
+  return {...defaults, ...config}
 }
 
 Modal.show = Modal.info = (config) => {
-  const mergedConfig = normalizeConfig(config)
+  const mergedConfig = mergeConfig(config, modalFunctionCallDefaults)
+  const ref = React.createRef<RefInterface>()
   return new Promise((resolve) => {
     let wrapper: HTMLElement | null = document.createElement('div')
     document.body.appendChild(wrapper)
@@ -101,13 +109,48 @@ Modal.show = Modal.info = (config) => {
       wrapper = null
       mergedConfig.onExited!()
     }
+    const {footer, content, ...omittedConfig} = mergedConfig
     ReactDOM.render(
-    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} >{mergedConfig.content}</BaseModal>,
+    <BaseModal visible={true} {...omittedConfig} onExited={unmountHandler} ref={ref}>
+      {content}
+      {footer && <Footer>{footer}</Footer>}
+      </BaseModal>,
       wrapper,
-      resolve
+      () => resolve(ref as ModalRefObject)
     )
   })
 }
+
+Modal.confirm = (config) => {
+  const mergedConfig = mergeConfig(config, {
+    ...modalFunctionCallDefaults, 
+    onConfirm: r => r.current!.closeModal(), 
+    onCancel: r => r.current!.closeModal()
+  }) as ModalConfirmCallOptions
+  const ref = React.createRef<RefInterface>()
+  return new Promise((resolve) => {
+    let wrapper: HTMLElement | null = document.createElement('div')
+    document.body.appendChild(wrapper)
+    const unmountHandler = () => {
+      unmountComponent(wrapper!)
+      wrapper = null
+      mergedConfig.onExited!()
+    }
+    const {onCancel, onConfirm, ...omittedConfig} = mergedConfig
+    ReactDOM.render(
+    <BaseModal visible={true} {...omittedConfig} onExited={unmountHandler} ref={ref}>
+      {mergedConfig.content}
+      <Footer>
+        <Button onClick={() => onCancel!(ref as ModalRefObject)} style={{marginRight: 8}}>取消</Button>
+        <Button type="primary" onClick={() => onConfirm!(ref as ModalRefObject)}>确定</Button>
+      </Footer>
+      </BaseModal>,
+      wrapper,
+      () => resolve(ref as ModalRefObject)
+    )
+  })
+}
+
 Modal.Footer = Footer
 
 export default Modal

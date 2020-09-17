@@ -5,7 +5,7 @@ import React, {
   ForwardRefRenderFunction,
   useImperativeHandle,
   ReactNode,
-  FunctionComponentElement
+  FunctionComponentElement, RefObject
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -29,28 +29,28 @@ export interface RefInterface {
   closeModal: () => void;
 }
 
-const wrapModalContent = (children: ReactNode) => {
-  return (
-    <div className='rf-modal-body'>
-      {React.Children.map(children, (child) => {
-        const childElement = child as FunctionComponentElement<HTMLElement>
-        if(typeof childElement === 'string') {
-          return child
-        }
-        if(childElement.type && childElement.type.displayName !== 'ModalFooter') {
-          return child
-        }
-        return null
-      })}
-    </div>
-  )
+export interface ModalRefObject extends Omit<RefObject<RefInterface>, 'current'> {
+  readonly current: RefInterface
+}
+
+const filterModalContent = (children: ReactNode) => {
+  return React.Children.map(children, (child) => {
+    const childElement = child as FunctionComponentElement<HTMLElement>
+    if(typeof childElement === 'string') {
+      return child
+    }
+    if(childElement && childElement.type && childElement.type.displayName !== 'ModalFooter') {
+      return child
+    }
+    return null
+  })
 }
 
 const wrapModalFooter = (children: ReactNode) => {
   let footerVisible = false
   const childElements = React.Children.map(children, (child) => {
     const childElement = child as FunctionComponentElement<HTMLElement>
-    if ( childElement.type && childElement.type.displayName === 'ModalFooter') {
+    if (childElement && childElement.type && childElement.type.displayName === 'ModalFooter') {
       footerVisible = true
       return child
     }
@@ -99,6 +99,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
     closeModal: () => handleClose(),
   }))
   const computedClassnames = useClassnames('rf-modal', className)
+  const computedModalBodyClassnames = useClassnames('rf-modal-body', {'no-title': !title && closable})
 
   return (
     <div className="rf-modal-root" {...props}>
@@ -129,8 +130,9 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
               )}
             </div>
           )}
-
-          {wrapModalContent(children)}
+          <div className={computedModalBodyClassnames}>
+            {filterModalContent(children)}
+          </div>
 
           {wrapModalFooter(children)}
         </div>
