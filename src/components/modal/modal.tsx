@@ -142,7 +142,7 @@ Modal.confirm = (config) => {
     <BaseModal visible={true} {...omittedConfig} onExited={unmountHandler} ref={ref}>
       {mergedConfig.content}
       <Footer>
-        <Button className="ml-2" onClick={() => onCancel!(ref as ModalRefObject)} style={{marginRight: 8}}>取消</Button>
+        <Button onClick={() => onCancel!(ref as ModalRefObject)} style={{marginRight: 8}}>取消</Button>
         <Button type="primary" onClick={() => onConfirm!(ref as ModalRefObject)}>确定</Button>
       </Footer>
       </BaseModal>,
