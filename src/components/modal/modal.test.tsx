@@ -12,7 +12,6 @@ describe('Modal render', () => {
     expect(document.querySelector('.rf-modal')).toBeInTheDocument()
     act(() => result.current[1](false))
     rerender(<Modal visible={result.current[0]}></Modal>)
-    // 等待3000ms动画结束
     setTimeout(() => { 
       expect(document.querySelector('.rf-modal-root')).toBeNull()
       expect(document.querySelector('.rf-modal-mask')).toBeNull()
@@ -28,12 +27,11 @@ describe('Modal maskClosable', () => {
     const {rerender} = render(<Modal visible={result.current[0]} onClose={handleModalClose}></Modal>)
     fireEvent.click(document.querySelector('.rf-modal-mask')!)
     rerender(<Modal visible={result.current[0]} onClose={handleModalClose}></Modal>)
-    // 等待3000ms动画结束
     setTimeout(() => {
       expect(document.querySelector('.rf-modal-root')).toBeNull()
       expect(document.querySelector('.rf-modal-mask')).toBeNull()
       expect(document.querySelector('.rf-modal')).toBeNull()
-    }, 3000)
+    }, 300)
   })
 })
 

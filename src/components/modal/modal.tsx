@@ -20,6 +20,9 @@ export interface MainModalInterface extends ForwardRefRenderFunction<RefInterfac
 const noop = () => {}
 
 const unmountComponent = (dom: HTMLElement) => {
+  if(!dom) {
+    return
+  }
   ReactDOM.unmountComponentAtNode(dom)
   dom.remove()
 }
