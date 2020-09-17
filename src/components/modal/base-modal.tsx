@@ -5,7 +5,7 @@ import React, {
   ForwardRefRenderFunction,
   useImperativeHandle,
   ReactNode,
-  FunctionComponentElement
+  FunctionComponentElement, RefObject
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Icon from '../icon'
@@ -27,6 +27,10 @@ export interface BaseModalProps {
 
 export interface RefInterface {
   closeModal: () => void;
+}
+
+export interface ModalRefObject extends Omit<RefObject<RefInterface>, 'current'> {
+  readonly current: RefInterface
 }
 
 const wrapModalContent = (children: ReactNode) => {

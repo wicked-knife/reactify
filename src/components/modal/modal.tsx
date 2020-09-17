@@ -4,10 +4,10 @@ import React, {
   forwardRef,
   ReactNode,
   ForwardRefExoticComponent, 
-  useCallback, RefAttributes,
+  useCallback, RefAttributes
 } from 'react'
 import ReactDOM from 'react-dom'
-import BaseModal, {RefInterface, BaseModalProps} from './base-modal'
+import BaseModal, {RefInterface, BaseModalProps, ModalRefObject} from './base-modal'
 import Footer from './footer'
 export interface ModalProps extends Omit<BaseModalProps, 'onExited'>{
   onExited?: () => void
@@ -63,28 +63,27 @@ interface ModalFunctionCallOptions {
   onExited?: () => void
   maskClosable?: boolean
   title?: string
-  //TODO:
+  width?: number | string
+  zIndex?: number
+  closable?: boolean
 }
 
 const ModalFunctionCallDefaults: ModalFunctionCallOptions = {
   maskClosable: true,
   onClose: () => {},
-  onExited: () => {}
-}
-
-interface ModalInfoOptions extends ModalFunctionCallOptions {
-  //TODO:
+  onExited: () => {},
+  closable: true
 }
 
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
-  show: (opt: ModalInfoOptions | string) => Promise<boolean>
-  info: (opt: ModalInfoOptions | string) => Promise<boolean>
+  show: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
+  info: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
   Footer: typeof Footer
 }
 
 const Modal = forwardRef<RefInterface, ModalProps>(MainModal) as ModalInterface
 
-const normalizeConfig = (config:ModalFunctionCallOptions | string) : ModalFunctionCallOptions => {
+const normalizeConfig = (config: ModalFunctionCallOptions | string) : ModalFunctionCallOptions => {
   if(typeof config === 'string') {
     return {...ModalFunctionCallDefaults, content: config}
   }
@@ -93,6 +92,7 @@ const normalizeConfig = (config:ModalFunctionCallOptions | string) : ModalFuncti
 
 Modal.show = Modal.info = (config) => {
   const mergedConfig = normalizeConfig(config)
+  const ref = React.createRef<RefInterface>()
   return new Promise((resolve) => {
     let wrapper: HTMLElement | null = document.createElement('div')
     document.body.appendChild(wrapper)
@@ -102,9 +102,9 @@ Modal.show = Modal.info = (config) => {
       mergedConfig.onExited!()
     }
     ReactDOM.render(
-    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} >{mergedConfig.content}</BaseModal>,
+    <BaseModal visible={true} {...mergedConfig} onExited={unmountHandler} ref={ref}>{mergedConfig.content}</BaseModal>,
       wrapper,
-      resolve
+      () => resolve(ref as ModalRefObject)
     )
   })
 }
