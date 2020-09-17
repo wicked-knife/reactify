@@ -41,7 +41,7 @@ const wrapModalContent = (children: ReactNode) => {
         if(typeof childElement === 'string') {
           return child
         }
-        if(childElement.type && childElement.type.displayName !== 'ModalFooter') {
+        if(childElement && childElement.type && childElement.type.displayName !== 'ModalFooter') {
           return child
         }
         return null
@@ -54,7 +54,7 @@ const wrapModalFooter = (children: ReactNode) => {
   let footerVisible = false
   const childElements = React.Children.map(children, (child) => {
     const childElement = child as FunctionComponentElement<HTMLElement>
-    if ( childElement.type && childElement.type.displayName === 'ModalFooter') {
+    if (childElement && childElement.type && childElement.type.displayName === 'ModalFooter') {
       footerVisible = true
       return child
     }

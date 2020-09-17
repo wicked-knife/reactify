@@ -246,6 +246,73 @@ describe('Modal exited', () => {
   })
 })
 
+const methods = ['show', 'info', 'confirm'] as Array<keyof typeof Modal>
+type FuncTypes = typeof Modal.show | typeof Modal.confirm
+
 describe('Modal functional call', () => {
-  // TODO:
+  methods.forEach(method => {
+    test('Call Modal.info or Modal.show should show modal', () => {
+      (Modal[method] as FuncTypes)('test modal info')
+      setTimeout(() => {
+        const modalBody = document.querySelector('.rf-modal-body') as HTMLElement
+        expect(modalBody).toBeInTheDocument()
+        expect(modalBody!.innerText).toBe('test modal info')
+      }, 300)
+    })
+  
+    test('Modal should render title if option.title is truthy', () => {
+       (Modal[method] as FuncTypes)({title: 'hello world'})
+      setTimeout(() => {
+        const modalTitle = document.querySelector('.rf-modal-title') as HTMLElement
+        expect(modalTitle).toBeInTheDocument()
+        expect(modalTitle.innerText).toBe('hello world')
+      }, 300)
+    })
+  
+    test('Modal should have correct width if option.width is set', () => {
+       (Modal[method] as FuncTypes)({width: 2000})
+      setTimeout(() => {
+        const modal = document.querySelector('.rf-modal')
+        const styles = window.getComputedStyle(modal!)
+        expect(styles.width).toBe('2000px')
+      }, 300)
+    })
+  
+    test('Modal should have correct zIndex if option.zIndex is set', () => {
+       (Modal[method] as FuncTypes)({zIndex: 2000})
+      setTimeout(() => {
+        const modal = document.querySelector('.rf-modal')
+        const styles = window.getComputedStyle(modal!)
+        expect(styles.zIndex).toBe(2000)
+      }, 300)
+    })
+  })
+})
+
+
+describe('Modal functional call returns', () => {
+  methods.forEach(method => {
+    test('Modal should receive a Promise Object', () => {
+      const p = (Modal[method] as FuncTypes)('hello world')
+      expect(Object.prototype.toString.call(p)).toBe('[object Promise]')
+    })
+  
+    test('Promise object should receive ref object in promise.then', () => {
+     (Modal[method] as FuncTypes)('hello world').then((ref) => {
+        expect(ref).not.toBeNull()
+        expect(ref.current).not.toBeNull()
+        expect(typeof ref.current.closeModal === 'function').toBeTruthy()
+      })
+    })
+  
+    test('After call ref.closeModal Modal should unmount', () => {
+      (Modal[method] as FuncTypes)('hello world').then(ref => {
+        ref.current.closeModal()
+        setTimeout(() => {
+          expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+        }, 300)
+      })
+    })
+  })
+
 })

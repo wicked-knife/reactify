@@ -83,6 +83,12 @@ const modalFunctionCallDefaults: ModalFunctionCallOptions = {
   closable: true
 }
 
+enum modalKeys {
+  show = 'show',
+  info = 'info',
+  confirm = 'confirm'
+}
+
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
   show: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
   info: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
@@ -125,8 +131,8 @@ Modal.show = Modal.info = (config) => {
 Modal.confirm = (config) => {
   const mergedConfig = mergeConfig(config, {
     ...modalFunctionCallDefaults, 
-    onConfirm: (r) => {r.current!.closeModal()}, 
-    onCancel: (r) => {r.current!.closeModal()}
+    onConfirm: r => r.current!.closeModal(), 
+    onCancel: r => r.current!.closeModal()
   }) as ModalConfirmCallOptions
   const ref = React.createRef<RefInterface>()
   return new Promise((resolve) => {
