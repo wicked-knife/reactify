@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import Modal, {RefInterface} from './index'
 import { render, fireEvent } from '@testing-library/react'
 import { renderHook, act } from '@testing-library/react-hooks'
+import { reverse } from 'dns'
 
 describe('Modal render', () => {
   test('Modal should be rendered if props visible is true, modal should close when change visible to false', () => {
@@ -286,9 +287,51 @@ describe('Modal functional call', () => {
         expect(styles.zIndex).toBe(2000)
       }, 300)
     })
+
+    test('Modal can be closed if option.closable is set truthy', () => {
+      // option.closable is default true
+      (Modal[method] as FuncTypes)('hello world')
+      setTimeout(() => {
+        const close = document.querySelector('.rf-modal .icon-wrapper')
+        expect(close).toBeInTheDocument()
+        fireEvent.click(close!)
+        setTimeout(() => {
+          expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+        })
+      }, 300)
+    })
+
+    test('Modal should trigger onClose event when modal close', () => {
+      const fn = jest.fn();
+      (Modal[method] as FuncTypes)({onClose: fn}).then(ref => {
+        ref.current.closeModal()
+        expect(fn).toBeCalled()
+        expect(fn).toBeCalledTimes(1)
+      })
+    })
+
+    test('Modal should trigger onExit event when modal destroyed', () => {
+      const fn = jest.fn();
+      (Modal[method] as FuncTypes)({onExited: fn}).then(ref => {
+        ref.current.closeModal()
+        setTimeout(() => {
+        expect(fn).toBeCalled()
+        expect(fn).toBeCalledTimes(1)
+        }, 300)
+      })
+    })
+
+    test('Modal.show and Modal.info should render footer if footer is truthy', () => {
+      if(['show', 'info'].includes(method)) {
+        (Modal[method] as FuncTypes)({footer: <div id="test-node">hello world</div>})
+        setTimeout(() => {
+          const element = document.getElementById('test-node')
+          expect(element).toBeInTheDocument()
+        }, 300)
+      }
+    })
   })
 })
-
 
 describe('Modal functional call returns', () => {
   methods.forEach(method => {
@@ -314,5 +357,53 @@ describe('Modal functional call returns', () => {
       })
     })
   })
+})
 
+describe('Modal.confirm call', () => {
+  test('Modal.confirm should render footer by default, even if option.footer is set truthy', () => {
+    Modal.confirm({footer: <div id="test-footer">should not be rendered</div>})
+    setTimeout(() => {
+      const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      expect(cancelButton).toBeInTheDocument()
+      expect(confirmButton).toBeInTheDocument()
+      const optionFooter = document.getElementById('test-footer')
+      expect(optionFooter).not.toBeInTheDocument()
+    }, 300)
+  })
+
+  test('onConfirm event should be triggered if click confirm button', () => {
+    const fn = jest.fn()
+    Modal.confirm({onConfirm: fn})
+    setTimeout(() => {
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      fireEvent.click(confirmButton!)
+      expect(fn).toBeCalledTimes(1)
+    }, 300)
+  })
+
+  test('onCancel event should be triggered if click cancel button', () => {
+    const fn = jest.fn()
+    Modal.confirm({onConfirm: fn})
+    setTimeout(() => {
+      const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+      fireEvent.click(cancelButton!)
+      expect(fn).toBeCalledTimes(1)
+    }, 300)
+  })
+
+  test('Modal can be closed if not set option.onConfirm or option.onCancel', () => {
+    Modal.confirm({})
+    setTimeout(() => {
+      const confirmButton = document.querySelector('.rf-btn.rf-btn-primary')
+      fireEvent.click(confirmButton!)
+      expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+      Modal.confirm({})
+      setTimeout(() => {
+        const cancelButton = document.querySelector('.rf-btn.rf-btn-default')
+        fireEvent.click(cancelButton!)
+        expect(document.querySelector('.rf-modal')).not.toBeInTheDocument()
+      }, 300)
+    }, 300)
+  })
 })

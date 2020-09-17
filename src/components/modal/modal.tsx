@@ -82,13 +82,6 @@ const modalFunctionCallDefaults: ModalFunctionCallOptions = {
   onExited: noop,
   closable: true
 }
-
-enum modalKeys {
-  show = 'show',
-  info = 'info',
-  confirm = 'confirm'
-}
-
 export interface ModalInterface extends ForwardRefExoticComponent<ModalProps & RefAttributes<RefInterface>> {
   show: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
   info: (opt: ModalFunctionCallOptions | string) => Promise<ModalRefObject>
