@@ -54,12 +54,12 @@ div.rf-modal-root {
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        .icon-close_filled {
+        .icon-close {
           color: $grey;
           transition: color 0.3s ease;
         }
         &:hover {
-          .icon-close_filled {
+          .icon-close {
             color: $grey-darken-2;
             transition: color 0.3s ease;
           }
