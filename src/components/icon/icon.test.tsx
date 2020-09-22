@@ -1,41 +1,38 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {render} from '@testing-library/react'
-import Icon from './index'
+import {renderHook} from '@testing-library/react-hooks'
+import {Close} from './index'
 
-describe('icon component should be mounted', () => {
-  test('icon component should be render in screen', () => {
-    const {container} = render(<Icon className="icon-user" />) 
-    const iconElement = container.querySelector('i')
-    expect(iconElement).toBeInTheDocument()
+describe('Icon render', () => {
+  test('Icon should render as SVG element', () => {
+    const {container} = render(<Close />)
+    expect(container).toBeInTheDocument()
+    expect(container.children[0].nodeName).toBe('svg')
   })
 
-  test('icon children should not be rendered', () => {
-    const {container} = render(<Icon className="icon-user" >hello world</Icon>) 
-    const iconElement = container.querySelector('i')
-    expect(iconElement!.innerText).toBe(undefined)
-  })
-})
-
-
-describe('icon component class names', () => {
-  const {container} = render(<Icon className="icon-user xxx" />) 
-  const iconElement = container.querySelector('i')
-  test('icon component should have custom class names', () => {
-    expect(iconElement).toHaveClass('xxx')
+  test('Svg element should have correct size', () => {
+    const {container} = render(<Close size="20"/>)
+    const svg = container.querySelector('svg')
+    expect(svg?.getAttribute('width')).toBe('20')
+    expect(svg?.getAttribute('height')).toBe('20')
   })
 
-  test('icon component should have correct icon class name', () => {
-    expect(iconElement).toHaveClass('icon-user')
+  test('Svg should have correct color', () => {
+    const {container} = render(<Close color="#f00"/>)
+    const svg = container.querySelector('svg')
+    expect(svg?.getAttribute('color')).toBe('#f00')
   })
-})
 
+  test('Svg should have correct className', () => {
+    const {container} = render(<Close color="#f00" className="test-icon"/>)
+    const svg = container.querySelector('svg')
+    expect(svg).toHaveClass('test-icon')
+  })
 
-describe('icon component styles', () => {
-  const {container} = render(<Icon className="icon-info" size={20} color="red"/>) 
-  const iconElement = container.querySelector('i')
-
-  test('icon component should have correct size', () => {
-    expect(iconElement).toHaveStyle('font-size: 20px')
-    expect(iconElement).toHaveStyle('color: red')
+  test('Should receive ref', () => {
+    const {result} = renderHook(() => useRef(null))
+    const {container} = render(<Close ref={result.current}/>)
+    const svg = container.querySelector('svg')
+    expect(svg).toBe(result.current.current)
   })
 })

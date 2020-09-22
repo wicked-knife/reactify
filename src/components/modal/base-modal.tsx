@@ -8,7 +8,7 @@ import React, {
   FunctionComponentElement, RefObject
 } from 'react'
 import { CSSTransition } from 'react-transition-group'
-import Icon from '../icon'
+import {Close} from '../icon'
 import useClassnames from 'classnames'
 import './modal.scss'
 export interface BaseModalProps {
@@ -125,7 +125,7 @@ const BaseModal: ForwardRefRenderFunction<RefInterface, BaseModalProps> = (
               {title}
               {closable && (
                 <div className="icon-wrapper" onClick={handleClose}>
-                  <Icon className="icon-close_filled" />
+                  <Close className="icon-close_filled" />
                 </div>
               )}
             </div>
