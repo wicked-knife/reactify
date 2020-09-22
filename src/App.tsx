@@ -1,14 +1,15 @@
-import React, { } from 'react'
-import Modal, {} from './components/modal'
-import Button from './components/button'
+import React, { useEffect } from 'react'
+import Message from './components/message'
 import './styles/index.scss'
 
 const App: React.FC = () => {
-  const showModal = () => {
-    Modal.confirm('hello world')
-  }
+  useEffect(() => {
+    Message.info({
+      message: 'hello world',
+      duration: 10000
+    })
+  }, [])
   return <div>
-    <Button onClick={showModal}>show</Button>
   </div>
 }
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, ForwardRefRenderFunction, forwardRef} from 'react'
 import useClassNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
-import {Close} from '../icon'
+import { Close } from '../icon'
 
 const noop = () => {}
 
