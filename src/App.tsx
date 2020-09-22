@@ -1,10 +1,14 @@
 import React, { } from 'react'
-import {Close} from './components/icon'
+import Modal, {} from './components/modal'
+import Button from './components/button'
 import './styles/index.scss'
 
 const App: React.FC = () => {
+  const showModal = () => {
+    Modal.confirm('hello world')
+  }
   return <div>
-    <Close />
+    <Button onClick={showModal}>show</Button>
   </div>
 }
 
