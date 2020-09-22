@@ -9,7 +9,7 @@ import React, {
   useRef,
   FunctionComponentElement,
 } from 'react'
-import {Close} from '../icon'
+import { ArrowUp } from '../icon'
 import useClassnames from 'classnames'
 import { MenuContext } from './index'
 import { CSSTransition } from 'react-transition-group'
@@ -66,7 +66,7 @@ const BaseSubMenu: ForwardRefRenderFunction<any, SubMenuProps> = (
         {title}
         {mode === 'vertical' && (
           <div className={`menu-arrow ${open ? 'is-open' : ''}`}>
-            <Close className='icon-arrow_down' />
+            <ArrowUp className='icon-arrow_down' size="18" />
           </div>
         )}
       </div>
