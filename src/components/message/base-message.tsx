@@ -1,7 +1,7 @@
 import React, {useState, useEffect, ForwardRefRenderFunction, forwardRef} from 'react'
 import useClassNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
-import { Close } from '../icon'
+import { CloseRoundFilled, CheckFilled, InfoFilled, Close } from '../icon'
 
 const noop = () => {}
 
@@ -10,10 +10,10 @@ export const Duration = 5000
 export type MessageType = 'success' | 'warning' | 'error' | 'info'
 
 const MessageIcon = {
-  'success': <Close className="icon-check mr-2" size={20}/>,
-  'warning': <Close className="icon-caution mr-2" size={20}/>,
-  'error': <Close className="icon-forbidden mr-2" size={20}/>,
-  'info': <Close className="icon-info mr-2" size={20}/>
+  'success': <CheckFilled className="icon-check mr-2" size={20}/>,
+  'warning': <InfoFilled className="icon-caution mr-2" size={20}/>,
+  'error': <CloseRoundFilled className="icon-forbidden mr-2" size={20}/>,
+  'info': <InfoFilled className="icon-info mr-2" size={20}/>
 }
 
 export interface MessageProps extends React.HtmlHTMLAttributes<HTMLDivElement> {

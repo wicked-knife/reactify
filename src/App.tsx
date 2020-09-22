@@ -3,13 +3,9 @@ import Message from './components/message'
 import './styles/index.scss'
 
 const App: React.FC = () => {
-  useEffect(() => {
-    Message.info({
-      message: 'hello world',
-      duration: 10000
-    })
-  }, [])
+  const show = () => Message.info('hello world')
   return <div>
+    <button onClick={show}>click me</button>
   </div>
 }
 
