@@ -40,7 +40,7 @@ export const MenuContext = createContext<MenuContext>({
 })
 
 const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
-  { mode, className, children, defaultSelectedKey },
+  { mode, className, children, defaultSelectedKey, ...props },
   ref
 ) => {
   const [selectedKey, setSelectedKey] = useState(
@@ -103,7 +103,7 @@ const BaseMenu: ForwardRefRenderFunction<any, MenuProps> = (
 
   return (
     <MenuContext.Provider value={initialContextValue}>
-      <ul className={computedClassNames} ref={ref}>
+      <ul className={computedClassNames} ref={ref} {...props}>
         {renderChildren()}
       </ul>
     </MenuContext.Provider>
