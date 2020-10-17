@@ -11,7 +11,7 @@ export type ButtonType =
   | 'warning'
 export type ButtonSize = 'small' | 'medium' | 'large'
 
-interface BaseButtonProps
+export interface BaseButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLElement>, 'type'> {
   block?: boolean
   disabled?: boolean
@@ -23,7 +23,7 @@ interface BaseButtonProps
   htmlType?: ButtonHTMLAttributes<HTMLElement>['type']
 }
 
-type ButtonProps = BaseButtonProps
+export type ButtonProps = BaseButtonProps
 
 const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
   {
