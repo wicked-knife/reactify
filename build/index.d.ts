@@ -1,4 +1,1 @@
-/// <reference types="react" />
-import './index.scss';
-declare const Demo: () => JSX.Element;
-export default Demo;
+export { default as Button } from './components/button';

@@ -1,0 +1,293 @@
+@import '../../styles/color';
+@import '../../styles/font';
+
+@mixin plain-btn-styles($border-color, $bg-color, $active-bg-color) {
+  border: $border-color 1px solid;
+  background-color: rgba(lighten($color: $bg-color, $amount: 10), 0.3);
+  color: $active-bg-color;
+  &:hover {
+    color: $white;
+    background-color: lighten($color: $active-bg-color, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $active-bg-color, $amount: 5);
+  }
+}
+
+@mixin plain-btn-disabled($bg-color, $border-color, $color, $active-bg-color) {
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: $bg-color;
+  border: $border-color 1px solid;
+  color: $color;
+  &:hover {
+    color: $color;
+    background-color: $active-bg-color;
+  }
+  &:active {
+    background-color: $active-bg-color;
+  }
+}
+
+// 非 plain 类型的 button disabled 的样式
+@mixin base-btn-disabled($disableColor) {
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: $disableColor;
+  color: $white;
+  &:hover {
+    color: $white;
+    background-color: $disableColor;
+  }
+  &:active {
+    background-color: $disableColor;
+  }
+}
+
+
+@mixin btn-size($height, $padding) {
+  height: $height;
+  padding: $padding;
+  border-radius: 2px;
+}
+
+@mixin btn-round($border-radius, $padding) {
+  border-radius: $border-radius;
+  padding: $padding;
+}
+
+.rf-btn-span {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-subtitle-2;
+  display: inline-block;
+}
+
+.rf-btn {
+  position: relative;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  display: inline-flex;
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.015);
+  &.rf-btn-medium {
+    @include btn-size(32px, 4px 16px);
+    &.rf-btn-round {
+      @include btn-round(32px, 4px 20px);
+    }
+    .rf-btn-span {
+      line-height: 24px;
+      vertical-align: middle;
+    }
+  }
+
+  &.rf-btn-large {
+    @include btn-size(36px, 4px 18px);
+    &.rf-btn-round {
+      @include btn-round(40px, 4px 28px);
+    }
+    .rf-btn-span {
+      line-height: 28px;
+      vertical-align: middle;
+    }
+  }
+
+  &.rf-btn-small {
+    @include btn-size(28px, 4px 14px);
+    &.rf-btn-round {
+      @include btn-round(28px, 4px 18px);
+    }
+    .rf-btn-span {
+      font-size: $font-size-caption;
+      line-height: 20px;
+      vertical-align: middle;
+    }
+  }
+
+  &.is-block {
+    display: flex;
+    width: 100%;
+  }
+}
+
+
+.rf-btn.rf-btn-default {
+  background-color: $white;
+  color: $grey-darken-3;
+  border: 1px solid $grey-lighten-1;
+  &:hover {
+    color: $primary;
+    border: 1px solid darken($color: $primary, $amount: 5);
+  }
+  &:active {
+    background-color: rgba(lighten($color: $blue-lighten-2, $amount: 10), 0.25);
+    color: darken($color: $primary, $amount: 10);
+    border: 1px solid darken($color: $primary, $amount: 10);
+  }
+  &.is-plain {
+    @extend .rf-btn-default;
+  }
+  &.is-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    color: $grey;
+    border: 1px solid $grey-lighten-2;
+    &:hover {
+      color: $grey;
+      border: 1px solid $grey-lighten-2;
+    }
+    &:active {
+      background-color: $white;
+      color: $grey;
+      border: 1px solid $grey-lighten-2;
+    }
+  }
+}
+
+.rf-btn.rf-btn-primary {
+  background-color: $primary;
+  color: $white;
+  &:hover {
+    background-color: lighten($color: $primary, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $primary, $amount: 5);
+  }
+  &.is-plain {
+    @include plain-btn-styles($blue-lighten-2, $blue-lighten-3, $primary);
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3),
+        $blue-lighten-4,
+        $blue-lighten-2,
+        rgba(lighten($color: $blue-lighten-3, $amount: 10), 0.3)
+      );
+    }
+  }
+
+  &.is-disabled {
+    @include base-btn-disabled($blue-lighten-3);
+  }
+}
+
+.rf-btn.rf-btn-danger {
+  background-color: $danger;
+  color: $white;
+  &:hover {
+    background-color: lighten($color: $danger, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $danger, $amount: 5);
+  }
+  &.is-plain {
+    @include plain-btn-styles($red-lighten-2, $red-lighten-3, $danger);
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3),
+        $red-lighten-4,
+        $red-lighten-2,
+        rgba(lighten($color: $red-lighten-3, $amount: 10), 0.3)
+      );
+    }
+  }
+
+  &.is-disabled {
+    @include base-btn-disabled($red-lighten-3);
+  }
+}
+
+.rf-btn.rf-btn-success {
+  background-color: $light-green;
+  color: $white;
+  &:hover {
+    background-color: lighten($color: $light-green, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $light-green, $amount: 5);
+  }
+  &.is-plain {
+    @include plain-btn-styles(
+      $light-green-lighten-2,
+      rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3),
+      $light-green
+    );
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3),
+        $light-green-lighten-4,
+        $light-green-lighten-2,
+        rgba(lighten($color: $light-green-lighten-3, $amount: 10), 0.3)
+      );
+    }
+  }
+  &.is-disabled {
+    @include base-btn-disabled($light-green-lighten-3);
+  }
+}
+
+.rf-btn.rf-btn-warning {
+  background-color: $warning;
+  color: $white;
+  &:hover {
+    background-color: lighten($color: $orange, $amount: 10);
+  }
+  &:active {
+    background-color: darken($color: $orange, $amount: 5);
+  }
+  &.is-plain {
+    @include plain-btn-styles(
+      $orange-lighten-2,
+      rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3),
+      $orange
+    );
+    &.is-disabled {
+      @include plain-btn-disabled(
+        rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3),
+        $orange-lighten-4,
+        $orange-lighten-2,
+        rgba(lighten($color: $orange-lighten-3, $amount: 10), 0.3)
+      );
+    }
+  }
+  &.is-disabled {
+    @include base-btn-disabled($orange-lighten-3);
+  }
+}
+
+.rf-btn-text {
+  color: $blue-lighten-2;
+  background-color: transparent;
+  &.rf-btn-small,
+  &.rf-btn-medium,
+  &.rf-btn-large {
+    padding-left: 6px;
+    padding-right: 6px;
+    &.rf-btn-round {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .rf-btn-span {
+      font-size: $font-size-subtitle-2;
+    }
+  }
+  &.rf-btn-small {
+    .rf-btn-span {
+      font-size: $font-size-caption;
+    }
+  }
+  &:active {
+    color: $blue-darken-2;
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: $blue-lighten-3;
+  }
+}

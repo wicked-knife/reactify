@@ -2,12 +2,17 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'production',
-  entry: path.join(__dirname, 'src/index.tsx'),
+  entry: path.join(__dirname, 'src/index.ts'),
   output: {
     library: 'reactify',
     libraryTarget: 'umd',
     filename: 'index.js',
     path: path.join(__dirname, 'build'),
+  },
+  resolve: {
+    extensions: [
+      '.ts', '.tsx', 'js', 'jsx',
+    ],
   },
   module: {
     rules: [

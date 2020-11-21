@@ -20,5 +20,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   'rules': {
+    'max-len': 'off',
+    'react/prop-types': 'off',
   },
 };
