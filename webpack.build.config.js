@@ -1,7 +1,8 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   mode: 'production',
-  entry: path.join(__dirname, 'src/index.ts'),
+  entry: path.join(__dirname, 'src/index.tsx'),
   output: {
     library: 'reactify',
     libraryTarget: 'umd',
@@ -27,7 +28,7 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           // Translates CSS into CommonJS
           'css-loader',
           // Compiles Sass to CSS
@@ -36,5 +37,10 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/index.css',
+    }),
+  ],
   externals: ['react', 'react-dom'],
 };

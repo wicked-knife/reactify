@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import './index.scss';
-import hello from '../build';
+import Hello from '../build';
+import '../build/css/index.css';
 const App = () => {
-  hello('world');
-  return <div>hello world</div>;
+  return <div><Hello /></div>;
 };
 
 ReactDom.render(<App/>, document.getElementById('root'));

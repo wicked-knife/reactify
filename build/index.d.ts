@@ -1,2 +1,4 @@
-declare const hello: (args: string) => void;
-export default hello;
+/// <reference types="react" />
+import './index.scss';
+declare const Demo: () => JSX.Element;
+export default Demo;
