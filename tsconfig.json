@@ -1,4 +1,9 @@
 {
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+    }
+  },
   "include": ["src/**/*"],
   "exclude": ["**/*.test.tsx"],
   "compilerOptions": {

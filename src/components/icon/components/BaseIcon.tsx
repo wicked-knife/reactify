@@ -22,7 +22,7 @@ const BaseIcon: ForwardRefRenderFunction<any, BaseIconProps> = (
   const attrs = {
     width: size,
     height: size,
-    color,
+    fill: color,
   };
   return (
     <Icon className={computedClassNames} {...props} {...attrs} ref={ref} />
