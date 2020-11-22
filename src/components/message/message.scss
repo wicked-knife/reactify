@@ -1,0 +1,80 @@
+@import "../../styles/color";
+@import "../../styles/font";
+
+.rf-message {
+  min-width: 380px;
+  max-width: 1280px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 15px 15px 15px 20px;
+  font-size: $font-size-subtitle-2;
+  transition: top 0.3s ease;
+  .message-close {
+    cursor: pointer;
+    margin-left: 16px;
+  }
+  .message-content {
+    flex: 1;
+  }
+}
+
+.rf-message-info {
+  border: 1px solid $blue-lighten-4;
+  color: $blue-darken-2;
+  background-color: lighten($color: $blue-lighten-4, $amount: 2.5);
+  .icon-info > path {
+    fill: $blue-darken-2;
+  }
+}
+
+.rf-message-error {
+  border: 1px solid $red-lighten-4;
+  color: $red-darken-2;
+  background-color: lighten($color: $red-lighten-4, $amount: 2.5);
+  .icon-forbidden > path {
+    fill: $red-darken-2;
+  }
+}
+
+.rf-message-warning {
+  border: 1px solid $orange-lighten-4;
+  color: $orange-darken-2;
+  background-color: $orange-lighten-5;
+  .icon-caution > path {
+    fill: $orange-darken-2;
+  }
+}
+
+.rf-message-success {
+  border: 1px solid $light-green-lighten-4;
+  color: $light-green-darken-2;
+  background-color: $light-green-lighten-5;
+  .icon-check > path {
+    fill: $light-green-darken-2;
+  }
+}
+
+.message-enter {
+  opacity: 0;
+  transform: scale(0.9) translateX(-50%);
+}
+.message-enter-active {
+  opacity: 1;
+  transform: scale(1) translateX(-50%);
+  transition: opacity 300ms, transform 300ms;
+}
+.message-exit {
+  opacity: 1;
+}
+.message-exit-active {
+  opacity: 0;
+  transform: scale(0.9) translateX(-50%);
+  transition: opacity 300ms, transform 300ms;
+}

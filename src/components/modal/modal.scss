@@ -1,0 +1,118 @@
+@import "../../styles/color";
+@import "../../styles/font";
+div.rf-modal-root {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  .rf-modal-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  .rf-modal {
+    position: relative;
+    background-color: white;
+    z-index: 10001;
+    min-width: 520px;
+    width: auto;
+    display: inline-block;
+    top: 100px;
+    text-align: initial;
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+      0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    .rf-modal-title {
+      box-sizing: border-box;
+      height: 55px;
+      padding: 16px 24px 16px 24px;
+      border-bottom: 1px solid $grey-lighten-3;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      position: relative;
+      &.no-title{
+        height: 32px;
+        padding: 16px 24px 16px 24px;
+        border-bottom: none;
+        .icon-wrapper{
+          width: 48px;
+          height: 32px;
+        }
+      }
+      .icon-wrapper {
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        right: 0;
+        top: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .icon-close {
+          color: $grey;
+          transition: color 0.3s ease;
+        }
+        &:hover {
+          .icon-close {
+            color: $grey-darken-2;
+            transition: color 0.3s ease;
+          }
+        }
+      }
+    }
+    .rf-modal-body{
+      box-sizing: border-box;
+      padding: 16px;
+      &.no-title{
+        padding: 0 16px 16px 16px;
+      }
+    }
+    .rf-modal-footer{
+      border-top: 1px solid $grey-lighten-3;
+      box-sizing: border-box;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.modal-fade-enter {
+  opacity: 0;
+}
+.modal-fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.modal-fade-exit {
+  opacity: 1;
+}
+.modal-fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.modal-exit {
+  opacity: 1;
+}
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
