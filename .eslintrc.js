@@ -22,5 +22,6 @@ module.exports = {
   'rules': {
     'max-len': 'off',
     'react/prop-types': 'off',
+    'linebreak-style': 'off',
   },
 };
