@@ -2,8 +2,8 @@ import React, {
   ForwardRefRenderFunction,
   forwardRef,
   SVGProps,
-} from 'react'
-import useClassNames from 'classnames'
+} from 'react';
+import useClassNames from 'classnames';
 
 export interface BaseIconProps extends SVGProps<SVGElement> {
   color?: string;
@@ -15,24 +15,24 @@ export interface BaseIconProps extends SVGProps<SVGElement> {
 }
 
 const BaseIcon: ForwardRefRenderFunction<any, BaseIconProps> = (
-  { color, size, className, Icon, ...props },
-  ref
+    {color, size, className, Icon, ...props},
+    ref,
 ) => {
-  const computedClassNames = useClassNames('iconfont', 'rf-icon', className)
+  const computedClassNames = useClassNames('iconfont', 'rf-icon', className);
   const attrs = {
     width: size,
     height: size,
-    color,
-  }
+    fill: color,
+  };
   return (
     <Icon className={computedClassNames} {...props} {...attrs} ref={ref} />
-  )
-}
+  );
+};
 
-const Icon = forwardRef(BaseIcon)
+const Icon = forwardRef(BaseIcon);
 
 Icon.defaultProps = {
   size: 16,
-}
+};
 
-export default Icon
+export default Icon;

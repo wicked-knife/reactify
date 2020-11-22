@@ -10,7 +10,7 @@
 
 # production
 /build
-/distgit 
+/dist
 
 # misc
 .DS_Store

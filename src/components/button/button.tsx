@@ -1,6 +1,6 @@
-import React, { ForwardRefRenderFunction, ButtonHTMLAttributes, forwardRef  } from 'react'
-import useClassNames from 'classnames'
-import './button.scss'
+import React, {ForwardRefRenderFunction, ButtonHTMLAttributes, forwardRef} from 'react';
+import useClassNames from 'classnames';
+import './button.scss';
 
 export type ButtonType =
   | 'default'
@@ -26,30 +26,30 @@ interface BaseButtonProps
 type ButtonProps = BaseButtonProps
 
 const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
-  {
-    block,
-    disabled,
-    className,
-    children,
-    type,
-    size,
-    plain,
-    round,
-    htmlType,
-    ...props
-  },
-  propRef
+    {
+      block,
+      disabled,
+      className,
+      children,
+      type,
+      size,
+      plain,
+      round,
+      htmlType,
+      ...props
+    },
+    propRef,
 ) => {
   const computedClassNames = useClassNames(
-    ['rf-btn', `rf-btn-${type}`, `rf-btn-${size}`],
-    {
-      'is-block': block,
-      'is-disabled': disabled,
-      'is-plain': plain,
-      'rf-btn-round': round,
-    },
-    className
-  )
+      ['rf-btn', `rf-btn-${type}`, `rf-btn-${size}`],
+      {
+        'is-block': block,
+        'is-disabled': disabled,
+        'is-plain': plain,
+        'rf-btn-round': round,
+      },
+      className,
+  );
 
   return (
     <button
@@ -60,10 +60,10 @@ const BaseButton: ForwardRefRenderFunction<any, ButtonProps> = (
       ref={propRef}>
       <span className='rf-btn-span'>{children}</span>
     </button>
-  )
-}
+  );
+};
 
-const Button = forwardRef<any, ButtonProps>(BaseButton)
+const Button = forwardRef<any, ButtonProps>(BaseButton);
 
 Button.defaultProps = {
   block: false,
@@ -73,6 +73,6 @@ Button.defaultProps = {
   round: false,
   disabled: false,
   htmlType: 'button',
-}
+};
 
-export default Button
+export default Button;
