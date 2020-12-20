@@ -1,10 +1,10 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-console.log(process.env.NODE_ENV);
 module.exports = {
   mode: 'production',
   entry: path.join(__dirname, 'src/index.ts'),
+  externals: ['react', 'react-dom'],
   output: {
     library: 'reactify',
     libraryTarget: 'umd',
@@ -51,5 +51,4 @@ module.exports = {
       filename: 'css/index.css',
     }),
   ].concat(process.env.NODE_ENV === 'analyse' ? new BundleAnalyzerPlugin() : []),
-  externals: ['react', 'react-dom'],
 };
