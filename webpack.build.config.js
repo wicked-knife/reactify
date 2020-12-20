@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 module.exports = {
   mode: 'production',
   entry: path.join(__dirname, 'src/index.ts'),
@@ -50,5 +51,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/index.css',
     }),
-  ].concat(process.env.NODE_ENV === 'analyse' ? new BundleAnalyzerPlugin() : []),
+  ].concat(
+    process.env.NODE_ENV === 'analyse' ?
+      new BundleAnalyzerPlugin({generateStatsFile: true}) :
+      [],
+  ),
 };
