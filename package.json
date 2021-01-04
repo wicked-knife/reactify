@@ -9,7 +9,7 @@
     "build": "rimraf build && npm run build:icon && webpack --config webpack.build.config.js",
     "build:icon": "ts-node ./src/components/icon/scripts/generate.ts",
     "dev:watch": "rimraf build && webpack --config webpack.build.config.js --watch",
-    "test": "jest"
+    "test": "jest --no-cache"
   },
   "author": "",
   "license": "ISC",
